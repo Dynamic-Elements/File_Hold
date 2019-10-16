@@ -52,7 +52,7 @@ namespace Accounting_PL
             }
             catch { }
 
-            string lexfile = lexfolder + "ExcelHolder.xlsx";
+            string lexfile = lexfolder + "TestExcelHolder.xlsx";
 
             xlApp = new Excel.Application();
             if (xlApp == null)
@@ -111,7 +111,7 @@ namespace Accounting_PL
 
             xlApp.Visible = true;
 
-            xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
             xlWorkBook.Close(true, misValue, misValue);
             xlApp.Quit();
             //xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
@@ -194,5 +194,17 @@ namespace Accounting_PL
             panel5.Visible = false;
             panel5.SendToBack();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            var date = DateTime.Now;
+            var lastSunday = Dates.DTOC(date.AddDays(- (int)date.DayOfWeek));  // Grabs the past Sunday for Week End
+
+            textBox1.Text = lastSunday;
+
+            textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
+
+        }
+
     }
 }
