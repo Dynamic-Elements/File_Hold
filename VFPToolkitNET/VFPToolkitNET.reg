@@ -1,0 +1,3 @@
+REGEDIT4
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\VFPToolkitNET]
+@="C:\\VFPToolkitNET\\"
