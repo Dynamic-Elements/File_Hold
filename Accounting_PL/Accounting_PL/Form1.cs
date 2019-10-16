@@ -118,13 +118,13 @@ namespace Accounting_PL
             //xlWorkBook.Close(true, misValue, misValue);
             //xlApp.Quit();
 
-            releaseObject(xlWorkSheet);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
+            ReleaseObject(xlWorkSheet);
+            ReleaseObject(xlWorkBook);
+            ReleaseObject(xlApp);
 
         }
 
-        private void releaseObject(object obj)
+        private void ReleaseObject(object obj)
         {
             try
             {
