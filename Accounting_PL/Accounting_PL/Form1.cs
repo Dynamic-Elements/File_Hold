@@ -29,6 +29,11 @@ namespace Accounting_PL
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Excel Code
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button1_Click(object sender, EventArgs e)
         {
             Excel.Application xlApp;
@@ -142,11 +147,24 @@ namespace Accounting_PL
             }
         }
 
+
+        /// <summary>
+        /// Scanner Button
+        /// This will handle the scanner feature.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button2_Click(object sender, EventArgs e)
         {
             
         }
 
+
+        /// <summary>
+        /// Food button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button3_Click(object sender, EventArgs e)
         {
             panel2.Visible = true;
@@ -159,6 +177,11 @@ namespace Accounting_PL
             panel5.SendToBack();
         }
 
+        /// <summary>
+        /// Labor Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button4_Click(object sender, EventArgs e)
         {
             panel2.Visible = false;
@@ -171,6 +194,11 @@ namespace Accounting_PL
             panel5.BringToFront();
         }
 
+        /// <summary>
+        /// Expenses Button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button5_Click(object sender, EventArgs e)
         {
             panel2.Visible = false;
@@ -183,6 +211,11 @@ namespace Accounting_PL
             panel5.SendToBack();
         }
 
+        /// <summary>
+        /// Overhead Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button6_Click(object sender, EventArgs e)
         {
             panel2.Visible = false;
@@ -195,6 +228,11 @@ namespace Accounting_PL
             panel5.SendToBack();
         }
 
+        /// <summary>
+        /// Setup fields right now. Will add more later.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             var date = DateTime.Now;
