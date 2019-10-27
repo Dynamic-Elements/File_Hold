@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Odbc;
+using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -156,7 +159,7 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Button2_Click(object sender, EventArgs e)
         {
-            
+
         }
 
 
@@ -236,7 +239,7 @@ namespace Accounting_PL
         private void Form1_Load(object sender, EventArgs e)
         {
             var date = DateTime.Now;
-            var lastSunday = Dates.DTOC(date.AddDays(- (int)date.DayOfWeek));  // Grabs the past Sunday for Week End
+            var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
 
             textBox1.Text = lastSunday;
 
@@ -244,5 +247,122 @@ namespace Accounting_PL
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            string lcServer = "salt.db.elephantsql.com";
+            string lcODBC = "PostgreSQL ANSI";
+            string lcDB = "pffejyte";
+            // string lcPort = "5432";  //  Port=" + lcPort + ";
+            string lcUser = "pffejyte";
+            string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
+            string lcSQL = "";
+            var dataSet1 = new DataSet();
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            lcSQL = "SELECT * FROM ~public~.~tb_inbuillding~ LIMIT 100".Replace('~', '"');
+
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+            OdbcCommand com = new OdbcCommand(lcSQL, cnn);
+            OdbcDataReader reader = com.ExecuteReader();
+            MessageBox.Show(vfpData.RecCount().ToString());
+            
+
+
+            //string lcYear = textBox2.Text;
+            //string lcEOW = textBox1.Text;
+
+            //string lcfPrimSupp = textBox84.Text;
+            //string lcfOthSupp = textBox77.Text;
+            //string lcfBread = textBox76.Text;
+            //string lcfBev = textBox75.Text;
+            //string lcfProd = textBox69.Text;
+            //string lcfCarbon = textBox68.Text;
+
+            //string lcoMort = textBox83.Text;
+            //string lcoLoan = textBox82.Text;
+            //string lcoAssoc = textBox81.Text;
+            //string lcoPropTax = textBox80.Text;
+            //string lcoAdvCoop = textBox79.Text;
+            //string lcoNatAdver = textBox78.Text;
+            //string lcoLicenseFee = textBox73.Text;
+
+            //string lceAccount = textBox27.Text;
+            //string lceBank = textBox26.Text;
+            //string lceCC = textBox25.Text;
+            //string lceFuel = textBox24.Text;
+            //string lceLegal = textBox23.Text;
+            //string lceLicensePerm = textBox22.Text;
+            //string lcePayroll = textBox28.Text;
+            //string lceInsur = textBox30.Text;
+            //string lceWorkComp = textBox29.Text;
+            //string lceAdvertise = textBox32.Text;
+            //string lceCharitable = textBox31.Text;
+            //string lceAuto = textBox21.Text;
+            //string lceCash = textBox20.Text;
+            //string lceElect = textBox34.Text;
+            //string lceGeneral = textBox33.Text;
+            //string lceHVAC = textBox19.Text;
+            //string lceLawn = textBox35.Text;
+            //string lcePaint = textBox36.Text;
+            //string lcePlumb = textBox37.Text;
+            //string lceRemodel = textBox38.Text;
+            //string lceStruct = textBox39.Text;
+            //string lceDishMach = textBox43.Text;
+            //string lceJanitorial = textBox42.Text;
+            //string lceOfficeComp = textBox44.Text;
+            //string lceRestaurant = textBox41.Text;
+            //string lceUniform = textBox40.Text;
+            //string lceData = textBox18.Text;
+            //string lceElectric = textBox45.Text;
+            //string lceMusic = textBox46.Text;
+            //string lceNatGas = textBox47.Text;
+
+            //string lclHost = textBox90.Text;
+            //string lclCook = textBox89.Text;
+            //string lclServer = textBox88.Text;
+            //string lclDMO = textBox87.Text;
+            //string lclSuperv = textBox86.Text;
+            //string lclOvertime = textBox85.Text;
+            //string lclGenManager = textBox74.Text;
+            //string lclManager = textBox72.Text;
+            //string lclBonus = textBox71.Text;
+            //string lclPayTax = textBox70.Text;
+
+
+
+            // DataView goView = VfpData.SqlExecute(oConn, lcSQL, "A_List");
+            // VfpData.Browse(goView);
+            // VfpData.Browse(command.ExecuteScalar());
+
+            /// oConn = SqlConnect(lcConnectionString);
+            /// goView = SqlExecute(oConn, lcSQL, "CustomerList");
+            /// SqlDisConnect(oConn);
+            /// 
+            /// //Select the default cursor and browse it
+            /// VFPToolkit.vfpData.Select(goView);
+            /// Browse();
+
+            MessageBox.Show("Done!");
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string lcServer = "salt.db.elephantsql.com";
+            string lcODBC = "PostgreSQL ANSI";
+            string lcDB = "pffejyte";
+            // string lcPort = "5432";  //  Port=" + lcPort + ";
+            string lcUser = "pffejyte";
+            string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
+            string lcSQL = "";
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OleDbConnection oConn = VfpData.SqlStringConnect(lcConnectionString);
+
+        }
     }
 }

@@ -396,7 +396,7 @@ namespace VFPToolkit
 			oForm.SetData(toView);
 			oForm.Show();
 		}
-		public static void Browse(){Browse(VfpData.oView);}
+		public static void Browse(string v) {Browse(VfpData.oView);}
 
 
 		/// <summary>
@@ -528,64 +528,64 @@ namespace VFPToolkit
 			return ds;
 		}
 
-		/// <summary>
-		/// Receives a connection string as a parameter and establishes a connection to
-		/// the backend. Returns a connection object back
-		/// </summary>
-		/// <example>
-		/// //Establish a connection and a command 
-		/// string lcConnectionString;
-		/// string lcSQL;
-		/// OleDbConnection oConn;
-		/// 
-		/// //Get the connection string and sql statement
-		/// lcConnectionString = "Provider=vfpoledb.1;Data Source='C:\\Program Files\\Microsoft Visual FoxPro 7\\Samples\\Data\\testdata.dbc';password='';user id=''";
-		/// lcSQL = "Select * from customer";
-		/// 
-		/// //Connect to the Database, execute the query and disconnect
-		/// //SqlConnect(), SqlExecute(), SqlDisconnect()
-		/// oConn = SqlConnect(lcConnectionString);
-		/// goView = SqlExecute(oConn, lcSQL, "CustomerList");
-		/// SqlDisConnect(oConn);
-		/// 
-		/// //Select the default cursor and browse it
-		/// VFPToolkit.vfpData.Select(goView);
-		/// Browse();
-		/// </example>
-		/// <param name="tcConnectionString"></param>
-		/// <returns></returns>
-		public static OleDbConnection SqlConnect(string tcConnectionString)
-		{
-			return new OleDbConnection(tcConnectionString);
-		}
+        /// <summary>
+        /// Receives a connection string as a parameter and establishes a connection to
+        /// the backend. Returns a connection object back
+        /// </summary>
+        /// <example>
+        /// //Establish a connection and a command 
+        /// string lcConnectionString;
+        /// string lcSQL;
+        /// OleDbConnection oConn;
+        /// 
+        /// //Get the connection string and sql statement
+        /// lcConnectionString = "Provider=vfpoledb.1;Data Source='C:\\Program Files\\Microsoft Visual FoxPro 7\\Samples\\Data\\testdata.dbc';password='';user id=''";
+        /// lcSQL = "Select * from customer";
+        /// 
+        /// //Connect to the Database, execute the query and disconnect
+        /// //SqlConnect(), SqlExecute(), SqlDisconnect()
+        /// oConn = SqlConnect(lcConnectionString);
+        /// goView = SqlExecute(oConn, lcSQL, "CustomerList");
+        /// SqlDisConnect(oConn);
+        /// 
+        /// //Select the default cursor and browse it
+        /// VFPToolkit.vfpData.Select(goView);
+        /// Browse();
+        /// </example>
+        /// <param name="tcConnectionString"></param>
+        /// <returns></returns>
+        public static OleDbConnection SqlConnect(string tcConnectionString)
+        {
+            return new OleDbConnection(tcConnectionString);
+        }
 
-		/// <summary>
-		/// Receives a connection string as a parameter and establishes a connection to
-		/// the backend. Returns a connection object back
-		/// </summary>
-		/// <example>
-		/// //Establish a connection and a command 
-		/// string lcConnectionString;
-		/// string lcSQL;
-		/// OleDbConnection oConn;
-		/// 
-		/// //Get the connection string and sql statement
-		/// lcConnectionString = "Provider=vfpoledb.1;Data Source='C:\\Program Files\\Microsoft Visual FoxPro 7\\Samples\\Data\\testdata.dbc';password='';user id=''";
-		/// lcSQL = "Select * from customer";
-		/// 
-		/// //Connect to the Database, execute the query and disconnect
-		/// //SqlConnect(), SqlExecute(), SqlDisconnect()
-		/// oConn = SqlConnect(lcConnectionString);
-		/// goView = SqlExecute(oConn, lcSQL, "CustomerList");
-		/// SqlDisConnect(oConn);
-		/// 
-		/// //Select the default cursor and browse it
-		/// VFPToolkit.vfpData.Select(goView);
-		/// Browse();
-		/// </example>
-		/// <param name="tcConnectionString"></param>
-		/// <returns></returns>
-		public static OleDbConnection SqlStringConnect(string tcConnectionString)
+        /// <summary>
+        /// Receives a connection string as a parameter and establishes a connection to
+        /// the backend. Returns a connection object back
+        /// </summary>
+        /// <example>
+        /// //Establish a connection and a command 
+        /// string lcConnectionString;
+        /// string lcSQL;
+        /// OleDbConnection oConn;
+        /// 
+        /// //Get the connection string and sql statement
+        /// lcConnectionString = "Provider=vfpoledb.1;Data Source='C:\\Program Files\\Microsoft Visual FoxPro 7\\Samples\\Data\\testdata.dbc';password='';user id=''";
+        /// lcSQL = "Select * from customer";
+        /// 
+        /// //Connect to the Database, execute the query and disconnect
+        /// //SqlConnect(), SqlExecute(), SqlDisconnect()
+        /// oConn = SqlConnect(lcConnectionString);
+        /// goView = SqlExecute(oConn, lcSQL, "CustomerList");
+        /// SqlDisConnect(oConn);
+        /// 
+        /// //Select the default cursor and browse it
+        /// VFPToolkit.vfpData.Select(goView);
+        /// Browse();
+        /// </example>
+        /// <param name="tcConnectionString"></param>
+        /// <returns></returns>
+        public static OleDbConnection SqlStringConnect(string tcConnectionString)
 		{
 			return SqlConnect(tcConnectionString);
 		}
