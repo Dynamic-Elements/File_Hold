@@ -261,91 +261,107 @@ namespace Accounting_PL
             string lcUser = "pffejyte";
             string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
             string lcSQL = "";
-            var dataSet1 = new DataSet();
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            lcSQL = "SELECT * FROM ~public~.~tb_inbuillding~ LIMIT 100".Replace('~', '"');
 
+            string lcYear = textBox2.Text.Trim();
+            string lcEOW = textBox1.Text.Trim();
+
+            string lcfPrimSupp = textBox84.Text.Trim();
+            string lcfOthSupp = textBox77.Text.Trim();
+            string lcfBread = textBox76.Text.Trim();
+            string lcfBev = textBox75.Text.Trim();
+            string lcfProd = textBox69.Text.Trim();
+            string lcfCarbon = textBox68.Text.Trim();
+
+            string lcoMort = textBox83.Text.Trim();
+            string lcoLoan = textBox82.Text.Trim();
+            string lcoAssoc = textBox81.Text.Trim();
+            string lcoPropTax = textBox80.Text.Trim();
+            string lcoAdvCoop = textBox79.Text.Trim();
+            string lcoNatAdver = textBox78.Text.Trim();
+            string lcoLicenseFee = textBox73.Text.Trim();
+
+            string lceAccount = textBox27.Text.Trim();
+            string lceBank = textBox26.Text.Trim();
+            string lceCC = textBox25.Text.Trim();
+            string lceFuel = textBox24.Text.Trim();
+            string lceLegal = textBox23.Text.Trim();
+            string lceLicensePerm = textBox22.Text.Trim();
+            string lcePayroll = textBox28.Text.Trim();
+            string lceInsur = textBox30.Text.Trim();
+            string lceWorkComp = textBox29.Text.Trim();
+            string lceAdvertise = textBox32.Text.Trim();
+            string lceCharitable = textBox31.Text.Trim();
+            string lceAuto = textBox21.Text.Trim();
+            string lceCash = textBox20.Text.Trim();
+            string lceElect = textBox34.Text.Trim();
+            string lceGeneral = textBox33.Text.Trim();
+            string lceHVAC = textBox19.Text.Trim();
+            string lceLawn = textBox35.Text.Trim();
+            string lcePaint = textBox36.Text.Trim();
+            string lcePlumb = textBox37.Text.Trim();
+            string lceRemodel = textBox38.Text.Trim();
+            string lceStruct = textBox39.Text.Trim();
+            string lceDishMach = textBox43.Text.Trim();
+            string lceJanitorial = textBox42.Text.Trim();
+            string lceOfficeComp = textBox44.Text.Trim();
+            string lceRestaurant = textBox41.Text.Trim();
+            string lceUniform = textBox40.Text.Trim();
+            string lceData = textBox18.Text.Trim();
+            string lceElectric = textBox45.Text.Trim();
+            string lceMusic = textBox46.Text.Trim();
+            string lceNatGas = textBox47.Text.Trim();
+
+            string lclHost = textBox90.Text.Trim();
+            string lclCook = textBox89.Text.Trim();
+            string lclServer = textBox88.Text.Trim();
+            string lclDMO = textBox87.Text.Trim();
+            string lclSuperv = textBox86.Text.Trim();
+            string lclOvertime = textBox85.Text.Trim();
+            string lclGenManager = textBox74.Text.Trim();
+            string lclManager = textBox72.Text.Trim();
+            string lclBonus = textBox71.Text.Trim();
+            string lclPayTax = textBox70.Text.Trim();
+
+            lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
             OdbcCommand com = new OdbcCommand(lcSQL, cnn);
-            OdbcDataReader reader = com.ExecuteReader();
-            MessageBox.Show(vfpData.RecCount().ToString());
-            
+            // OdbcDataReader reader = com.ExecuteReader();
+            int result = com.ExecuteNonQuery();
 
+            if (result > 0)
+            {
+                /// Update records
+                // MessageBox.Show(result.ToString());
+                lcSQL = " Update table set NetSales=, PrimSupp=" + lcfPrimSupp + ", OthSupp="+lcfOthSupp+", Bread="+lcfBread+", Bever="+lcfBev+", Produce="+lcfProd+"," +
+                    " CarbDio="+lcfCarbon+", FoodC=, HostCash="+lclHost+", Cooks="+lclCook+", Servers="+lclServer+", DMO="+lclDMO+", Superv="+lclSuperv+", Overt="+lclOvertime+"," +
+                    " GenMan="+lclGenManager+", Manager="+lclManager+", Bonus="+lclBonus+", PayTax="+lclPayTax+", HealthCare=, Retire=, LaborC=, Accounting="+lceAccount+"," +
+                    " Bank="+lceBank+", CreditC="+lceCC+", Fuel="+lceFuel+", Legal="+lceLegal+", License="+lceLicensePerm+", PayRollP="+lcePayroll+", Insurance="+lceInsur+"," +
+                    " WorkComp, Ads, Charitable, Auto, Cash, Electrical, General, HVAC, Lawn, Paint, Plumb, Remodel, DishM, Janitorial, Office, Restaurant, Uniforms, Data, Electricity, Music, NaturalG, Security, Trash, Water, Expenses, Mortgage, Loan, Association, PropertyT, Advertising, NationalAds, LicensingF, OverheadC, IDs, Structural where Week=" + lcYear;
 
-            //string lcYear = textBox2.Text;
-            //string lcEOW = textBox1.Text;
+            }
+            else
+            {
+                /// Insert records
+                // MessageBox.Show("Hello There, no records");
+                lcSQL = "Insert into table (NetSales, PrimSupp, OthSupp, Bread, Bever, Produce, CarbDio, FoodC, HostCash, Cooks, Servers, "
+                    + "DMO, Superv, Overt, GenMan, Manager, Bonus, PayTax, HealthCare, Retire, LaborC, Accounting, Bank, CreditC, Fuel, Legal, "
+                    + "License, PayRollP, Insurance, WorkComp, Ads, Charitable, Auto, Cash, Electrical, General, HVAC, Lawn, Paint, Plumb, "
+                    + "Remodel, DishM, Janitorial, Office, Restaurant, Uniforms, Data, Electricity, Music, NaturalG, Security, Trash, Water, "
+                    + "Expenses, Mortgage, Loan, Association, PropertyT, Advertising, NationalAds, LicensingF, OverheadC, IDs, Structural) "
+                    + " values "
+                    + " () ";
 
-            //string lcfPrimSupp = textBox84.Text;
-            //string lcfOthSupp = textBox77.Text;
-            //string lcfBread = textBox76.Text;
-            //string lcfBev = textBox75.Text;
-            //string lcfProd = textBox69.Text;
-            //string lcfCarbon = textBox68.Text;
+            }
 
-            //string lcoMort = textBox83.Text;
-            //string lcoLoan = textBox82.Text;
-            //string lcoAssoc = textBox81.Text;
-            //string lcoPropTax = textBox80.Text;
-            //string lcoAdvCoop = textBox79.Text;
-            //string lcoNatAdver = textBox78.Text;
-            //string lcoLicenseFee = textBox73.Text;
-
-            //string lceAccount = textBox27.Text;
-            //string lceBank = textBox26.Text;
-            //string lceCC = textBox25.Text;
-            //string lceFuel = textBox24.Text;
-            //string lceLegal = textBox23.Text;
-            //string lceLicensePerm = textBox22.Text;
-            //string lcePayroll = textBox28.Text;
-            //string lceInsur = textBox30.Text;
-            //string lceWorkComp = textBox29.Text;
-            //string lceAdvertise = textBox32.Text;
-            //string lceCharitable = textBox31.Text;
-            //string lceAuto = textBox21.Text;
-            //string lceCash = textBox20.Text;
-            //string lceElect = textBox34.Text;
-            //string lceGeneral = textBox33.Text;
-            //string lceHVAC = textBox19.Text;
-            //string lceLawn = textBox35.Text;
-            //string lcePaint = textBox36.Text;
-            //string lcePlumb = textBox37.Text;
-            //string lceRemodel = textBox38.Text;
-            //string lceStruct = textBox39.Text;
-            //string lceDishMach = textBox43.Text;
-            //string lceJanitorial = textBox42.Text;
-            //string lceOfficeComp = textBox44.Text;
-            //string lceRestaurant = textBox41.Text;
-            //string lceUniform = textBox40.Text;
-            //string lceData = textBox18.Text;
-            //string lceElectric = textBox45.Text;
-            //string lceMusic = textBox46.Text;
-            //string lceNatGas = textBox47.Text;
-
-            //string lclHost = textBox90.Text;
-            //string lclCook = textBox89.Text;
-            //string lclServer = textBox88.Text;
-            //string lclDMO = textBox87.Text;
-            //string lclSuperv = textBox86.Text;
-            //string lclOvertime = textBox85.Text;
-            //string lclGenManager = textBox74.Text;
-            //string lclManager = textBox72.Text;
-            //string lclBonus = textBox71.Text;
-            //string lclPayTax = textBox70.Text;
-
-
-
-            // DataView goView = VfpData.SqlExecute(oConn, lcSQL, "A_List");
-            // VfpData.Browse(goView);
-            // VfpData.Browse(command.ExecuteScalar());
-
-            /// oConn = SqlConnect(lcConnectionString);
-            /// goView = SqlExecute(oConn, lcSQL, "CustomerList");
-            /// SqlDisConnect(oConn);
-            /// 
-            /// //Select the default cursor and browse it
-            /// VFPToolkit.vfpData.Select(goView);
-            /// Browse();
+            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            int rowsAdded = cmd.ExecuteNonQuery();
+            if (rowsAdded > 0)
+                MessageBox.Show("Row inserted!!");
+            else
+                // Well this should never really happen
+                MessageBox.Show("No row inserted");
 
             MessageBox.Show("Done!");
 
