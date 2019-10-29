@@ -159,6 +159,11 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Button2_Click(object sender, EventArgs e)
         {
+            /// Notes
+            /// https://www.scanitto.com/
+            /// https://www.vintasoft.com/download.html
+            /// http://www.viscomsoft.com/
+
 
         }
 
