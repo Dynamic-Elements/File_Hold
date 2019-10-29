@@ -311,6 +311,9 @@ namespace Accounting_PL
             string lceElectric = textBox45.Text.Trim();
             string lceMusic = textBox46.Text.Trim();
             string lceNatGas = textBox47.Text.Trim();
+            string lceSecurity = textBox48.Text.Trim();
+            string lceTrash = textBox49.Text.Trim();
+            string lceWaterSewer = textBox50.Text.Trim();
 
             string lclHost = textBox90.Text.Trim();
             string lclCook = textBox89.Text.Trim();
@@ -334,24 +337,27 @@ namespace Accounting_PL
             {
                 /// Update records
                 // MessageBox.Show(result.ToString());
-                lcSQL = " Update table set NetSales=, PrimSupp=" + lcfPrimSupp + ", OthSupp="+lcfOthSupp+", Bread="+lcfBread+", Bever="+lcfBev+", Produce="+lcfProd+"," +
-                    " CarbDio="+lcfCarbon+", FoodC=, HostCash="+lclHost+", Cooks="+lclCook+", Servers="+lclServer+", DMO="+lclDMO+", Superv="+lclSuperv+", Overt="+lclOvertime+"," +
-                    " GenMan="+lclGenManager+", Manager="+lclManager+", Bonus="+lclBonus+", PayTax="+lclPayTax+", HealthCare=, Retire=, LaborC=, Accounting="+lceAccount+"," +
-                    " Bank="+lceBank+", CreditC="+lceCC+", Fuel="+lceFuel+", Legal="+lceLegal+", License="+lceLicensePerm+", PayRollP="+lcePayroll+", Insurance="+lceInsur+"," +
-                    " WorkComp, Ads, Charitable, Auto, Cash, Electrical, General, HVAC, Lawn, Paint, Plumb, Remodel, DishM, Janitorial, Office, Restaurant, Uniforms, Data, Electricity, Music, NaturalG, Security, Trash, Water, Expenses, Mortgage, Loan, Association, PropertyT, Advertising, NationalAds, LicensingF, OverheadC, IDs, Structural where Week=" + lcYear;
+                lcSQL = " Update table set NetSales=, PrimSupp=" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
+                    " CarbDio=" + lcfCarbon + ", FoodC=, HostCash=" + lclHost + ", Cooks=" + lclCook + ", Servers=" + lclServer + ", DMO=" + lclDMO + ", Superv=" + lclSuperv + ", Overt=" + lclOvertime + "," +
+                    " GenMan=" + lclGenManager + ", Manager=" + lclManager + ", Bonus=" + lclBonus + ", PayTax=" + lclPayTax + ", HealthCare=, Retire=, LaborC=, Accounting=" + lceAccount + "," +
+                    " Bank=" + lceBank + ", CreditC=" + lceCC + ", Fuel=" + lceFuel + ", Legal=" + lceLegal + ", License=" + lceLicensePerm + ", PayRollP=" + lcePayroll + ", Insurance=" + lceInsur + "," +
+                    " WorkComp=" + lceWorkComp + ", Ads=" + lceAdvertise + ", Charitable=" + lceCharitable + ", Auto=" + lceAuto + ", Cash=" + lceCash + ", Electrical=" + lceElect + "," +
+                    " General=" + lceGeneral + ", HVAC=" + lceHVAC + ", Lawn=" + lceLawn + ", Paint=" + lcePaint + ", Plumb=" + lcePlumb + ", Remodel=" + lceRemodel + ", DishM=" + lceDishMach + "," +
+                    " Janitorial=" + lceJanitorial + ", Office=" + lceOfficeComp + ", Restaurant=" + lceRestaurant + ", Uniforms=" + lceUniform + ", Data=" + lceData + ", Electricity=" + lceElectric + "," +
+                    " Music=" + lceMusic + ", NaturalG=" + lceNatGas + ", Security=" + lceSecurity + ", Trash=" + lceTrash + ", Water=" + lceWaterSewer + ", Expenses=, Mortgage=" + lcoMort + "," +
+                    " Loan=" + lcoLoan + ", Association=" + lcoAssoc + ", PropertyT=" + lcoPropTax + ", Advertising=" + lceAdvertise + ", NationalAds=" + lcoNatAdver + ", LicensingF=" + lcoLicenseFee + "," +
+                    " OverheadC=, Structural=" + lceStruct + " where Week=" + lcEOW;
 
             }
             else
             {
                 /// Insert records
                 // MessageBox.Show("Hello There, no records");
-                lcSQL = "Insert into table (NetSales, PrimSupp, OthSupp, Bread, Bever, Produce, CarbDio, FoodC, HostCash, Cooks, Servers, "
-                    + "DMO, Superv, Overt, GenMan, Manager, Bonus, PayTax, HealthCare, Retire, LaborC, Accounting, Bank, CreditC, Fuel, Legal, "
-                    + "License, PayRollP, Insurance, WorkComp, Ads, Charitable, Auto, Cash, Electrical, General, HVAC, Lawn, Paint, Plumb, "
-                    + "Remodel, DishM, Janitorial, Office, Restaurant, Uniforms, Data, Electricity, Music, NaturalG, Security, Trash, Water, "
-                    + "Expenses, Mortgage, Loan, Association, PropertyT, Advertising, NationalAds, LicensingF, OverheadC, IDs, Structural) "
-                    + " values "
-                    + " () ";
+                lcSQL = " Insert into table (Week,NetSales,PrimSupp,OthSupp,Bread,Bever,Produce,CarbDio,FoodC,HostCash,Cooks,Servers,DMO,Superv,Overt,GenMan,Manager,Bonus,PayTax,HealthCare,Retire,LaborC,Accounting," +
+                    "Bank,CreditC,Fuel,Legal,License,PayRollP,Insurance,WorkComp,Ads,Charitable,Auto,Cash,Electrical,General,HVAC,Lawn,Paint,Plumb,Remodel,DishM,Janitorial,Office,Restaurant,Uniforms,Data," +
+                    "Electricity,Music,NaturalG,Security,Trash,Water,Expenses,Mortgage,Loan,Association,PropertyT,Advertising,NationalAds,LicensingF,OverheadC,IDs,Structural) " +
+                    " values " +
+                    " ('" + lcEOW + "','','" + lcfPrimSupp + "') ";
 
             }
 
