@@ -253,23 +253,24 @@ namespace Accounting_PL
         }
 
         /// <summary>
-        /// 
+        /// Save button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Button7_Click(object sender, EventArgs e)
         {
-            string lcServer = "salt.db.elephantsql.com";
-            string lcODBC = "PostgreSQL ANSI";
-            string lcDB = "pffejyte";
-            // string lcPort = "5432";  //  Port=" + lcPort + ";
-            string lcUser = "pffejyte";
-            string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
-            string lcSQL = "";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //string lcServer = "salt.db.elephantsql.com";
+            //string lcODBC = "PostgreSQL ANSI";
+            //string lcDB = "pffejyte";
+            //// string lcPort = "5432";  //  Port=" + lcPort + ";
+            //string lcUser = "pffejyte";
+            //string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
+            //string lcSQL = "";
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
 
             string lcYear = textBox2.Text.Trim();
             string lcEOW = textBox1.Text.Trim();
+            string lcNetSales = textBox3.Text.Trim();
 
             string lcfPrimSupp = textBox84.Text.Trim();
             string lcfOthSupp = textBox77.Text.Trim();
@@ -277,6 +278,7 @@ namespace Accounting_PL
             string lcfBev = textBox75.Text.Trim();
             string lcfProd = textBox69.Text.Trim();
             string lcfCarbon = textBox68.Text.Trim();
+            string lcfTotFood = textBox4.Text.Trim();
 
             string lcoMort = textBox83.Text.Trim();
             string lcoLoan = textBox82.Text.Trim();
@@ -285,6 +287,7 @@ namespace Accounting_PL
             string lcoAdvCoop = textBox79.Text.Trim();
             string lcoNatAdver = textBox78.Text.Trim();
             string lcoLicenseFee = textBox73.Text.Trim();
+            string lcoTotOverhead = textBox6.Text.Trim();
 
             string lceAccount = textBox27.Text.Trim();
             string lceBank = textBox26.Text.Trim();
@@ -319,6 +322,7 @@ namespace Accounting_PL
             string lceSecurity = textBox48.Text.Trim();
             string lceTrash = textBox49.Text.Trim();
             string lceWaterSewer = textBox50.Text.Trim();
+            string lceTotExpense = textBox7.Text.Trim();
 
             string lclHost = textBox90.Text.Trim();
             string lclCook = textBox89.Text.Trim();
@@ -330,40 +334,53 @@ namespace Accounting_PL
             string lclManager = textBox72.Text.Trim();
             string lclBonus = textBox71.Text.Trim();
             string lclPayTax = textBox70.Text.Trim();
+            string lclTotLabor = textBox5.Text.Trim();
 
-            lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
+            string lcServer = "67.222.39.62";
+            string lcODBC = "PostgreSQL ANSI";
+            string lcDB = "Tb_Test";
+            string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcUser = "dynamkr0_pgtest";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "fzk4pktb";
+            string lcSQL = "";
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider="+ lcProv + ";Server=" + lcServer + ";Port=" + lcPort + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
+            lcSQL = "SELECT * from table where where Week=" + lcEOW;      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
+            
             OdbcCommand com = new OdbcCommand(lcSQL, cnn);
-            // OdbcDataReader reader = com.ExecuteReader();
             int result = com.ExecuteNonQuery();
-
             if (result > 0)
             {
                 /// Update records
                 // MessageBox.Show(result.ToString());
-                lcSQL = " Update table set NetSales=, PrimSupp=" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
-                    " CarbDio=" + lcfCarbon + ", FoodC=, HostCash=" + lclHost + ", Cooks=" + lclCook + ", Servers=" + lclServer + ", DMO=" + lclDMO + ", Superv=" + lclSuperv + ", Overt=" + lclOvertime + "," +
-                    " GenMan=" + lclGenManager + ", Manager=" + lclManager + ", Bonus=" + lclBonus + ", PayTax=" + lclPayTax + ", HealthCare=, Retire=, LaborC=, Accounting=" + lceAccount + "," +
+                lcSQL = " Update table set NetSales=" + lcNetSales + ", PrimSupp=" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
+                    " CarbDio=" + lcfCarbon + ", FoodC=" + lcfTotFood + ", HostCash=" + lclHost + ", Cooks=" + lclCook + ", Servers=" + lclServer + ", DMO=" + lclDMO + ", Superv=" + lclSuperv + ", Overt=" + lclOvertime + "," +
+                    " GenMan=" + lclGenManager + ", Manager=" + lclManager + ", Bonus=" + lclBonus + ", PayTax=" + lclPayTax + ", HealthCare=, Retire=, LaborC=" + lclTotLabor + ", Accounting=" + lceAccount + "," +
                     " Bank=" + lceBank + ", CreditC=" + lceCC + ", Fuel=" + lceFuel + ", Legal=" + lceLegal + ", License=" + lceLicensePerm + ", PayRollP=" + lcePayroll + ", Insurance=" + lceInsur + "," +
                     " WorkComp=" + lceWorkComp + ", Ads=" + lceAdvertise + ", Charitable=" + lceCharitable + ", Auto=" + lceAuto + ", Cash=" + lceCash + ", Electrical=" + lceElect + "," +
                     " General=" + lceGeneral + ", HVAC=" + lceHVAC + ", Lawn=" + lceLawn + ", Paint=" + lcePaint + ", Plumb=" + lcePlumb + ", Remodel=" + lceRemodel + ", DishM=" + lceDishMach + "," +
                     " Janitorial=" + lceJanitorial + ", Office=" + lceOfficeComp + ", Restaurant=" + lceRestaurant + ", Uniforms=" + lceUniform + ", Data=" + lceData + ", Electricity=" + lceElectric + "," +
-                    " Music=" + lceMusic + ", NaturalG=" + lceNatGas + ", Security=" + lceSecurity + ", Trash=" + lceTrash + ", Water=" + lceWaterSewer + ", Expenses=, Mortgage=" + lcoMort + "," +
-                    " Loan=" + lcoLoan + ", Association=" + lcoAssoc + ", PropertyT=" + lcoPropTax + ", Advertising=" + lceAdvertise + ", NationalAds=" + lcoNatAdver + ", LicensingF=" + lcoLicenseFee + "," +
-                    " OverheadC=, Structural=" + lceStruct + " where Week=" + lcEOW;
-
+                    " Music=" + lceMusic + ", NaturalG=" + lceNatGas + ", Security=" + lceSecurity + ", Trash=" + lceTrash + ", Water=" + lceWaterSewer + ", Expenses=" + lceTotExpense + ", Mortgage=" + lcoMort + "," +
+                    " Loan=" + lcoLoan + ", Association=" + lcoAssoc + ", PropertyT=" + lcoPropTax + ", Advertising=" + lcoAdvCoop + ", NationalAds=" + lcoNatAdver + ", LicensingF=" + lcoLicenseFee + "," +
+                    " OverheadC=" + lcoTotOverhead + ", Structural=" + lceStruct + " where Week=" + lcEOW;
             }
             else
             {
                 /// Insert records
                 // MessageBox.Show("Hello There, no records");
-                lcSQL = " Insert into table (Week,NetSales,PrimSupp,OthSupp,Bread,Bever,Produce,CarbDio,FoodC,HostCash,Cooks,Servers,DMO,Superv,Overt,GenMan,Manager,Bonus,PayTax,HealthCare,Retire,LaborC,Accounting," +
-                    "Bank,CreditC,Fuel,Legal,License,PayRollP,Insurance,WorkComp,Ads,Charitable,Auto,Cash,Electrical,General,HVAC,Lawn,Paint,Plumb,Remodel,DishM,Janitorial,Office,Restaurant,Uniforms,Data," +
-                    "Electricity,Music,NaturalG,Security,Trash,Water,Expenses,Mortgage,Loan,Association,PropertyT,Advertising,NationalAds,LicensingF,OverheadC,IDs,Structural) " +
-                    " values " +
-                    " ('" + lcEOW + "','','" + lcfPrimSupp + "') ";
-
+                //lcSQL = " Insert into table (Week,NetSales,PrimSupp,OthSupp,Bread,Bever,Produce,CarbDio,FoodC,HostCash,Cooks,Servers,DMO,Superv,Overt,GenMan,Manager,Bonus,PayTax,HealthCare,Retire,LaborC,Accounting," +
+                //    "Bank,CreditC,Fuel,Legal,License,PayRollP,Insurance,WorkComp,Ads,Charitable,Auto,Cash,Electrical,General,HVAC,Lawn,Paint,Plumb,Remodel,DishM,Janitorial,Office,Restaurant,Uniforms,Data," +
+                //    "Electricity,Music,NaturalG,Security,Trash,Water,Expenses,Mortgage,Loan,Association,PropertyT,Advertising,NationalAds,LicensingF,OverheadC,IDs,Structural) " +
+                //    " values " +
+                //    " ('" + lcEOW + "','" + lcNetSales + "','" + lcfPrimSupp + "','"+ lcfOthSupp + "','"+ lcfBread + "','"+ lcfBev + "','"+ lcfProd + "','"+ lcfCarbon + "','"+ lcfTotFood + "','"+ lclHost + "'," +
+                //    "'"+ lclCook + "','"+ lclServer + "','"+ lclDMO + "','"+ lclSuperv + "','"+ lclOvertime + "','"+ lclGenManager + "','"+ lclManager + "','"+ lclBonus + "','"+ lclPayTax + "','"++"'," +
+                //    "'"++"','" + lclTotLabor + "','" + lceAccount + "','" + lceBank + "','" + lceCC + "','" + lceFuel + "','" + lceLegal + "','" + lceLicensePerm + "','" + lcePayroll + "','" + lceInsur + "','" + lceWorkComp + "'," +
+                //    "'" + lceAdvertise + "','" + lceCharitable + "','" + lceAuto + "','" + lceCash + "','" + lceElect + "','" + lceGeneral + "','" + lceHVAC + "','" + lceLawn + "','" + lcePaint + "','" + lcePlumb + "'," +
+                //    "'" + lceRemodel + "','" + lceDishMach + "','" + lceJanitorial + "','" + lceOfficeComp + "','" + lceRestaurant + "','" + lceUniform + "','" + lceData + "','" + lceElectric + "','" + lceMusic + "','" + lceNatGas + "'," +
+                //    "'" + lceSecurity + "','" + lceTrash + "','" + lceWaterSewer + "','" + lceTotExpense + "','" + lcoMort + "','" + lcoLoan + "','" + lcoAssoc + "','" + lcoPropTax + "','" + lcoAdvCoop + "','" + lcoNatAdver + "'," +
+                //    "'" + lcoLicenseFee + "','" + lcoTotOverhead + "','" + lceStruct + "') ";
             }
 
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
@@ -374,21 +391,8 @@ namespace Accounting_PL
                 // Well this should never really happen
                 MessageBox.Show("No row inserted");
 
+            cnn.Close();
             MessageBox.Show("Done!");
-
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            string lcServer = "salt.db.elephantsql.com";
-            string lcODBC = "PostgreSQL ANSI";
-            string lcDB = "pffejyte";
-            // string lcPort = "5432";  //  Port=" + lcPort + ";
-            string lcUser = "pffejyte";
-            string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
-            string lcSQL = "";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OleDbConnection oConn = VfpData.SqlStringConnect(lcConnectionString);
 
         }
     }
