@@ -6,6 +6,7 @@ using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -73,6 +74,7 @@ namespace Accounting_PL
             xlWorkBook = xlApp.Workbooks.Add(misValue);
             // xlWorkBook = xlApp.Workbooks.Open(@"d:\csharp-Excel.xls", 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0)
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            xlWorkSheet.Name = "Basic Stuff";
 
             //add data 
             xlWorkSheet.Cells[4, 2] = "";
@@ -119,12 +121,26 @@ namespace Accounting_PL
 
             xlApp.Visible = true;
 
-            xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-            //xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            //xlWorkBook.Close(true, misValue, misValue);
-            //xlApp.Quit();
+            //  xlWorkBook.Worksheets.Add();
+
+            var coll = new Excel.Worksheet[13];
+
+            for (int i = 1; i < 13; i++)
+            {
+                coll[i] = xlWorkBook.Worksheets.Add();
+                coll[i].Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
+            }
+
+            xlWorkBook.Worksheets.Add();
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            xlWorkSheet.Name = "YTD";
+
+            // xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            // xlWorkBook.Close(true, misValue, misValue);
+            // xlApp.Quit();
+            // xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            // xlWorkBook.Close(true, misValue, misValue);
+            // xlApp.Quit();
 
             ReleaseObject(xlWorkSheet);
             ReleaseObject(xlWorkBook);
@@ -344,11 +360,11 @@ namespace Accounting_PL
             string lcProv = "SQLOLEDB";
             string lcPass = "fzk4pktb";
             string lcSQL = "";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider="+ lcProv + ";Server=" + lcServer + ";Port=" + lcPort + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";Port=" + lcPort + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
             lcSQL = "SELECT * from table where where Week=" + lcEOW;      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
-            
+
             OdbcCommand com = new OdbcCommand(lcSQL, cnn);
             int result = com.ExecuteNonQuery();
             if (result > 0)
