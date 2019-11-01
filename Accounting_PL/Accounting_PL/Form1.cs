@@ -74,44 +74,10 @@ namespace Accounting_PL
             xlWorkBook = xlApp.Workbooks.Add(misValue);
             // xlWorkBook = xlApp.Workbooks.Open(@"d:\csharp-Excel.xls", 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0)
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            xlWorkSheet.Name = "Basic Stuff";
+            xlWorkSheet.Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1); 
 
             //add data 
-            xlWorkSheet.Cells[4, 2] = "";
-            xlWorkSheet.Cells[4, 3] = "Student1";
-            xlWorkSheet.Cells[4, 4] = "Student2";
-            xlWorkSheet.Cells[4, 5] = "Student3";
-
-            xlWorkSheet.Cells[5, 2] = "Term1";
-            xlWorkSheet.Cells[5, 3] = "80";
-            xlWorkSheet.Cells[5, 4] = "65";
-            xlWorkSheet.Cells[5, 5] = "45";
-
-            xlWorkSheet.Cells[6, 2] = "Term2";
-            xlWorkSheet.Cells[6, 3] = "78";
-            xlWorkSheet.Cells[6, 4] = "72";
-            xlWorkSheet.Cells[6, 5] = "60";
-
-            xlWorkSheet.Cells[7, 2] = "Term3";
-            xlWorkSheet.Cells[7, 3] = "82";
-            xlWorkSheet.Cells[7, 4] = "80";
-            xlWorkSheet.Cells[7, 5] = "65";
-
-            xlWorkSheet.Cells[8, 2] = "Term4";
-            xlWorkSheet.Cells[8, 3] = "75";
-            xlWorkSheet.Cells[8, 4] = "82";
-            xlWorkSheet.Cells[8, 5] = "68";
-
-            xlWorkSheet.Cells[9, 2] = "Total";
-            xlWorkSheet.Cells[9, 3] = "315";
-            xlWorkSheet.Cells[9, 4] = "299";
-            xlWorkSheet.Cells[9, 5] = "238";
-
-            formatRange = xlWorkSheet.get_Range("a1", "b1");
-            formatRange.NumberFormat = "mm/dd/yyyy";
-            //formatRange.NumberFormat = "mm/dd/yyyy hh:mm:ss";
-            xlWorkSheet.Cells[1, 1] = "31/5/2014";
-
+            
             xlWorkSheet.Cells[1, 1] = "ID";
             xlWorkSheet.Cells[1, 2] = "Name";
             xlWorkSheet.Cells[2, 1] = "1";
@@ -125,10 +91,17 @@ namespace Accounting_PL
 
             var coll = new Excel.Worksheet[13];
 
-            for (int i = 1; i < 13; i++)
+            for (int i = 2; i < 13; i++)
             {
                 coll[i] = xlWorkBook.Worksheets.Add();
                 coll[i].Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
+
+                coll[i].Cells[1, 1] = "ID";
+                coll[i].Cells[1, 2] = "Name";
+                coll[i].Cells[2, 1] = "1";
+                coll[i].Cells[2, 2] = "One";
+                coll[i].Cells[4, 3] = "Student1";
+
             }
 
             xlWorkBook.Worksheets.Add();
