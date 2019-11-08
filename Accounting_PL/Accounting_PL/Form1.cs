@@ -344,7 +344,7 @@ namespace Accounting_PL
             {
                 /// Update records
                 // MessageBox.Show(result.ToString());
-                lcSQL = " Update table set NetSales=@" + lcNetSales + ", PrimSupp=" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
+                lcSQL = " Update table set NetSales=" + lcNetSales + ", PrimSupp=" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
                     " CarbDio=" + lcfCarbon + ", FoodC=" + lcfTotFood + ", HostCash=" + lclHost + ", Cooks=" + lclCook + ", Servers=" + lclServer + ", DMO=" + lclDMO + ", Superv=" + lclSuperv + ", Overt=" + lclOvertime + "," +
                     " GenMan=" + lclGenManager + ", Manager=" + lclManager + ", Bonus=" + lclBonus + ", PayTax=" + lclPayTax + ", HealthCare=, Retire=, LaborC=" + lclTotLabor + ", Accounting=" + lceAccount + "," +
                     " Bank=" + lceBank + ", CreditC=" + lceCC + ", Fuel=" + lceFuel + ", Legal=" + lceLegal + ", License=" + lceLicensePerm + ", PayRollP=" + lcePayroll + ", Insurance=" + lceInsur + "," +
