@@ -44,24 +44,24 @@ namespace Accounting_PL
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
             object misValue = Missing.Value;
-            Excel.Range range;
-            Excel.Range chartRange;
-            Excel.Range formatRange;
+            //Excel.Range range;
+            //Excel.Range chartRange;
+            //Excel.Range formatRange;
 
-            string lexfolder = Files.AddBS(baseCurDir + "ExcelHold");
+            string lexfolder = Files.AddBS(baseCurDir + "FinancialFolder");
             try
             {
                 // Determine whether the directory exists.
                 if (!Directory.Exists(lexfolder))
                 {
+                    /// If it does not exist then create it. 
                     DirectoryInfo di = Directory.CreateDirectory(lexfolder);
-                    // MessageBox.Show("The directory was created successfully at " + Directory.GetCreationTime(lexfolder));
                 }
 
             }
             catch { }
 
-            string lexfile = lexfolder + "TestExcelHolder.xlsx";
+            string lexfile = lexfolder + "FinancialSheets.xlsx";
 
             xlApp = new Excel.Application();
             if (xlApp == null)
@@ -74,10 +74,10 @@ namespace Accounting_PL
             xlWorkBook = xlApp.Workbooks.Add(misValue);
             // xlWorkBook = xlApp.Workbooks.Open(@"d:\csharp-Excel.xls", 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0)
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            xlWorkSheet.Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1); 
+            xlWorkSheet.Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1);
 
             //add data 
-            
+
             xlWorkSheet.Cells[1, 1] = "ID";
             xlWorkSheet.Cells[1, 2] = "Name";
             xlWorkSheet.Cells[2, 1] = "1";
@@ -108,7 +108,7 @@ namespace Accounting_PL
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
             xlWorkSheet.Name = "YTD";
 
-            // xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
             // xlWorkBook.Close(true, misValue, misValue);
             // xlApp.Quit();
             // xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
@@ -344,46 +344,101 @@ namespace Accounting_PL
             {
                 /// Update records
                 // MessageBox.Show(result.ToString());
-                lcSQL = " Update table set NetSales=@lcNetSales" + lcNetSales + ", PrimSupp=@lcfPrimSupp" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
-                    " CarbDio=" + lcfCarbon + ", FoodC=" + lcfTotFood + ", HostCash=" + lclHost + ", Cooks=" + lclCook + ", Servers=" + lclServer + ", DMO=" + lclDMO + ", Superv=" + lclSuperv + ", Overt=" + lclOvertime + "," +
-                    " GenMan=" + lclGenManager + ", Manager=" + lclManager + ", Bonus=" + lclBonus + ", PayTax=" + lclPayTax + ", HealthCare=, Retire=, LaborC=" + lclTotLabor + ", Accounting=" + lceAccount + "," +
-                    " Bank=" + lceBank + ", CreditC=" + lceCC + ", Fuel=" + lceFuel + ", Legal=" + lceLegal + ", License=" + lceLicensePerm + ", PayRollP=" + lcePayroll + ", Insurance=" + lceInsur + "," +
-                    " WorkComp=" + lceWorkComp + ", Ads=" + lceAdvertise + ", Charitable=" + lceCharitable + ", Auto=" + lceAuto + ", Cash=" + lceCash + ", Electrical=" + lceElect + "," +
-                    " General=" + lceGeneral + ", HVAC=" + lceHVAC + ", Lawn=" + lceLawn + ", Paint=" + lcePaint + ", Plumb=" + lcePlumb + ", Remodel=" + lceRemodel + ", DishM=" + lceDishMach + "," +
-                    " Janitorial=" + lceJanitorial + ", Office=" + lceOfficeComp + ", Restaurant=" + lceRestaurant + ", Uniforms=" + lceUniform + ", Data=" + lceData + ", Electricity=" + lceElectric + "," +
-                    " Music=" + lceMusic + ", NaturalG=" + lceNatGas + ", Security=" + lceSecurity + ", Trash=" + lceTrash + ", Water=" + lceWaterSewer + ", Expenses=" + lceTotExpense + ", Mortgage=" + lcoMort + "," +
-                    " Loan=" + lcoLoan + ", Association=" + lcoAssoc + ", PropertyT=" + lcoPropTax + ", Advertising=" + lcoAdvCoop + ", NationalAds=" + lcoNatAdver + ", LicensingF=" + lcoLicenseFee + "," +
-                    " OverheadC=" + lcoTotOverhead + ", Structural=" + lceStruct + " where Week=" + lcEOW;
+                lcSQL = " Update table set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Bever=@lcfBev, Produce=@lcfProd," +
+                    " CarbDio=@lcfCarbon, FoodC=@lcfTotFood, HostCash=@lclHost, Cooks=@lclCook, Servers=@lclServer, DMO=@lclDMO, Superv=@lclSuperv, Overt=@lclOvertime," +
+                    " GenMan=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus, PayTax=@lclPayTax, HealthCare=, Retire=, LaborC=@lclTotLabor, Accounting=@lceAccount," +
+                    " Bank=@lceBank, CreditC=@lceCC, Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayRollP=@lcePayroll, Insurance=@lceInsur," +
+                    " WorkComp=@lceWorkComp, Ads=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, Cash=@lceCash, Electrical=@lceElect," +
+                    " General=@lceGeneral, HVAC=@lceHVAC, Lawn=@lceLawn, Paint=@lcePaint, Plumb=@lcePlumb, Remodel=@lceRemodel, DishM=@lceDishMach," +
+                    " Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform, Data=@lceData, Electricity=@lceElectric," +
+                    " Music=@lceMusic, NaturalG=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash, Water=@lceWaterSewer, Expenses=@lceTotExpense, Mortgage=@lcoMort," +
+                    " Loan=@lcoLoan, Association=@lcoAssoc, PropertyT=@lcoPropTax, Advertising=@lcoAdvCoop, NationalAds=@lcoNatAdver, LicensingF=@lcoLicenseFee," +
+                    " OverheadC=@lcoTotOverhead, Structural=@lceStruct where Week=@lcEOW";
             }
             else
             {
                 /// Insert records
                 // MessageBox.Show("Hello There, no records");
-                //lcSQL = " Insert into table (Week,NetSales,PrimSupp,OthSupp,Bread,Bever,Produce,CarbDio,FoodC,HostCash,Cooks,Servers,DMO,Superv,Overt,GenMan,Manager,Bonus,PayTax,HealthCare,Retire,LaborC,Accounting," +
-                //    "Bank,CreditC,Fuel,Legal,License,PayRollP,Insurance,WorkComp,Ads,Charitable,Auto,Cash,Electrical,General,HVAC,Lawn,Paint,Plumb,Remodel,DishM,Janitorial,Office,Restaurant,Uniforms,Data," +
-                //    "Electricity,Music,NaturalG,Security,Trash,Water,Expenses,Mortgage,Loan,Association,PropertyT,Advertising,NationalAds,LicensingF,OverheadC,IDs,Structural) " +
-                //    " values " +
-                //    " ('" + lcEOW + "','" + lcNetSales + "','" + lcfPrimSupp + "','"+ lcfOthSupp + "','"+ lcfBread + "','"+ lcfBev + "','"+ lcfProd + "','"+ lcfCarbon + "','"+ lcfTotFood + "','"+ lclHost + "'," +
-                //    "'"+ lclCook + "','"+ lclServer + "','"+ lclDMO + "','"+ lclSuperv + "','"+ lclOvertime + "','"+ lclGenManager + "','"+ lclManager + "','"+ lclBonus + "','"+ lclPayTax + "','"++"'," +
-                //    "'"++"','" + lclTotLabor + "','" + lceAccount + "','" + lceBank + "','" + lceCC + "','" + lceFuel + "','" + lceLegal + "','" + lceLicensePerm + "','" + lcePayroll + "','" + lceInsur + "','" + lceWorkComp + "'," +
-                //    "'" + lceAdvertise + "','" + lceCharitable + "','" + lceAuto + "','" + lceCash + "','" + lceElect + "','" + lceGeneral + "','" + lceHVAC + "','" + lceLawn + "','" + lcePaint + "','" + lcePlumb + "'," +
-                //    "'" + lceRemodel + "','" + lceDishMach + "','" + lceJanitorial + "','" + lceOfficeComp + "','" + lceRestaurant + "','" + lceUniform + "','" + lceData + "','" + lceElectric + "','" + lceMusic + "','" + lceNatGas + "'," +
-                //    "'" + lceSecurity + "','" + lceTrash + "','" + lceWaterSewer + "','" + lceTotExpense + "','" + lcoMort + "','" + lcoLoan + "','" + lcoAssoc + "','" + lcoPropTax + "','" + lcoAdvCoop + "','" + lcoNatAdver + "'," +
-                //    "'" + lcoLicenseFee + "','" + lcoTotOverhead + "','" + lceStruct + "') ";
+                lcSQL = " Insert into table (Week,NetSales,PrimSupp,OthSupp,Bread,Bever,Produce,CarbDio,FoodC,HostCash,Cooks,Servers,DMO,Superv,Overt,GenMan,Manager,Bonus,PayTax," +
+                    "HealthCare,Retire,LaborC,Accounting,Bank,CreditC,Fuel,Legal,License,PayRollP,Insurance,WorkComp,Ads,Charitable,Auto,Cash,Electrical,General,HVAC,Lawn,Paint,Plumb," +
+                    "Remodel,DishM,Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalG,Security,Trash,Water,Expenses,Mortgage,Loan,Association,PropertyT,Advertising," +
+                    "NationalAds,LicensingF,OverheadC,IDs,Structural) " +
+                    " values " +
+                    " ('@lcEOW','@lcNetSales','@lcfPrimSupp','@lcfOthSupp','@lcfBread','@lcfBev','@lcfProd','@lcfCarbon','@lcfTotFood','@lclHost','@lclCook','@lclServer','@lclDMO'," +
+                    "'@lclSuperv','@lclOvertime','@lclGenManager','@lclManager','@lclBonus','@lclPayTax','@lcHealth','@lcRetire','@lclTotLabor','@lceAccount','@lceBank','@lceCC'," +
+                    "'@lceFuel','@lceLegal','@lceLicensePerm','@lcePayroll','@lceInsur','@lceWorkComp','@lceAdvertise','@lceCharitable','@lceAuto','@lceCash','@lceElect','@lceGeneral'," +
+                    "'@lceHVAC','@lceLawn','@lcePaint','@lcePlumb','@lceRemodel','@lceDishMach','@lceJanitorial','@lceOfficeComp','@lceRestaurant','@lceUniform','@lceData'," +
+                    "'@lceElectric','@lceMusic','@lceNatGas','@lceSecurity','@lceTrash','@lceWaterSewer','@lceTotExpense','@lcoMort','@lcoLoan','@lcoAssoc','@lcoPropTax'," +
+                    "'@lcoAdvCoop','@lcoNatAdver','@lcoLicenseFee','@lcoTotOverhead','@lceStruct')";
             }
-           
+
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             //// Pass values to Parameters
             cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
             cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
-            cmd.Parameters.AddWithValue("@",);
-            cmd.Parameters.AddWithValue("@",);
-            cmd.Parameters.AddWithValue("@",);
-            cmd.Parameters.AddWithValue("@",);
-            cmd.Parameters.AddWithValue("@",);
-            cmd.Parameters.AddWithValue("@",);
-            cmd.Parameters.AddWithValue("@",);
-
+            cmd.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
+            cmd.Parameters.AddWithValue("@lcfBread", lcfBread);
+            cmd.Parameters.AddWithValue("@lcfBev", lcfBev);
+            cmd.Parameters.AddWithValue("@lcfProd", lcfProd);
+            cmd.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
+            cmd.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
+            cmd.Parameters.AddWithValue("@lclHost", lclHost);
+            cmd.Parameters.AddWithValue("@lclCook", lclCook);
+            cmd.Parameters.AddWithValue("@lclServer", lclServer);
+            cmd.Parameters.AddWithValue("@lclDMO", lclDMO);
+            cmd.Parameters.AddWithValue("@lclSuperv", lclSuperv);
+            cmd.Parameters.AddWithValue("@lclOvertime", lclOvertime);
+            cmd.Parameters.AddWithValue("@lclGenManager", lclGenManager);
+            cmd.Parameters.AddWithValue("@lclManager", lclManager);
+            cmd.Parameters.AddWithValue("@lclBonus", lclBonus);
+            cmd.Parameters.AddWithValue("@lclPayTax", lclPayTax);
+            // cmd.Parameters.AddWithValue("@lcHealth",lcHealth);  //  HealthCare= 
+            // cmd.Parameters.AddWithValue("@lcRetire",lcRetire);  //  Retire=
+            cmd.Parameters.AddWithValue("@lclTotLabor", lclTotLabor);
+            cmd.Parameters.AddWithValue("@lceAccount", lceAccount);
+            cmd.Parameters.AddWithValue("@lceBank", lceBank);
+            cmd.Parameters.AddWithValue("@lceCC", lceCC);
+            cmd.Parameters.AddWithValue("@lceFuel", lceFuel);
+            cmd.Parameters.AddWithValue("@lceLegal", lceLegal);
+            cmd.Parameters.AddWithValue("@lceLicensePerm", lceLicensePerm);
+            cmd.Parameters.AddWithValue("@lcePayroll", lcePayroll);
+            cmd.Parameters.AddWithValue("@lceInsur", lceInsur);
+            cmd.Parameters.AddWithValue("@lceWorkComp", lceWorkComp);
+            cmd.Parameters.AddWithValue("@lceAdvertise", lceAdvertise);
+            cmd.Parameters.AddWithValue("@lceCharitable", lceCharitable);
+            cmd.Parameters.AddWithValue("@lceAuto", lceAuto);
+            cmd.Parameters.AddWithValue("@lceCash", lceCash);
+            cmd.Parameters.AddWithValue("@lceElect", lceElect);
+            cmd.Parameters.AddWithValue("@lceGeneral", lceGeneral);
+            cmd.Parameters.AddWithValue("@lceHVAC", lceHVAC);
+            cmd.Parameters.AddWithValue("@lceLawn", lceLawn);
+            cmd.Parameters.AddWithValue("@lcePaint", lcePaint);
+            cmd.Parameters.AddWithValue("@lcePlumb", lcePlumb);
+            cmd.Parameters.AddWithValue("@lceRemodel", lceRemodel);
+            cmd.Parameters.AddWithValue("@lceDishMach", lceDishMach);
+            cmd.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
+            cmd.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
+            cmd.Parameters.AddWithValue("@lceRestaurant", lceRestaurant);
+            cmd.Parameters.AddWithValue("@lceUniform", lceUniform);
+            cmd.Parameters.AddWithValue("@lceData", lceData);
+            cmd.Parameters.AddWithValue("@lceElectric", lceElectric);
+            cmd.Parameters.AddWithValue("@lceMusic", lceMusic);
+            cmd.Parameters.AddWithValue("@lceNatGas", lceNatGas);
+            cmd.Parameters.AddWithValue("@lceSecurity", lceSecurity);
+            cmd.Parameters.AddWithValue("@lceTrash", lceTrash);
+            cmd.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
+            cmd.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
+            cmd.Parameters.AddWithValue("@lcoMort", lcoMort);
+            cmd.Parameters.AddWithValue("@lcoLoan", lcoLoan);
+            cmd.Parameters.AddWithValue("@lcoAssoc", lcoAssoc);
+            cmd.Parameters.AddWithValue("@lcoPropTax", lcoPropTax);
+            cmd.Parameters.AddWithValue("@lcoAdvCoop", lcoAdvCoop);
+            cmd.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
+            cmd.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
+            cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
+            cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
+            cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
+            //  cmd.Parameters.AddWithValue("@",);
 
             int rowsAdded = cmd.ExecuteNonQuery();
             if (rowsAdded > 0)
