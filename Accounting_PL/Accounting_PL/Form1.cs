@@ -344,7 +344,7 @@ namespace Accounting_PL
             {
                 /// Update records
                 // MessageBox.Show(result.ToString());
-                lcSQL = " Update table set NetSales=" + lcNetSales + ", PrimSupp=" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
+                lcSQL = " Update table set NetSales=@lcNetSales" + lcNetSales + ", PrimSupp=@lcfPrimSupp" + lcfPrimSupp + ", OthSupp=" + lcfOthSupp + ", Bread=" + lcfBread + ", Bever=" + lcfBev + ", Produce=" + lcfProd + "," +
                     " CarbDio=" + lcfCarbon + ", FoodC=" + lcfTotFood + ", HostCash=" + lclHost + ", Cooks=" + lclCook + ", Servers=" + lclServer + ", DMO=" + lclDMO + ", Superv=" + lclSuperv + ", Overt=" + lclOvertime + "," +
                     " GenMan=" + lclGenManager + ", Manager=" + lclManager + ", Bonus=" + lclBonus + ", PayTax=" + lclPayTax + ", HealthCare=, Retire=, LaborC=" + lclTotLabor + ", Accounting=" + lceAccount + "," +
                     " Bank=" + lceBank + ", CreditC=" + lceCC + ", Fuel=" + lceFuel + ", Legal=" + lceLegal + ", License=" + lceLicensePerm + ", PayRollP=" + lcePayroll + ", Insurance=" + lceInsur + "," +
@@ -371,8 +371,20 @@ namespace Accounting_PL
                 //    "'" + lceSecurity + "','" + lceTrash + "','" + lceWaterSewer + "','" + lceTotExpense + "','" + lcoMort + "','" + lcoLoan + "','" + lcoAssoc + "','" + lcoPropTax + "','" + lcoAdvCoop + "','" + lcoNatAdver + "'," +
                 //    "'" + lcoLicenseFee + "','" + lcoTotOverhead + "','" + lceStruct + "') ";
             }
-
+           
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //// Pass values to Parameters
+            cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
+            cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
+            cmd.Parameters.AddWithValue("@",);
+            cmd.Parameters.AddWithValue("@",);
+            cmd.Parameters.AddWithValue("@",);
+            cmd.Parameters.AddWithValue("@",);
+            cmd.Parameters.AddWithValue("@",);
+            cmd.Parameters.AddWithValue("@",);
+            cmd.Parameters.AddWithValue("@",);
+
+
             int rowsAdded = cmd.ExecuteNonQuery();
             if (rowsAdded > 0)
                 MessageBox.Show("Row inserted!!");
