@@ -152,6 +152,13 @@ namespace Accounting_PL
             /// https://www.scanitto.com/
             /// https://www.vintasoft.com/download.html
             /// http://www.viscomsoft.com/
+            /// https://duckduckgo.com/?q=c%23+ocr+scanning+documents+and+texts&t=ffab&atb=v1-1&ia=web
+            /// https://www.codingame.com/playgrounds/10058/scanned-pdf-to-ocr-textsearchable-pdf-using-c
+            /// https://asprise.com/royalty-free-library/c%23-sharp.net-ocr-source-code-examples-demos.html
+            /// https://github.com/tesseract-ocr/tesseract
+            /// https://itextpdf.com/en/products/itext-7/pdfxfa
+            /// https://www.nuget.org/packages/itext7/
+            /// https://ghostscript.com/download/gsdnld.html
 
 
         }
@@ -248,6 +255,7 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Button7_Click(object sender, EventArgs e)
         {
+            
             //string lcServer = "salt.db.elephantsql.com";
             //string lcODBC = "PostgreSQL ANSI";
             //string lcDB = "pffejyte";
@@ -325,18 +333,34 @@ namespace Accounting_PL
             string lclPayTax = textBox70.Text.Trim();
             string lclTotLabor = textBox5.Text.Trim();
 
-            string lcServer = "67.222.39.62";
-            string lcODBC = "PostgreSQL ANSI";
-            string lcDB = "Tb_Test";
-            string lcPort = "3306";  //  Port=" + lcPort + ";
-            string lcUser = "dynamkr0_pgtest";
+            //string lcServer = "67.222.39.62";
+            //string lcODBC = "PostgreSQL ANSI";
+            //string lcDB = "Tb_Test";
+            //string lcPort = "3306";  //  Port=" + lcPort + ";
+            //string lcUser = "dynamkr0_pgtest";
+            //string lcProv = "SQLOLEDB";
+            //string lcPass = "fzk4pktb";
+
+            /// (New) tb_Play
+            /// tb_HelpingHand
+            /// playgroup
+            /// tbmaster
+            /// Smartman55
+            /// (new) playgroup ((US) East US)
+
+            string lcServer = "playgroup.database.windows.net";
+            string lcODBC = "OODBC Driver 17 for SQL Server";
+            string lcDB = "tb_HelpingHand";
+            // string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
-            string lcPass = "fzk4pktb";
+            string lcPass = "Smartman55";
+
             string lcSQL = "";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";Port=" + lcPort + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
-            lcSQL = "SELECT * from table where where Week=" + lcEOW;      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
+            lcSQL = "SELECT * from tb_datahold where where Week=" + lcEOW;      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
 
             OdbcCommand com = new OdbcCommand(lcSQL, cnn);
             int result = com.ExecuteNonQuery();
@@ -344,36 +368,40 @@ namespace Accounting_PL
             {
                 /// Update records
                 // MessageBox.Show(result.ToString());
-                lcSQL = " Update table set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Bever=@lcfBev, Produce=@lcfProd," +
-                    " CarbDio=@lcfCarbon, FoodC=@lcfTotFood, HostCash=@lclHost, Cooks=@lclCook, Servers=@lclServer, DMO=@lclDMO, Superv=@lclSuperv, Overt=@lclOvertime," +
-                    " GenMan=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus, PayTax=@lclPayTax, HealthCare=, Retire=, LaborC=@lclTotLabor, Accounting=@lceAccount," +
-                    " Bank=@lceBank, CreditC=@lceCC, Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayRollP=@lcePayroll, Insurance=@lceInsur," +
-                    " WorkComp=@lceWorkComp, Ads=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, Cash=@lceCash, Electrical=@lceElect," +
-                    " General=@lceGeneral, HVAC=@lceHVAC, Lawn=@lceLawn, Paint=@lcePaint, Plumb=@lcePlumb, Remodel=@lceRemodel, DishM=@lceDishMach," +
-                    " Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform, Data=@lceData, Electricity=@lceElectric," +
-                    " Music=@lceMusic, NaturalG=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash, Water=@lceWaterSewer, Expenses=@lceTotExpense, Mortgage=@lcoMort," +
-                    " Loan=@lcoLoan, Association=@lcoAssoc, PropertyT=@lcoPropTax, Advertising=@lcoAdvCoop, NationalAds=@lcoNatAdver, LicensingF=@lcoLicenseFee," +
-                    " OverheadC=@lcoTotOverhead, Structural=@lceStruct where Week=@lcEOW";
+                lcSQL = " Update tb_datahold set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Beverage=@lcfBev," +
+                    " Produce=@lcfProd,CarbonDioxide=@lcfCarbon, FoodCost=@lcfTotFood, HostCashier=@lclHost, Cooks=@lclCook, Servers=@lclServer," +
+                    " DMO=@lclDMO, Supervisor=@lclSuperv, Overtime=@lclOvertime,GeneralManager=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus," +
+                    " PayrollTax=@lclPayTax, Healthcare=, Retirement=, LaborCost=@lclTotLabor, Accounting=@lceAccount,Bank=@lceBank, CreditCard=@lceCC," +
+                    " Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayrollProc=@lcePayroll, Insurance=@lceInsur,WorkersComp=@lceWorkComp," +
+                    " Advertising=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, CashShortage=@lceCash, Electrical=@lceElect,General=@lceGeneral," +
+                    " HVAC=@lceHVAC, Lawn=@lceLawn, Painting=@lcePaint, Plumbing=@lcePlumb, Remodeling=@lceRemodel, Structural=@lceStruct," +
+                    " DishMachine=@lceDishMach,Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform," +
+                    " Data=@lceData, Electricity=@lceElectric,Music=@lceMusic, NaturalGas=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash," +
+                    " WaterSewer=@lceWaterSewer, ExpenseCost=@lceTotExpense, Mortgage=@lcoMort,LoanPayment=@lcoLoan, Association=@lcoAssoc," +
+                    " PropertyTax=@lcoPropTax, AdvertisingCoop=@lcoAdvCoop, NationalAdvertise=@lcoNatAdver, LicensingFee=@lcoLicenseFee," +
+                    "OverheadCost=@lcoTotOverhead where Week=@lcEOW";
             }
             else
             {
                 /// Insert records
                 // MessageBox.Show("Hello There, no records");
-                lcSQL = " Insert into table (Week,NetSales,PrimSupp,OthSupp,Bread,Bever,Produce,CarbDio,FoodC,HostCash,Cooks,Servers,DMO,Superv,Overt,GenMan,Manager,Bonus,PayTax," +
-                    "HealthCare,Retire,LaborC,Accounting,Bank,CreditC,Fuel,Legal,License,PayRollP,Insurance,WorkComp,Ads,Charitable,Auto,Cash,Electrical,General,HVAC,Lawn,Paint,Plumb," +
-                    "Remodel,DishM,Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalG,Security,Trash,Water,Expenses,Mortgage,Loan,Association,PropertyT,Advertising," +
-                    "NationalAds,LicensingF,OverheadC,IDs,Structural) " +
+                lcSQL = " Insert into tb_datahold (Week,NetSales,PrimSupp,OthSupp,Bread,Beverage,Produce,CarbonDioxide,FoodCost,HostCashier,Cooks,Servers,DMO,Supervisor," +
+                    "Overtime,GeneralManager,Manager,Bonus,PayrollTax,Healthcare,Retirement,LaborCost,Accounting,Bank,CreditCard,Fuel,Legal,License,PayrollProc," +
+                    "Insurance,WorkersComp,Advertising,Charitable,Auto,CashShortage,Electrical,General,HVAC,Lawn,Painting,Plumbing,Remodeling,Structural,DishMachine," +
+                    "Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalGas,Security,Trash,WaterSewer,ExpenseCost,Mortgage,LoanPayment,Association," +
+                    "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost,IDs) " +
                     " values " +
                     " ('@lcEOW','@lcNetSales','@lcfPrimSupp','@lcfOthSupp','@lcfBread','@lcfBev','@lcfProd','@lcfCarbon','@lcfTotFood','@lclHost','@lclCook','@lclServer','@lclDMO'," +
                     "'@lclSuperv','@lclOvertime','@lclGenManager','@lclManager','@lclBonus','@lclPayTax','@lcHealth','@lcRetire','@lclTotLabor','@lceAccount','@lceBank','@lceCC'," +
                     "'@lceFuel','@lceLegal','@lceLicensePerm','@lcePayroll','@lceInsur','@lceWorkComp','@lceAdvertise','@lceCharitable','@lceAuto','@lceCash','@lceElect','@lceGeneral'," +
-                    "'@lceHVAC','@lceLawn','@lcePaint','@lcePlumb','@lceRemodel','@lceDishMach','@lceJanitorial','@lceOfficeComp','@lceRestaurant','@lceUniform','@lceData'," +
+                    "'@lceHVAC','@lceLawn','@lcePaint','@lcePlumb','@lceRemodel','@lceStruct','@lceDishMach','@lceJanitorial','@lceOfficeComp','@lceRestaurant','@lceUniform','@lceData'," +
                     "'@lceElectric','@lceMusic','@lceNatGas','@lceSecurity','@lceTrash','@lceWaterSewer','@lceTotExpense','@lcoMort','@lcoLoan','@lcoAssoc','@lcoPropTax'," +
-                    "'@lcoAdvCoop','@lcoNatAdver','@lcoLicenseFee','@lcoTotOverhead','@lceStruct')";
+                    "'@lcoAdvCoop','@lcoNatAdver','@lcoLicenseFee','@lcoTotOverhead')";
             }
 
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             //// Pass values to Parameters
+            cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
             cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
             cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
             cmd.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
@@ -415,6 +443,7 @@ namespace Accounting_PL
             cmd.Parameters.AddWithValue("@lcePaint", lcePaint);
             cmd.Parameters.AddWithValue("@lcePlumb", lcePlumb);
             cmd.Parameters.AddWithValue("@lceRemodel", lceRemodel);
+            cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
             cmd.Parameters.AddWithValue("@lceDishMach", lceDishMach);
             cmd.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
             cmd.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
@@ -436,8 +465,6 @@ namespace Accounting_PL
             cmd.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
             cmd.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
             cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
-            cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
-            cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
             //  cmd.Parameters.AddWithValue("@",);
 
             int rowsAdded = cmd.ExecuteNonQuery();
