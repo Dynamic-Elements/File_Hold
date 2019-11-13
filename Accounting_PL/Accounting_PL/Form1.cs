@@ -159,6 +159,13 @@ namespace Accounting_PL
             /// https://itextpdf.com/en/products/itext-7/pdfxfa
             /// https://www.nuget.org/packages/itext7/
             /// https://ghostscript.com/download/gsdnld.html
+            /// https://docs.microsoft.com/en-us/sql/azure-data-studio/quickstart-postgres?view=sql-server-ver15
+            /// https://www.mssqltips.com/sqlservertip/3662/sql-server-and-postgresql-linked-server-configuration--part-2/
+            /// https://www.vintasoft.com/vsocr-dotnet-index.html
+            /// 
+
+            /// https://docs.microsoft.com/en-us/azure/sql-database/?view=sql-server-ver15
+            /// https://www.vintasoft.com/docs/vsimaging-dotnet/Programming-Ocr-Save_OCR_results.html#SaveOcrResultsToTextFile
 
 
         }
@@ -347,6 +354,8 @@ namespace Accounting_PL
             /// tbmaster
             /// Smartman55
             /// (new) playgroup ((US) East US)
+            /// https://hadoop.apache.org/
+            /// https://www.digitalocean.com/
 
             string lcServer = "playgroup.database.windows.net";
             string lcODBC = "OODBC Driver 17 for SQL Server";
