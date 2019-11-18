@@ -162,7 +162,6 @@ namespace Accounting_PL
             /// https://docs.microsoft.com/en-us/sql/azure-data-studio/quickstart-postgres?view=sql-server-ver15
             /// https://www.mssqltips.com/sqlservertip/3662/sql-server-and-postgresql-linked-server-configuration--part-2/
             /// https://www.vintasoft.com/vsocr-dotnet-index.html
-            /// 
 
             /// https://docs.microsoft.com/en-us/azure/sql-database/?view=sql-server-ver15
             /// https://www.vintasoft.com/docs/vsimaging-dotnet/Programming-Ocr-Save_OCR_results.html#SaveOcrResultsToTextFile
@@ -358,7 +357,7 @@ namespace Accounting_PL
             /// https://www.digitalocean.com/
 
             string lcServer = "playgroup.database.windows.net";
-            string lcODBC = "OODBC Driver 17 for SQL Server";
+            string lcODBC = "ODBC Driver 17 for SQL Server";
             string lcDB = "tb_HelpingHand";
             // string lcPort = "3306";  //  Port=" + lcPort + ";
             string lcUser = "tbmaster";
@@ -369,7 +368,7 @@ namespace Accounting_PL
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
-            lcSQL = "SELECT * from tb_datahold where where Week=" + lcEOW;      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
+            lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
 
             OdbcCommand com = new OdbcCommand(lcSQL, cnn);
             int result = com.ExecuteNonQuery();
@@ -388,24 +387,25 @@ namespace Accounting_PL
                     " Data=@lceData, Electricity=@lceElectric,Music=@lceMusic, NaturalGas=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash," +
                     " WaterSewer=@lceWaterSewer, ExpenseCost=@lceTotExpense, Mortgage=@lcoMort,LoanPayment=@lcoLoan, Association=@lcoAssoc," +
                     " PropertyTax=@lcoPropTax, AdvertisingCoop=@lcoAdvCoop, NationalAdvertise=@lcoNatAdver, LicensingFee=@lcoLicenseFee," +
-                    "OverheadCost=@lcoTotOverhead where Week=@lcEOW";
+                    "OverheadCost=@lcoTotOverhead where Week='@lcEOW'";
             }
             else
             {
                 /// Insert records
                 // MessageBox.Show("Hello There, no records");
+                /// ,IDs
                 lcSQL = " Insert into tb_datahold (Week,NetSales,PrimSupp,OthSupp,Bread,Beverage,Produce,CarbonDioxide,FoodCost,HostCashier,Cooks,Servers,DMO,Supervisor," +
                     "Overtime,GeneralManager,Manager,Bonus,PayrollTax,Healthcare,Retirement,LaborCost,Accounting,Bank,CreditCard,Fuel,Legal,License,PayrollProc," +
                     "Insurance,WorkersComp,Advertising,Charitable,Auto,CashShortage,Electrical,General,HVAC,Lawn,Painting,Plumbing,Remodeling,Structural,DishMachine," +
                     "Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalGas,Security,Trash,WaterSewer,ExpenseCost,Mortgage,LoanPayment,Association," +
-                    "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost,IDs) " +
+                    "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost) " +
                     " values " +
-                    " ('@lcEOW','@lcNetSales','@lcfPrimSupp','@lcfOthSupp','@lcfBread','@lcfBev','@lcfProd','@lcfCarbon','@lcfTotFood','@lclHost','@lclCook','@lclServer','@lclDMO'," +
-                    "'@lclSuperv','@lclOvertime','@lclGenManager','@lclManager','@lclBonus','@lclPayTax','@lcHealth','@lcRetire','@lclTotLabor','@lceAccount','@lceBank','@lceCC'," +
-                    "'@lceFuel','@lceLegal','@lceLicensePerm','@lcePayroll','@lceInsur','@lceWorkComp','@lceAdvertise','@lceCharitable','@lceAuto','@lceCash','@lceElect','@lceGeneral'," +
-                    "'@lceHVAC','@lceLawn','@lcePaint','@lcePlumb','@lceRemodel','@lceStruct','@lceDishMach','@lceJanitorial','@lceOfficeComp','@lceRestaurant','@lceUniform','@lceData'," +
-                    "'@lceElectric','@lceMusic','@lceNatGas','@lceSecurity','@lceTrash','@lceWaterSewer','@lceTotExpense','@lcoMort','@lcoLoan','@lcoAssoc','@lcoPropTax'," +
-                    "'@lcoAdvCoop','@lcoNatAdver','@lcoLicenseFee','@lcoTotOverhead')";
+                    " ('@lcEOW',@lcNetSales,@lcfPrimSupp,@lcfOthSupp,@lcfBread,@lcfBev,@lcfProd,@lcfCarbon,@lcfTotFood,@lclHost,@lclCook,@lclServer,@lclDMO," +
+                    "@lclSuperv,@lclOvertime,@lclGenManager,@lclManager,@lclBonus,@lclPayTax,@lcHealth,@lcRetire,@lclTotLabor,@lceAccount,@lceBank,@lceCC," +
+                    "@lceFuel,@lceLegal,@lceLicensePerm,@lcePayroll,@lceInsur,@lceWorkComp,@lceAdvertise,@lceCharitable,@lceAuto,@lceCash,@lceElect,@lceGeneral," +
+                    "@lceHVAC,@lceLawn,@lcePaint,@lcePlumb,@lceRemodel,@lceStruct,@lceDishMach,@lceJanitorial,@lceOfficeComp,@lceRestaurant,@lceUniform,@lceData," +
+                    "@lceElectric,@lceMusic,@lceNatGas,@lceSecurity,@lceTrash,@lceWaterSewer,@lceTotExpense,@lcoMort,@lcoLoan,@lcoAssoc,@lcoPropTax," +
+                    "@lcoAdvCoop,@lcoNatAdver,@lcoLicenseFee,@lcoTotOverhead)";
             }
 
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
