@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VFPToolkit;
 using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace Accounting_PL
 {
@@ -140,6 +142,8 @@ namespace Accounting_PL
         }
 
 
+        
+
         /// <summary>
         /// Scanner Button
         /// This will handle the scanner feature.
@@ -149,6 +153,10 @@ namespace Accounting_PL
         private void Button2_Click(object sender, EventArgs e)
         {
             /// Notes
+            /// https://www.syncfusion.com/kb/9144/how-to-convert-scanned-image-to-searchable-pdf-by-processing-ocr
+            /// https://help.syncfusion.com/file-formats/pdf/working-with-ocr?_ga=2.194924142.216447619.1574224028-344549646.1574224028 
+            ///  
+            /// 
             /// https://www.scanitto.com/
             /// https://www.vintasoft.com/download.html
             /// http://www.viscomsoft.com/
@@ -165,6 +173,37 @@ namespace Accounting_PL
 
             /// https://docs.microsoft.com/en-us/azure/sql-database/?view=sql-server-ver15
             /// https://www.vintasoft.com/docs/vsimaging-dotnet/Programming-Ocr-Save_OCR_results.html#SaveOcrResultsToTextFile
+            /// file:///C:/Program%20Files/gs/gs9.50/doc/Readme.htm
+
+            //Create a new PDF document
+            PdfDocument document = new PdfDocument();
+            //Add a page to the document
+            PdfPage page = document.Pages.Add();
+            //Create PDF graphics for a page
+            PdfGraphics graphics = page.Graphics;
+            //Load the image from the disk
+            PdfBitmap image = new PdfBitmap("Input.jpg");
+            //Draw the image
+            graphics.DrawImage(image, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
+            //Save the document into stream
+            MemoryStream stream = new MemoryStream();
+            document.Save(stream);
+            //Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
+            using (OCRProcessor processor = new OCRProcessor(@"/Tesseract Binaries/"))
+            {
+                //Load a PDF document
+                PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
+                //Set OCR language to process
+                processor.Settings.Language = Languages.English;
+                //Process OCR by providing the PDF document and Tesseract data
+                processor.PerformOCR(lDoc, @"/Tessdata/");
+                //Save the OCR processed PDF document in the disk
+                lDoc.Save("OCR.pdf");
+                //Close the document
+                lDoc.Close(true);
+            }
+            //This will open the PDF file so, the result will be seen in default PDF viewer
+            Process.Start("OCR.pdf");
 
 
         }
@@ -261,7 +300,7 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Button7_Click(object sender, EventArgs e)
         {
-            
+
             //string lcServer = "salt.db.elephantsql.com";
             //string lcODBC = "PostgreSQL ANSI";
             //string lcDB = "pffejyte";
@@ -486,6 +525,11 @@ namespace Accounting_PL
             cnn.Close();
             MessageBox.Show("Done!");
 
+        }
+
+        private void textBox84_Leave(object sender, EventArgs e)
+        {
+            // textBox4 = textBox84.Text.Trim() + textBox77.Text.Trim() + textBox76.Text.Trim() + textBox75.Text.Trim() + textBox69.Text.Trim() + textBox68.Text.Trim();
         }
     }
 }
