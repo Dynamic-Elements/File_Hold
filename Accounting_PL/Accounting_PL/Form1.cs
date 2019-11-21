@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Syncfusion.OCRProcessor;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Pdf.Parsing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +11,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -142,7 +147,7 @@ namespace Accounting_PL
         }
 
 
-        
+
 
         /// <summary>
         /// Scanner Button
@@ -224,6 +229,9 @@ namespace Accounting_PL
             panel4.SendToBack();
             panel5.Visible = false;
             panel5.SendToBack();
+
+            updateCalculations();
+
         }
 
         /// <summary>
@@ -241,6 +249,9 @@ namespace Accounting_PL
             panel4.SendToBack();
             panel5.Visible = true;
             panel5.BringToFront();
+
+            updateCalculations();
+
         }
 
         /// <summary>
@@ -258,6 +269,9 @@ namespace Accounting_PL
             panel4.SendToBack();
             panel5.Visible = false;
             panel5.SendToBack();
+
+            updateCalculations();
+
         }
 
         /// <summary>
@@ -275,6 +289,9 @@ namespace Accounting_PL
             panel4.BringToFront();
             panel5.Visible = false;
             panel5.SendToBack();
+
+            updateCalculations();
+
         }
 
         /// <summary>
@@ -284,14 +301,55 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
 
             textBox1.Text = lastSunday;
-
             textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
 
+            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
+            {
+                comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
+            }
+
+
+            lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";
+
+
         }
+
+        private void updateCalculations()
+        {
+            // This will calculate all the totals of each grouping
+            // textBox6.Text = Convert.ToString((Convert.ToInt32(textBox1.Text) + Convert.ToInt32()));
+
+            // Food
+            textBox4.Text = Convert.ToString((Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
+                Convert.ToInt32(textBox75.Text) + Convert.ToInt32(textBox69.Text) + Convert.ToInt32(textBox68.Text)));
+
+            // Expenses
+            textBox7.Text = Convert.ToString((Convert.ToInt32(textBox27.Text) + Convert.ToInt32(textBox26.Text) + Convert.ToInt32(textBox25.Text) +
+                Convert.ToInt32(textBox24.Text) + Convert.ToInt32(textBox23.Text) + Convert.ToInt32(textBox22.Text) + Convert.ToInt32(textBox28.Text) +
+                Convert.ToInt32(textBox30.Text) + Convert.ToInt32(textBox29.Text) + Convert.ToInt32(textBox32.Text) + Convert.ToInt32(textBox31.Text) +
+                Convert.ToInt32(textBox21.Text) + Convert.ToInt32(textBox20.Text) + Convert.ToInt32(textBox34.Text) + Convert.ToInt32(textBox33.Text) +
+                Convert.ToInt32(textBox19.Text) + Convert.ToInt32(textBox35.Text) + Convert.ToInt32(textBox36.Text) + Convert.ToInt32(textBox37.Text) +
+                Convert.ToInt32(textBox38.Text) + Convert.ToInt32(textBox39.Text) + Convert.ToInt32(textBox43.Text) + Convert.ToInt32(textBox42.Text) +
+                Convert.ToInt32(textBox44.Text) + Convert.ToInt32(textBox41.Text) + Convert.ToInt32(textBox40.Text) + Convert.ToInt32(textBox18.Text) +
+                Convert.ToInt32(textBox45.Text) + Convert.ToInt32(textBox46.Text) + Convert.ToInt32(textBox47.Text) + Convert.ToInt32(textBox48.Text) +
+                Convert.ToInt32(textBox49.Text) + Convert.ToInt32(textBox50.Text)));
+
+            // Labor
+            textBox5.Text = Convert.ToString((Convert.ToInt32(textBox90.Text) + Convert.ToInt32(textBox89.Text) + Convert.ToInt32(textBox88.Text) +
+                Convert.ToInt32(textBox87.Text) + Convert.ToInt32(textBox86.Text) + Convert.ToInt32(textBox85.Text) + Convert.ToInt32(textBox74.Text) +
+                Convert.ToInt32(textBox72.Text) + Convert.ToInt32(textBox71.Text) + Convert.ToInt32(textBox70.Text)));
+
+            // Overhead
+            textBox6.Text = Convert.ToString((Convert.ToInt32(textBox83.Text) + Convert.ToInt32(textBox82.Text) + Convert.ToInt32(textBox81.Text) +
+                Convert.ToInt32(textBox80.Text) + Convert.ToInt32(textBox79.Text) + Convert.ToInt32(textBox78.Text) + Convert.ToInt32(textBox73.Text)));
+
+        }
+
 
         /// <summary>
         /// Save button
@@ -301,14 +359,7 @@ namespace Accounting_PL
         private void Button7_Click(object sender, EventArgs e)
         {
 
-            //string lcServer = "salt.db.elephantsql.com";
-            //string lcODBC = "PostgreSQL ANSI";
-            //string lcDB = "pffejyte";
-            //// string lcPort = "5432";  //  Port=" + lcPort + ";
-            //string lcUser = "pffejyte";
-            //string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
-            //string lcSQL = "";
-            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            // updateCalculations();
 
             string lcYear = textBox2.Text.Trim();
             string lcEOW = textBox1.Text.Trim();
@@ -378,38 +429,25 @@ namespace Accounting_PL
             string lclPayTax = textBox70.Text.Trim();
             string lclTotLabor = textBox5.Text.Trim();
 
-            //string lcServer = "67.222.39.62";
-            //string lcODBC = "PostgreSQL ANSI";
-            //string lcDB = "Tb_Test";
-            //string lcPort = "3306";  //  Port=" + lcPort + ";
-            //string lcUser = "dynamkr0_pgtest";
+            //string lcServer = "playgroup.database.windows.net";
+            //string lcODBC = "ODBC Driver 17 for SQL Server";
+            //string lcDB = "tb_HelpingHand";
+            //// string lcPort = "3306";  //  Port=" + lcPort + ";
+            //string lcUser = "tbmaster";
             //string lcProv = "SQLOLEDB";
-            //string lcPass = "fzk4pktb";
-
-            /// (New) tb_Play
-            /// tb_HelpingHand
-            /// playgroup
-            /// tbmaster
-            /// Smartman55
-            /// (new) playgroup ((US) East US)
-            /// https://hadoop.apache.org/
-            /// https://www.digitalocean.com/
-
-            string lcServer = "playgroup.database.windows.net";
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "tb_HelpingHand";
-            // string lcPort = "3306";  //  Port=" + lcPort + ";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "Smartman55";
+            //string lcPass = "Smartman55";
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            //cnn.Open();
 
             string lcSQL = "";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
             lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
 
-            OdbcCommand com = new OdbcCommand(lcSQL, cnn);
+            
+            Conn_cl.
+            ExecuteQueries(lcSQL);
+
+            // OdbcCommand com = new OdbcCommand(lcSQL, cnn);
             int result = com.ExecuteNonQuery();
             if (result > 0)
             {
@@ -531,5 +569,96 @@ namespace Accounting_PL
         {
             // textBox4 = textBox84.Text.Trim() + textBox77.Text.Trim() + textBox76.Text.Trim() + textBox75.Text.Trim() + textBox69.Text.Trim() + textBox68.Text.Trim();
         }
+
+
+        //public static string lConn(OdbcConnection conn)
+        //{
+
+        //    //string lcServer = "salt.db.elephantsql.com";
+        //    //string lcODBC = "PostgreSQL ANSI";
+        //    //string lcDB = "pffejyte";
+        //    //// string lcPort = "5432";  //  Port=" + lcPort + ";
+        //    //string lcUser = "pffejyte";
+        //    //string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
+        //    //string lcSQL = "";
+        //    //string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+
+        //    //string lcServer = "67.222.39.62";
+        //    //string lcODBC = "PostgreSQL ANSI";
+        //    //string lcDB = "Tb_Test";
+        //    //string lcPort = "3306";  //  Port=" + lcPort + ";
+        //    //string lcUser = "dynamkr0_pgtest";
+        //    //string lcProv = "SQLOLEDB";
+        //    //string lcPass = "fzk4pktb";
+
+        //    /// (New) tb_Play
+        //    /// tb_HelpingHand
+        //    /// playgroup
+        //    /// tbmaster
+        //    /// Smartman55
+        //    /// (new) playgroup ((US) East US)
+        //    /// https://hadoop.apache.org/
+        //    /// https://www.digitalocean.com/
+
+        //    string lcServer = "playgroup.database.windows.net";
+        //    string lcODBC = "ODBC Driver 17 for SQL Server";
+        //    string lcDB = "tb_HelpingHand";
+        //    // string lcPort = "3306";  //  Port=" + lcPort + ";
+        //    string lcUser = "tbmaster";
+        //    string lcProv = "SQLOLEDB";
+        //    string lcPass = "Smartman55";
+        //    string lcSQL = "";
+        //    string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+        //    OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+
+        //    return cnn;
+        //}
+
     }
+
+    public class Conn_cl
+    {
+
+        //string lcServer = "playgroup.database.windows.net";
+        //string lcODBC = "ODBC Driver 17 for SQL Server";
+        //string lcDB = "tb_HelpingHand";
+        //string lcUser = "tbmaster";
+        //string lcProv = "SQLOLEDB";
+        //string lcPass = "Smartman55";
+        // string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+        string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
+        OdbcConnection con;
+
+        public void OpenConection()
+        {
+            // string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
+            // OdbcConnection con;
+            con = new OdbcConnection(lcConnectionString);
+            con.Open();
+        }
+        public void CloseConnection()
+        {
+            con.Close();
+        }
+        public void ExecuteQueries(string Query_)
+        {
+            OdbcCommand cmd = new OdbcCommand(Query_, con);
+            cmd.ExecuteNonQuery();
+        }
+        public OdbcDataReader DataReader(string Query_)  // SqlDataReader
+        {
+            OdbcCommand cmd = new OdbcCommand(Query_, con);
+            OdbcDataReader dr = cmd.ExecuteReader();  // SqlDataReader
+            return dr;
+        }
+        public object ShowDataInGridView(string Query_)
+        {
+            SqlDataAdapter dr = new SqlDataAdapter(Query_, lcConnectionString);  // SqlDataAdapter  SqlDataAdapter
+            DataSet ds = new DataSet();
+            dr.Fill(ds);
+            object dataum = ds.Tables[0];
+            return dataum;
+        }
+    }
+
 }
