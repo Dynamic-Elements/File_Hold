@@ -2,9 +2,9 @@
 using System.Data.Odbc;
 using System.Data.SqlClient;
 
-namespace Accounting_PL
+namespace Connection_Class
 {
-    public class Conn_cl
+    public class Connection_Query
     {
 
         //string lcServer = "playgroup.database.windows.net";
@@ -14,32 +14,32 @@ namespace Accounting_PL
         //string lcProv = "SQLOLEDB";
         //string lcPass = "Smartman55";
         // string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-        string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
-        OdbcConnection con;
+        public static string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
+        public static OdbcConnection con;
 
-        public void OpenConection()
+        public static void OpenConection()
         {
             // string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
             // OdbcConnection con;
             con = new OdbcConnection(lcConnectionString);
             con.Open();
         }
-        public void CloseConnection()
+        public static void CloseConnection()
         {
             con.Close();
         }
-        public void ExecuteQueries(string Query_)
+        public static void ExecuteQueries(string Query_)
         {
             OdbcCommand cmd = new OdbcCommand(Query_, con);
             cmd.ExecuteNonQuery();
         }
-        public OdbcDataReader DataReader(string Query_)  // SqlDataReader
+        public static OdbcDataReader DataReader(string Query_)  // SqlDataReader
         {
             OdbcCommand cmd = new OdbcCommand(Query_, con);
             OdbcDataReader dr = cmd.ExecuteReader();  // SqlDataReader
             return dr;
         }
-        public object ShowDataInGridView(string Query_)
+        public static object ShowDataInGridView(string Query_)
         {
             SqlDataAdapter dr = new SqlDataAdapter(Query_, lcConnectionString);  // SqlDataAdapter  SqlDataAdapter
             DataSet ds = new DataSet();

@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VFPToolkit;
+using Connection_Class;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -302,6 +303,19 @@ namespace Accounting_PL
         private void Form1_Load(object sender, EventArgs e)
         {
 
+            string lcServer = "playgroup.database.windows.net";
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "tb_HelpingHand";
+            // string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Smartman55";
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+            
+            // int result = com.ExecuteNonQuery();
+
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
 
@@ -313,9 +327,15 @@ namespace Accounting_PL
                 comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
             }
 
+            string lcSQL = "SELECT * from tb_datahold where Week='" + textBox1.Text.Trim() + "'";
+            OdbcCommand com = new OdbcCommand(lcSQL, cnn);
+            int result = com.ExecuteNonQuery();
+            MessageBox.Show(Convert.ToString(result));
 
-            lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";
-
+            //Connection_Query.OpenConection();
+            //string lcSQL = "SELECT * from tb_datahold where Week='" + textBox1.Text.Trim() + "'";
+            //int result = Convert.ToInt32(Connection_Query.DataReader(lcSQL));
+            //MessageBox.Show(Convert.ToString(result));
 
         }
 
@@ -442,13 +462,11 @@ namespace Accounting_PL
 
             string lcSQL = "";
             lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
-
-            
-            Conn_cl.
-            ExecuteQueries(lcSQL);
+            Connection_Query.OpenConection();
+            int result = Convert.ToInt32(Connection_Query.DataReader(lcSQL));
 
             // OdbcCommand com = new OdbcCommand(lcSQL, cnn);
-            int result = com.ExecuteNonQuery();
+            // int result = com.ExecuteNonQuery();
             if (result > 0)
             {
                 /// Update records
@@ -485,6 +503,9 @@ namespace Accounting_PL
                     "@lcoAdvCoop,@lcoNatAdver,@lcoLicenseFee,@lcoTotOverhead)";
             }
 
+            OdbcConnection cnn = new OdbcConnection("Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;");
+            cnn.Open();
+            // Connection_Query.ExecuteQueries(lcSQL);
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             //// Pass values to Parameters
             cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
@@ -553,13 +574,15 @@ namespace Accounting_PL
             cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
             //  cmd.Parameters.AddWithValue("@",);
 
-            int rowsAdded = cmd.ExecuteNonQuery();
+            int rowsAdded = Convert.ToInt32(Connection_Query.DataReader(lcSQL));
+            // int rowsAdded = cmd.ExecuteNonQuery();
             if (rowsAdded > 0)
                 MessageBox.Show("Row inserted!!");
             else
                 // Well this should never really happen
                 MessageBox.Show("No row inserted");
 
+            Connection_Query.CloseConnection();
             cnn.Close();
             MessageBox.Show("Done!");
 
@@ -616,49 +639,49 @@ namespace Accounting_PL
 
     }
 
-    public class Conn_cl
-    {
+    //public class Conn_cl
+    //{
 
-        //string lcServer = "playgroup.database.windows.net";
-        //string lcODBC = "ODBC Driver 17 for SQL Server";
-        //string lcDB = "tb_HelpingHand";
-        //string lcUser = "tbmaster";
-        //string lcProv = "SQLOLEDB";
-        //string lcPass = "Smartman55";
-        // string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-        string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
-        OdbcConnection con;
+    //    //string lcServer = "playgroup.database.windows.net";
+    //    //string lcODBC = "ODBC Driver 17 for SQL Server";
+    //    //string lcDB = "tb_HelpingHand";
+    //    //string lcUser = "tbmaster";
+    //    //string lcProv = "SQLOLEDB";
+    //    //string lcPass = "Smartman55";
+    //    // string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+    //    string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
+    //    OdbcConnection con;
 
-        public void OpenConection()
-        {
-            // string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
-            // OdbcConnection con;
-            con = new OdbcConnection(lcConnectionString);
-            con.Open();
-        }
-        public void CloseConnection()
-        {
-            con.Close();
-        }
-        public void ExecuteQueries(string Query_)
-        {
-            OdbcCommand cmd = new OdbcCommand(Query_, con);
-            cmd.ExecuteNonQuery();
-        }
-        public OdbcDataReader DataReader(string Query_)  // SqlDataReader
-        {
-            OdbcCommand cmd = new OdbcCommand(Query_, con);
-            OdbcDataReader dr = cmd.ExecuteReader();  // SqlDataReader
-            return dr;
-        }
-        public object ShowDataInGridView(string Query_)
-        {
-            SqlDataAdapter dr = new SqlDataAdapter(Query_, lcConnectionString);  // SqlDataAdapter  SqlDataAdapter
-            DataSet ds = new DataSet();
-            dr.Fill(ds);
-            object dataum = ds.Tables[0];
-            return dataum;
-        }
-    }
+    //    public void OpenConection()
+    //    {
+    //        // string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
+    //        // OdbcConnection con;
+    //        con = new OdbcConnection(lcConnectionString);
+    //        con.Open();
+    //    }
+    //    public void CloseConnection()
+    //    {
+    //        con.Close();
+    //    }
+    //    public void ExecuteQueries(string Query_)
+    //    {
+    //        OdbcCommand cmd = new OdbcCommand(Query_, con);
+    //        cmd.ExecuteNonQuery();
+    //    }
+    //    public OdbcDataReader DataReader(string Query_)  // SqlDataReader
+    //    {
+    //        OdbcCommand cmd = new OdbcCommand(Query_, con);
+    //        OdbcDataReader dr = cmd.ExecuteReader();  // SqlDataReader
+    //        return dr;
+    //    }
+    //    public object ShowDataInGridView(string Query_)
+    //    {
+    //        SqlDataAdapter dr = new SqlDataAdapter(Query_, lcConnectionString);  // SqlDataAdapter  SqlDataAdapter
+    //        DataSet ds = new DataSet();
+    //        dr.Fill(ds);
+    //        object dataum = ds.Tables[0];
+    //        return dataum;
+    //    }
+    //}
 
 }
