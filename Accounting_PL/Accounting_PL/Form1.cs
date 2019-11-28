@@ -18,10 +18,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VFPToolkit;
-using Connection_Class;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -39,6 +39,187 @@ namespace Accounting_PL
         public Form1()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Setup fields right now. Will add more later.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string lcServer = "playgroup.database.windows.net";
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "tb_HelpingHand";
+            // string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Smartman55";
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+
+            // int result = com.ExecuteNonQuery();
+
+            var date = DateTime.Now;
+            var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
+
+            textBox1.Text = lastSunday;
+            textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
+
+            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
+            {
+                comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
+            }
+
+            string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";
+            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            OdbcDataReader reader = cmd.ExecuteReader();
+            // MessageBox.Show(Convert.ToString(reader.GetOrdinal("NetSales")));
+
+            if (reader.HasRows)
+            {
+
+                textBox3.Text = reader["NetSales"].ToString();
+
+                textBox84.Text = reader["PrimSupp"].ToString();
+                textBox77.Text = reader["OthSupp"].ToString();
+                textBox76.Text = reader["Bread"].ToString();
+                textBox75.Text = reader["Beverage"].ToString();
+                textBox69.Text = reader["Produce"].ToString();
+                textBox68.Text = reader["CarbonDioxide"].ToString();
+                textBox4.Text = reader["FoodCost"].ToString();
+
+                textBox83.Text = reader["Mortgage"].ToString();
+                textBox82.Text = reader["LoanPayment"].ToString();
+                textBox81.Text = reader["Association"].ToString();
+                textBox80.Text = reader["PropertyTax"].ToString();
+                textBox79.Text = reader["AdvertisingCoop"].ToString();
+                textBox78.Text = reader["NationalAdvertise"].ToString();
+                textBox73.Text = reader["LicensingFee"].ToString();
+                textBox6.Text = reader["OverheadCost"].ToString();
+
+                textBox27.Text = reader["Accounting"].ToString();
+                textBox26.Text = reader["Bank"].ToString();
+                textBox25.Text = reader["CreditCard"].ToString();
+                textBox24.Text = reader["Fuel"].ToString();
+                textBox23.Text = reader["Legal"].ToString();
+                textBox22.Text = reader["License"].ToString();
+                textBox28.Text = reader["PayrollProc"].ToString();
+                textBox30.Text = reader["Insurance"].ToString();
+                textBox29.Text = reader["WorkersComp"].ToString();
+                textBox32.Text = reader["Advertising"].ToString();
+                textBox31.Text = reader["Charitable"].ToString();
+                textBox21.Text = reader["Auto"].ToString();
+                textBox20.Text = reader["CashShortage"].ToString();
+                textBox34.Text = reader["Electrical"].ToString();
+                textBox33.Text = reader["General"].ToString();
+                textBox19.Text = reader["HVAC"].ToString();
+                textBox35.Text = reader["Lawn"].ToString();
+                textBox36.Text = reader["Painting"].ToString();
+                textBox37.Text = reader["Plumbing"].ToString();
+                textBox38.Text = reader["Remodeling"].ToString();
+                textBox39.Text = reader["Structural"].ToString();
+                textBox43.Text = reader["DishMachine"].ToString();
+                textBox42.Text = reader["Janitorial"].ToString();
+                textBox44.Text = reader["Office"].ToString();
+                textBox41.Text = reader["Restaurant"].ToString();
+                textBox40.Text = reader["Uniforms"].ToString();
+                textBox18.Text = reader["Data"].ToString();
+                textBox45.Text = reader["Electricity"].ToString();
+                textBox46.Text = reader["Music"].ToString();
+                textBox47.Text = reader["NaturalGas"].ToString();
+                textBox48.Text = reader["Security"].ToString();
+                textBox49.Text = reader["Trash"].ToString();
+                textBox50.Text = reader["WaterSewer"].ToString();
+                textBox7.Text = reader["ExpenseCost"].ToString();
+
+                textBox90.Text = reader["HostCashier"].ToString();
+                textBox89.Text = reader["Cooks"].ToString();
+                textBox88.Text = reader["Servers"].ToString();
+                textBox87.Text = reader["DMO"].ToString();
+                textBox86.Text = reader["Supervisor"].ToString();
+                textBox85.Text = reader["Overtime"].ToString();
+                textBox74.Text = reader["GeneralManager"].ToString();
+                textBox72.Text = reader["Manager"].ToString();
+                textBox71.Text = reader["Bonus"].ToString();
+                textBox70.Text = reader["PayrollTax"].ToString();
+                textBox5.Text = reader["LaborCost"].ToString();
+
+                //  Retirement   Healthcare
+            }
+            else
+            {
+
+                textBox3.Text = "0.00";
+
+                textBox84.Text = "0.00";
+                textBox77.Text = "0.00";
+                textBox76.Text = "0.00";
+                textBox75.Text = "0.00";
+                textBox69.Text = "0.00";
+                textBox68.Text = "0.00";
+                textBox4.Text = "0.00";
+
+                textBox83.Text = "0.00";
+                textBox82.Text = "0.00";
+                textBox81.Text = "0.00";
+                textBox80.Text = "0.00";
+                textBox79.Text = "0.00";
+                textBox78.Text = "0.00";
+                textBox73.Text = "0.00";
+                textBox6.Text = "0.00";
+
+                textBox27.Text = "0.00";
+                textBox26.Text = "0.00";
+                textBox25.Text = "0.00";
+                textBox24.Text = "0.00";
+                textBox23.Text = "0.00";
+                textBox22.Text = "0.00";
+                textBox28.Text = "0.00";
+                textBox30.Text = "0.00";
+                textBox29.Text = "0.00";
+                textBox32.Text = "0.00";
+                textBox31.Text = "0.00";
+                textBox21.Text = "0.00";
+                textBox20.Text = "0.00";
+                textBox34.Text = "0.00";
+                textBox33.Text = "0.00";
+                textBox19.Text = "0.00";
+                textBox35.Text = "0.00";
+                textBox36.Text = "0.00";
+                textBox37.Text = "0.00";
+                textBox38.Text = "0.00";
+                textBox39.Text = "0.00";
+                textBox43.Text = "0.00";
+                textBox42.Text = "0.00";
+                textBox44.Text = "0.00";
+                textBox41.Text = "0.00";
+                textBox40.Text = "0.00";
+                textBox18.Text = "0.00";
+                textBox45.Text = "0.00";
+                textBox46.Text = "0.00";
+                textBox47.Text = "0.00";
+                textBox48.Text = "0.00";
+                textBox49.Text = "0.00";
+                textBox50.Text = "0.00";
+                textBox7.Text = "0.00";
+
+                textBox90.Text = "0.00";
+                textBox89.Text = "0.00";
+                textBox88.Text = "0.00";
+                textBox87.Text = "0.00";
+                textBox86.Text = "0.00";
+                textBox85.Text = "0.00";
+                textBox74.Text = "0.00";
+                textBox72.Text = "0.00";
+                textBox71.Text = "0.00";
+                textBox70.Text = "0.00";
+                textBox5.Text = "0.00";
+
+            }
+            cnn.Close();
+
         }
 
         /// <summary>
@@ -295,79 +476,40 @@ namespace Accounting_PL
 
         }
 
-        /// <summary>
-        /// Setup fields right now. Will add more later.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
-            string lcServer = "playgroup.database.windows.net";
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "tb_HelpingHand";
-            // string lcPort = "3306";  //  Port=" + lcPort + ";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "Smartman55";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
-            
-            // int result = com.ExecuteNonQuery();
-
-            var date = DateTime.Now;
-            var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
-
-            textBox1.Text = lastSunday;
-            textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
-
-            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
-            {
-                comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
-            }
-
-            string lcSQL = "SELECT * from tb_datahold where Week='" + textBox1.Text.Trim() + "'";
-            OdbcCommand com = new OdbcCommand(lcSQL, cnn);
-            int result = com.ExecuteNonQuery();
-            MessageBox.Show(Convert.ToString(result));
-
-            //Connection_Query.OpenConection();
-            //string lcSQL = "SELECT * from tb_datahold where Week='" + textBox1.Text.Trim() + "'";
-            //int result = Convert.ToInt32(Connection_Query.DataReader(lcSQL));
-            //MessageBox.Show(Convert.ToString(result));
-
-        }
 
         private void updateCalculations()
         {
             // This will calculate all the totals of each grouping
             // textBox6.Text = Convert.ToString((Convert.ToInt32(textBox1.Text) + Convert.ToInt32()));
 
-            // Food
-            textBox4.Text = Convert.ToString((Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
-                Convert.ToInt32(textBox75.Text) + Convert.ToInt32(textBox69.Text) + Convert.ToInt32(textBox68.Text)));
+            try
+            {
+                // Food
+                textBox4.Text = Convert.ToString((Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
+                    Convert.ToInt32(textBox75.Text) + Convert.ToInt32(textBox69.Text) + Convert.ToInt32(textBox68.Text)));
 
-            // Expenses
-            textBox7.Text = Convert.ToString((Convert.ToInt32(textBox27.Text) + Convert.ToInt32(textBox26.Text) + Convert.ToInt32(textBox25.Text) +
-                Convert.ToInt32(textBox24.Text) + Convert.ToInt32(textBox23.Text) + Convert.ToInt32(textBox22.Text) + Convert.ToInt32(textBox28.Text) +
-                Convert.ToInt32(textBox30.Text) + Convert.ToInt32(textBox29.Text) + Convert.ToInt32(textBox32.Text) + Convert.ToInt32(textBox31.Text) +
-                Convert.ToInt32(textBox21.Text) + Convert.ToInt32(textBox20.Text) + Convert.ToInt32(textBox34.Text) + Convert.ToInt32(textBox33.Text) +
-                Convert.ToInt32(textBox19.Text) + Convert.ToInt32(textBox35.Text) + Convert.ToInt32(textBox36.Text) + Convert.ToInt32(textBox37.Text) +
-                Convert.ToInt32(textBox38.Text) + Convert.ToInt32(textBox39.Text) + Convert.ToInt32(textBox43.Text) + Convert.ToInt32(textBox42.Text) +
-                Convert.ToInt32(textBox44.Text) + Convert.ToInt32(textBox41.Text) + Convert.ToInt32(textBox40.Text) + Convert.ToInt32(textBox18.Text) +
-                Convert.ToInt32(textBox45.Text) + Convert.ToInt32(textBox46.Text) + Convert.ToInt32(textBox47.Text) + Convert.ToInt32(textBox48.Text) +
-                Convert.ToInt32(textBox49.Text) + Convert.ToInt32(textBox50.Text)));
+                // Expenses
+                textBox7.Text = Convert.ToString((Convert.ToInt32(textBox27.Text) + Convert.ToInt32(textBox26.Text) + Convert.ToInt32(textBox25.Text) +
+                    Convert.ToInt32(textBox24.Text) + Convert.ToInt32(textBox23.Text) + Convert.ToInt32(textBox22.Text) + Convert.ToInt32(textBox28.Text) +
+                    Convert.ToInt32(textBox30.Text) + Convert.ToInt32(textBox29.Text) + Convert.ToInt32(textBox32.Text) + Convert.ToInt32(textBox31.Text) +
+                    Convert.ToInt32(textBox21.Text) + Convert.ToInt32(textBox20.Text) + Convert.ToInt32(textBox34.Text) + Convert.ToInt32(textBox33.Text) +
+                    Convert.ToInt32(textBox19.Text) + Convert.ToInt32(textBox35.Text) + Convert.ToInt32(textBox36.Text) + Convert.ToInt32(textBox37.Text) +
+                    Convert.ToInt32(textBox38.Text) + Convert.ToInt32(textBox39.Text) + Convert.ToInt32(textBox43.Text) + Convert.ToInt32(textBox42.Text) +
+                    Convert.ToInt32(textBox44.Text) + Convert.ToInt32(textBox41.Text) + Convert.ToInt32(textBox40.Text) + Convert.ToInt32(textBox18.Text) +
+                    Convert.ToInt32(textBox45.Text) + Convert.ToInt32(textBox46.Text) + Convert.ToInt32(textBox47.Text) + Convert.ToInt32(textBox48.Text) +
+                    Convert.ToInt32(textBox49.Text) + Convert.ToInt32(textBox50.Text)));
 
-            // Labor
-            textBox5.Text = Convert.ToString((Convert.ToInt32(textBox90.Text) + Convert.ToInt32(textBox89.Text) + Convert.ToInt32(textBox88.Text) +
-                Convert.ToInt32(textBox87.Text) + Convert.ToInt32(textBox86.Text) + Convert.ToInt32(textBox85.Text) + Convert.ToInt32(textBox74.Text) +
-                Convert.ToInt32(textBox72.Text) + Convert.ToInt32(textBox71.Text) + Convert.ToInt32(textBox70.Text)));
+                // Labor
+                textBox5.Text = Convert.ToString((Convert.ToInt32(textBox90.Text) + Convert.ToInt32(textBox89.Text) + Convert.ToInt32(textBox88.Text) +
+                    Convert.ToInt32(textBox87.Text) + Convert.ToInt32(textBox86.Text) + Convert.ToInt32(textBox85.Text) + Convert.ToInt32(textBox74.Text) +
+                    Convert.ToInt32(textBox72.Text) + Convert.ToInt32(textBox71.Text) + Convert.ToInt32(textBox70.Text)));
 
-            // Overhead
-            textBox6.Text = Convert.ToString((Convert.ToInt32(textBox83.Text) + Convert.ToInt32(textBox82.Text) + Convert.ToInt32(textBox81.Text) +
-                Convert.ToInt32(textBox80.Text) + Convert.ToInt32(textBox79.Text) + Convert.ToInt32(textBox78.Text) + Convert.ToInt32(textBox73.Text)));
-
+                // Overhead
+                textBox6.Text = Convert.ToString((Convert.ToInt32(textBox83.Text) + Convert.ToInt32(textBox82.Text) + Convert.ToInt32(textBox81.Text) +
+                    Convert.ToInt32(textBox80.Text) + Convert.ToInt32(textBox79.Text) + Convert.ToInt32(textBox78.Text) + Convert.ToInt32(textBox73.Text)));
+            }
+            catch { }
         }
 
 
@@ -457,140 +599,920 @@ namespace Accounting_PL
             //string lcProv = "SQLOLEDB";
             //string lcPass = "Smartman55";
             //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            // OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+
             //cnn.Open();
 
-            string lcSQL = "";
-            lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
-            Connection_Query.OpenConection();
-            int result = Convert.ToInt32(Connection_Query.DataReader(lcSQL));
+            //string lcSQL = "";
+            //lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
+            //OdbcCommand com = new OdbcCommand(lcSQL, cnn);
+            //int result = com.ExecuteNonQuery();
+            //if (result > 0)
+            //{
+            //    /// Update records
+            //    // MessageBox.Show(result.ToString());
+            //    lcSQL = " Update tb_datahold set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Beverage=@lcfBev," +
+            //        " Produce=@lcfProd,CarbonDioxide=@lcfCarbon, FoodCost=@lcfTotFood, HostCashier=@lclHost, Cooks=@lclCook, Servers=@lclServer," +
+            //        " DMO=@lclDMO, Supervisor=@lclSuperv, Overtime=@lclOvertime,GeneralManager=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus," +
+            //        " PayrollTax=@lclPayTax, Healthcare=, Retirement=, LaborCost=@lclTotLabor, Accounting=@lceAccount,Bank=@lceBank, CreditCard=@lceCC," +
+            //        " Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayrollProc=@lcePayroll, Insurance=@lceInsur,WorkersComp=@lceWorkComp," +
+            //        " Advertising=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, CashShortage=@lceCash, Electrical=@lceElect,General=@lceGeneral," +
+            //        " HVAC=@lceHVAC, Lawn=@lceLawn, Painting=@lcePaint, Plumbing=@lcePlumb, Remodeling=@lceRemodel, Structural=@lceStruct," +
+            //        " DishMachine=@lceDishMach,Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform," +
+            //        " Data=@lceData, Electricity=@lceElectric,Music=@lceMusic, NaturalGas=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash," +
+            //        " WaterSewer=@lceWaterSewer, ExpenseCost=@lceTotExpense, Mortgage=@lcoMort,LoanPayment=@lcoLoan, Association=@lcoAssoc," +
+            //        " PropertyTax=@lcoPropTax, AdvertisingCoop=@lcoAdvCoop, NationalAdvertise=@lcoNatAdver, LicensingFee=@lcoLicenseFee," +
+            //        "OverheadCost=@lcoTotOverhead where Week='@lcEOW'";
+            //}
+            //else
+            //{
+            //    /// Insert records
+            //    // MessageBox.Show("Hello There, no records");
+            //    /// ,IDs
+            //    lcSQL = " Insert into tb_datahold (Week,NetSales,PrimSupp,OthSupp,Bread,Beverage,Produce,CarbonDioxide,FoodCost,HostCashier,Cooks,Servers,DMO,Supervisor," +
+            //        "Overtime,GeneralManager,Manager,Bonus,PayrollTax,Healthcare,Retirement,LaborCost,Accounting,Bank,CreditCard,Fuel,Legal,License,PayrollProc," +
+            //        "Insurance,WorkersComp,Advertising,Charitable,Auto,CashShortage,Electrical,General,HVAC,Lawn,Painting,Plumbing,Remodeling,Structural,DishMachine," +
+            //        "Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalGas,Security,Trash,WaterSewer,ExpenseCost,Mortgage,LoanPayment,Association," +
+            //        "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost) " +
+            //        " values " +
+            //        " ('@lcEOW',@lcNetSales,@lcfPrimSupp,@lcfOthSupp,@lcfBread,@lcfBev,@lcfProd,@lcfCarbon,@lcfTotFood,@lclHost,@lclCook,@lclServer,@lclDMO," +
+            //        "@lclSuperv,@lclOvertime,@lclGenManager,@lclManager,@lclBonus,@lclPayTax,@lcHealth,@lcRetire,@lclTotLabor,@lceAccount,@lceBank,@lceCC," +
+            //        "@lceFuel,@lceLegal,@lceLicensePerm,@lcePayroll,@lceInsur,@lceWorkComp,@lceAdvertise,@lceCharitable,@lceAuto,@lceCash,@lceElect,@lceGeneral," +
+            //        "@lceHVAC,@lceLawn,@lcePaint,@lcePlumb,@lceRemodel,@lceStruct,@lceDishMach,@lceJanitorial,@lceOfficeComp,@lceRestaurant,@lceUniform,@lceData," +
+            //        "@lceElectric,@lceMusic,@lceNatGas,@lceSecurity,@lceTrash,@lceWaterSewer,@lceTotExpense,@lcoMort,@lcoLoan,@lcoAssoc,@lcoPropTax," +
+            //        "@lcoAdvCoop,@lcoNatAdver,@lcoLicenseFee,@lcoTotOverhead)";
+            //}
 
-            // OdbcCommand com = new OdbcCommand(lcSQL, cnn);
-            // int result = com.ExecuteNonQuery();
-            if (result > 0)
-            {
-                /// Update records
-                // MessageBox.Show(result.ToString());
-                lcSQL = " Update tb_datahold set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Beverage=@lcfBev," +
-                    " Produce=@lcfProd,CarbonDioxide=@lcfCarbon, FoodCost=@lcfTotFood, HostCashier=@lclHost, Cooks=@lclCook, Servers=@lclServer," +
-                    " DMO=@lclDMO, Supervisor=@lclSuperv, Overtime=@lclOvertime,GeneralManager=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus," +
-                    " PayrollTax=@lclPayTax, Healthcare=, Retirement=, LaborCost=@lclTotLabor, Accounting=@lceAccount,Bank=@lceBank, CreditCard=@lceCC," +
-                    " Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayrollProc=@lcePayroll, Insurance=@lceInsur,WorkersComp=@lceWorkComp," +
-                    " Advertising=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, CashShortage=@lceCash, Electrical=@lceElect,General=@lceGeneral," +
-                    " HVAC=@lceHVAC, Lawn=@lceLawn, Painting=@lcePaint, Plumbing=@lcePlumb, Remodeling=@lceRemodel, Structural=@lceStruct," +
-                    " DishMachine=@lceDishMach,Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform," +
-                    " Data=@lceData, Electricity=@lceElectric,Music=@lceMusic, NaturalGas=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash," +
-                    " WaterSewer=@lceWaterSewer, ExpenseCost=@lceTotExpense, Mortgage=@lcoMort,LoanPayment=@lcoLoan, Association=@lcoAssoc," +
-                    " PropertyTax=@lcoPropTax, AdvertisingCoop=@lcoAdvCoop, NationalAdvertise=@lcoNatAdver, LicensingFee=@lcoLicenseFee," +
-                    "OverheadCost=@lcoTotOverhead where Week='@lcEOW'";
-            }
-            else
-            {
-                /// Insert records
-                // MessageBox.Show("Hello There, no records");
-                /// ,IDs
-                lcSQL = " Insert into tb_datahold (Week,NetSales,PrimSupp,OthSupp,Bread,Beverage,Produce,CarbonDioxide,FoodCost,HostCashier,Cooks,Servers,DMO,Supervisor," +
-                    "Overtime,GeneralManager,Manager,Bonus,PayrollTax,Healthcare,Retirement,LaborCost,Accounting,Bank,CreditCard,Fuel,Legal,License,PayrollProc," +
-                    "Insurance,WorkersComp,Advertising,Charitable,Auto,CashShortage,Electrical,General,HVAC,Lawn,Painting,Plumbing,Remodeling,Structural,DishMachine," +
-                    "Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalGas,Security,Trash,WaterSewer,ExpenseCost,Mortgage,LoanPayment,Association," +
-                    "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost) " +
-                    " values " +
-                    " ('@lcEOW',@lcNetSales,@lcfPrimSupp,@lcfOthSupp,@lcfBread,@lcfBev,@lcfProd,@lcfCarbon,@lcfTotFood,@lclHost,@lclCook,@lclServer,@lclDMO," +
-                    "@lclSuperv,@lclOvertime,@lclGenManager,@lclManager,@lclBonus,@lclPayTax,@lcHealth,@lcRetire,@lclTotLabor,@lceAccount,@lceBank,@lceCC," +
-                    "@lceFuel,@lceLegal,@lceLicensePerm,@lcePayroll,@lceInsur,@lceWorkComp,@lceAdvertise,@lceCharitable,@lceAuto,@lceCash,@lceElect,@lceGeneral," +
-                    "@lceHVAC,@lceLawn,@lcePaint,@lcePlumb,@lceRemodel,@lceStruct,@lceDishMach,@lceJanitorial,@lceOfficeComp,@lceRestaurant,@lceUniform,@lceData," +
-                    "@lceElectric,@lceMusic,@lceNatGas,@lceSecurity,@lceTrash,@lceWaterSewer,@lceTotExpense,@lcoMort,@lcoLoan,@lcoAssoc,@lcoPropTax," +
-                    "@lcoAdvCoop,@lcoNatAdver,@lcoLicenseFee,@lcoTotOverhead)";
-            }
+            ////// Pass values to Parameters
+            //cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
+            //cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
+            //cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
+            //cmd.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
+            //cmd.Parameters.AddWithValue("@lcfBread", lcfBread);
+            //cmd.Parameters.AddWithValue("@lcfBev", lcfBev);
+            //cmd.Parameters.AddWithValue("@lcfProd", lcfProd);
+            //cmd.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
+            //cmd.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
+            //cmd.Parameters.AddWithValue("@lclHost", lclHost);
+            //cmd.Parameters.AddWithValue("@lclCook", lclCook);
+            //cmd.Parameters.AddWithValue("@lclServer", lclServer);
+            //cmd.Parameters.AddWithValue("@lclDMO", lclDMO);
+            //cmd.Parameters.AddWithValue("@lclSuperv", lclSuperv);
+            //cmd.Parameters.AddWithValue("@lclOvertime", lclOvertime);
+            //cmd.Parameters.AddWithValue("@lclGenManager", lclGenManager);
+            //cmd.Parameters.AddWithValue("@lclManager", lclManager);
+            //cmd.Parameters.AddWithValue("@lclBonus", lclBonus);
+            //cmd.Parameters.AddWithValue("@lclPayTax", lclPayTax);
+            //// cmd.Parameters.AddWithValue("@lcHealth",lcHealth);  //  HealthCare= 
+            //// cmd.Parameters.AddWithValue("@lcRetire",lcRetire);  //  Retire=
+            //cmd.Parameters.AddWithValue("@lclTotLabor", lclTotLabor);
+            //cmd.Parameters.AddWithValue("@lceAccount", lceAccount);
+            //cmd.Parameters.AddWithValue("@lceBank", lceBank);
+            //cmd.Parameters.AddWithValue("@lceCC", lceCC);
+            //cmd.Parameters.AddWithValue("@lceFuel", lceFuel);
+            //cmd.Parameters.AddWithValue("@lceLegal", lceLegal);
+            //cmd.Parameters.AddWithValue("@lceLicensePerm", lceLicensePerm);
+            //cmd.Parameters.AddWithValue("@lcePayroll", lcePayroll);
+            //cmd.Parameters.AddWithValue("@lceInsur", lceInsur);
+            //cmd.Parameters.AddWithValue("@lceWorkComp", lceWorkComp);
+            //cmd.Parameters.AddWithValue("@lceAdvertise", lceAdvertise);
+            //cmd.Parameters.AddWithValue("@lceCharitable", lceCharitable);
+            //cmd.Parameters.AddWithValue("@lceAuto", lceAuto);
+            //cmd.Parameters.AddWithValue("@lceCash", lceCash);
+            //cmd.Parameters.AddWithValue("@lceElect", lceElect);
+            //cmd.Parameters.AddWithValue("@lceGeneral", lceGeneral);
+            //cmd.Parameters.AddWithValue("@lceHVAC", lceHVAC);
+            //cmd.Parameters.AddWithValue("@lceLawn", lceLawn);
+            //cmd.Parameters.AddWithValue("@lcePaint", lcePaint);
+            //cmd.Parameters.AddWithValue("@lcePlumb", lcePlumb);
+            //cmd.Parameters.AddWithValue("@lceRemodel", lceRemodel);
+            //cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
+            //cmd.Parameters.AddWithValue("@lceDishMach", lceDishMach);
+            //cmd.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
+            //cmd.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
+            //cmd.Parameters.AddWithValue("@lceRestaurant", lceRestaurant);
+            //cmd.Parameters.AddWithValue("@lceUniform", lceUniform);
+            //cmd.Parameters.AddWithValue("@lceData", lceData);
+            //cmd.Parameters.AddWithValue("@lceElectric", lceElectric);
+            //cmd.Parameters.AddWithValue("@lceMusic", lceMusic);
+            //cmd.Parameters.AddWithValue("@lceNatGas", lceNatGas);
+            //cmd.Parameters.AddWithValue("@lceSecurity", lceSecurity);
+            //cmd.Parameters.AddWithValue("@lceTrash", lceTrash);
+            //cmd.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
+            //cmd.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
+            //cmd.Parameters.AddWithValue("@lcoMort", lcoMort);
+            //cmd.Parameters.AddWithValue("@lcoLoan", lcoLoan);
+            //cmd.Parameters.AddWithValue("@lcoAssoc", lcoAssoc);
+            //cmd.Parameters.AddWithValue("@lcoPropTax", lcoPropTax);
+            //cmd.Parameters.AddWithValue("@lcoAdvCoop", lcoAdvCoop);
+            //cmd.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
+            //cmd.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
+            //cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
+            ////  cmd.Parameters.AddWithValue("@",);
 
-            OdbcConnection cnn = new OdbcConnection("Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;");
-            cnn.Open();
-            // Connection_Query.ExecuteQueries(lcSQL);
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            //// Pass values to Parameters
-            cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
-            cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
-            cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
-            cmd.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
-            cmd.Parameters.AddWithValue("@lcfBread", lcfBread);
-            cmd.Parameters.AddWithValue("@lcfBev", lcfBev);
-            cmd.Parameters.AddWithValue("@lcfProd", lcfProd);
-            cmd.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
-            cmd.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
-            cmd.Parameters.AddWithValue("@lclHost", lclHost);
-            cmd.Parameters.AddWithValue("@lclCook", lclCook);
-            cmd.Parameters.AddWithValue("@lclServer", lclServer);
-            cmd.Parameters.AddWithValue("@lclDMO", lclDMO);
-            cmd.Parameters.AddWithValue("@lclSuperv", lclSuperv);
-            cmd.Parameters.AddWithValue("@lclOvertime", lclOvertime);
-            cmd.Parameters.AddWithValue("@lclGenManager", lclGenManager);
-            cmd.Parameters.AddWithValue("@lclManager", lclManager);
-            cmd.Parameters.AddWithValue("@lclBonus", lclBonus);
-            cmd.Parameters.AddWithValue("@lclPayTax", lclPayTax);
-            // cmd.Parameters.AddWithValue("@lcHealth",lcHealth);  //  HealthCare= 
-            // cmd.Parameters.AddWithValue("@lcRetire",lcRetire);  //  Retire=
-            cmd.Parameters.AddWithValue("@lclTotLabor", lclTotLabor);
-            cmd.Parameters.AddWithValue("@lceAccount", lceAccount);
-            cmd.Parameters.AddWithValue("@lceBank", lceBank);
-            cmd.Parameters.AddWithValue("@lceCC", lceCC);
-            cmd.Parameters.AddWithValue("@lceFuel", lceFuel);
-            cmd.Parameters.AddWithValue("@lceLegal", lceLegal);
-            cmd.Parameters.AddWithValue("@lceLicensePerm", lceLicensePerm);
-            cmd.Parameters.AddWithValue("@lcePayroll", lcePayroll);
-            cmd.Parameters.AddWithValue("@lceInsur", lceInsur);
-            cmd.Parameters.AddWithValue("@lceWorkComp", lceWorkComp);
-            cmd.Parameters.AddWithValue("@lceAdvertise", lceAdvertise);
-            cmd.Parameters.AddWithValue("@lceCharitable", lceCharitable);
-            cmd.Parameters.AddWithValue("@lceAuto", lceAuto);
-            cmd.Parameters.AddWithValue("@lceCash", lceCash);
-            cmd.Parameters.AddWithValue("@lceElect", lceElect);
-            cmd.Parameters.AddWithValue("@lceGeneral", lceGeneral);
-            cmd.Parameters.AddWithValue("@lceHVAC", lceHVAC);
-            cmd.Parameters.AddWithValue("@lceLawn", lceLawn);
-            cmd.Parameters.AddWithValue("@lcePaint", lcePaint);
-            cmd.Parameters.AddWithValue("@lcePlumb", lcePlumb);
-            cmd.Parameters.AddWithValue("@lceRemodel", lceRemodel);
-            cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
-            cmd.Parameters.AddWithValue("@lceDishMach", lceDishMach);
-            cmd.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
-            cmd.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
-            cmd.Parameters.AddWithValue("@lceRestaurant", lceRestaurant);
-            cmd.Parameters.AddWithValue("@lceUniform", lceUniform);
-            cmd.Parameters.AddWithValue("@lceData", lceData);
-            cmd.Parameters.AddWithValue("@lceElectric", lceElectric);
-            cmd.Parameters.AddWithValue("@lceMusic", lceMusic);
-            cmd.Parameters.AddWithValue("@lceNatGas", lceNatGas);
-            cmd.Parameters.AddWithValue("@lceSecurity", lceSecurity);
-            cmd.Parameters.AddWithValue("@lceTrash", lceTrash);
-            cmd.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
-            cmd.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
-            cmd.Parameters.AddWithValue("@lcoMort", lcoMort);
-            cmd.Parameters.AddWithValue("@lcoLoan", lcoLoan);
-            cmd.Parameters.AddWithValue("@lcoAssoc", lcoAssoc);
-            cmd.Parameters.AddWithValue("@lcoPropTax", lcoPropTax);
-            cmd.Parameters.AddWithValue("@lcoAdvCoop", lcoAdvCoop);
-            cmd.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
-            cmd.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
-            cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
-            //  cmd.Parameters.AddWithValue("@",);
+            //int rowsAdded = cmd.ExecuteNonQuery();
+            //if (rowsAdded > 0)
+            //    MessageBox.Show("Row inserted!!");
+            //else
+            //    // Well this should never really happen
+            //    MessageBox.Show("No row inserted");
 
-            int rowsAdded = Convert.ToInt32(Connection_Query.DataReader(lcSQL));
-            // int rowsAdded = cmd.ExecuteNonQuery();
-            if (rowsAdded > 0)
-                MessageBox.Show("Row inserted!!");
-            else
-                // Well this should never really happen
-                MessageBox.Show("No row inserted");
+            //cnn.Close();
+            //MessageBox.Show("Done!");
 
-            Connection_Query.CloseConnection();
-            cnn.Close();
-            MessageBox.Show("Done!");
+        }
 
+        private void textBox3_Leave(object sender, EventArgs e)
+        {
+            string value = textBox3.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox3.Text = val.ToString("C");
+        }
+
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
         }
 
         private void textBox84_Leave(object sender, EventArgs e)
         {
-            // textBox4 = textBox84.Text.Trim() + textBox77.Text.Trim() + textBox76.Text.Trim() + textBox75.Text.Trim() + textBox69.Text.Trim() + textBox68.Text.Trim();
+            string value = textBox84.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox84.Text = val.ToString("C");
+        }
+
+        private void textBox84_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox77_Leave(object sender, EventArgs e)
+        {
+            string value = textBox77.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox77.Text = val.ToString("C");
+        }
+
+        private void textBox77_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox76_Leave(object sender, EventArgs e)
+        {
+            string value = textBox76.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox76.Text = val.ToString("C");
+        }
+
+        private void textBox76_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox75_Leave(object sender, EventArgs e)
+        {
+            string value = textBox75.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox75.Text = val.ToString("C");
+        }
+
+        private void textBox75_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox69_Leave(object sender, EventArgs e)
+        {
+            string value = textBox69.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox69.Text = val.ToString("C");
+        }
+
+        private void textBox69_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox68_Leave(object sender, EventArgs e)
+        {
+            string value = textBox68.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox68.Text = val.ToString("C");
+        }
+
+        private void textBox68_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox4_Leave(object sender, EventArgs e)
+        {
+            string value = textBox4.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox4.Text = val.ToString("C");
+        }
+
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox90_Leave(object sender, EventArgs e)
+        {
+            string value = textBox90.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox90.Text = val.ToString("C");
+        }
+
+        private void textBox90_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox89_Leave(object sender, EventArgs e)
+        {
+            string value = textBox89.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox89.Text = val.ToString("C");
+        }
+
+        private void textBox89_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox88_Leave(object sender, EventArgs e)
+        {
+            string value = textBox88.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox88.Text = val.ToString("C");
+        }
+
+        private void textBox88_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox87_Leave(object sender, EventArgs e)
+        {
+            string value = textBox87.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox87.Text = val.ToString("C");
+        }
+
+        private void textBox87_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox86_Leave(object sender, EventArgs e)
+        {
+            string value = textBox86.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox86.Text = val.ToString("C");
+        }
+
+        private void textBox86_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox85_Leave(object sender, EventArgs e)
+        {
+            string value = textBox85.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox85.Text = val.ToString("C");
+        }
+
+        private void textBox85_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox74_Leave(object sender, EventArgs e)
+        {
+            string value = textBox74.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox74.Text = val.ToString("C");
+        }
+
+        private void textBox74_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox72_Leave(object sender, EventArgs e)
+        {
+            string value = textBox72.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox72.Text = val.ToString("C");
+        }
+
+        private void textBox72_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox71_Leave(object sender, EventArgs e)
+        {
+            string value = textBox71.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox71.Text = val.ToString("C");
+        }
+
+        private void textBox71_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox70_Leave(object sender, EventArgs e)
+        {
+            string value = textBox70.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox70.Text = val.ToString("C");
+        }
+
+        private void textBox70_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox5_Leave(object sender, EventArgs e)
+        {
+            string value = textBox5.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox5.Text = val.ToString("C");
+        }
+
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox83_Leave(object sender, EventArgs e)
+        {
+            string value = textBox83.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox83.Text = val.ToString("C");
+        }
+
+        private void textBox83_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox82_Leave(object sender, EventArgs e)
+        {
+            string value = textBox82.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox82.Text = val.ToString("C");
+        }
+
+        private void textBox82_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox81_Leave(object sender, EventArgs e)
+        {
+            string value = textBox81.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox81.Text = val.ToString("C");
+        }
+
+        private void textBox81_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox80_Leave(object sender, EventArgs e)
+        {
+            string value = textBox80.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox80.Text = val.ToString("C");
+        }
+
+        private void textBox80_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox79_Leave(object sender, EventArgs e)
+        {
+            string value = textBox79.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox79.Text = val.ToString("C");
+        }
+
+        private void textBox79_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox78_Leave(object sender, EventArgs e)
+        {
+            string value = textBox78.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox78.Text = val.ToString("C");
+        }
+
+        private void textBox78_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox73_Leave(object sender, EventArgs e)
+        {
+            string value = textBox73.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox73.Text = val.ToString("C");
+        }
+
+        private void textBox73_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox6_Leave(object sender, EventArgs e)
+        {
+            string value = textBox6.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox6.Text = val.ToString("C");
+        }
+
+        private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox27_Leave(object sender, EventArgs e)
+        {
+            string value = textBox27.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox27.Text = val.ToString("C");
+        }
+
+        private void textBox27_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox26_Leave(object sender, EventArgs e)
+        {
+            string value = textBox26.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox26.Text = val.ToString("C");
+        }
+
+        private void textBox26_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox25_Leave(object sender, EventArgs e)
+        {
+            string value = textBox25.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox25.Text = val.ToString("C");
+        }
+
+        private void textBox25_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox24_Leave(object sender, EventArgs e)
+        {
+            string value = textBox24.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox24.Text = val.ToString("C");
+        }
+
+        private void textBox24_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox23_Leave(object sender, EventArgs e)
+        {
+            string value = textBox23.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox23.Text = val.ToString("C");
+        }
+
+        private void textBox23_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox22_Leave(object sender, EventArgs e)
+        {
+            string value = textBox22.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox22.Text = val.ToString("C");
+        }
+
+        private void textBox22_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox28_Leave(object sender, EventArgs e)
+        {
+            string value = textBox28.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox28.Text = val.ToString("C");
+        }
+
+        private void textBox28_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox30_Leave(object sender, EventArgs e)
+        {
+            string value = textBox30.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox30.Text = val.ToString("C");
+        }
+
+        private void textBox30_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox29_Leave(object sender, EventArgs e)
+        {
+            string value = textBox29.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox29.Text = val.ToString("C");
+        }
+
+        private void textBox29_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox32_Leave(object sender, EventArgs e)
+        {
+            string value = textBox32.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox32.Text = val.ToString("C");
+        }
+
+        private void textBox32_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox31_Leave(object sender, EventArgs e)
+        {
+            string value = textBox31.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox31.Text = val.ToString("C");
+        }
+
+        private void textBox31_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox21_Leave(object sender, EventArgs e)
+        {
+            string value = textBox21.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox21.Text = val.ToString("C");
+        }
+
+        private void textBox21_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox20_Leave(object sender, EventArgs e)
+        {
+            string value = textBox20.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox20.Text = val.ToString("C");
+        }
+
+        private void textBox20_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox34_Leave(object sender, EventArgs e)
+        {
+            string value = textBox34.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox34.Text = val.ToString("C");
+        }
+
+        private void textBox34_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox33_Leave(object sender, EventArgs e)
+        {
+            string value = textBox33.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox33.Text = val.ToString("C");
+        }
+
+        private void textBox33_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox19_Leave(object sender, EventArgs e)
+        {
+            string value = textBox19.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox19.Text = val.ToString("C");
+        }
+
+        private void textBox19_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox35_Leave(object sender, EventArgs e)
+        {
+            string value = textBox35.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox35.Text = val.ToString("C");
+        }
+
+        private void textBox35_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox36_Leave(object sender, EventArgs e)
+        {
+            string value = textBox36.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox36.Text = val.ToString("C");
+        }
+
+        private void textBox36_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox37_Leave(object sender, EventArgs e)
+        {
+            string value = textBox37.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox37.Text = val.ToString("C");
+        }
+
+        private void textBox37_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox38_Leave(object sender, EventArgs e)
+        {
+            string value = textBox38.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox38.Text = val.ToString("C");
+        }
+
+        private void textBox38_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox39_Leave(object sender, EventArgs e)
+        {
+            string value = textBox39.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox39.Text = val.ToString("C");
+        }
+
+        private void textBox39_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox43_Leave(object sender, EventArgs e)
+        {
+            string value = textBox43.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox43.Text = val.ToString("C");
+        }
+
+        private void textBox43_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox42_Leave(object sender, EventArgs e)
+        {
+            string value = textBox42.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox42.Text = val.ToString("C");
+        }
+
+        private void textBox42_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox44_Leave(object sender, EventArgs e)
+        {
+            string value = textBox44.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox44.Text = val.ToString("C");
+        }
+
+        private void textBox44_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox41_Leave(object sender, EventArgs e)
+        {
+            string value = textBox41.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox41.Text = val.ToString("C");
+        }
+
+        private void textBox41_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox40_Leave(object sender, EventArgs e)
+        {
+            string value = textBox40.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox40.Text = val.ToString("C");
+        }
+
+        private void textBox40_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox18_Leave(object sender, EventArgs e)
+        {
+            string value = textBox18.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox18.Text = val.ToString("C");
+        }
+
+        private void textBox18_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox45_Leave(object sender, EventArgs e)
+        {
+            string value = textBox45.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox45.Text = val.ToString("C");
+        }
+
+        private void textBox45_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox46_Leave(object sender, EventArgs e)
+        {
+            string value = textBox46.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox46.Text = val.ToString("C");
+        }
+
+        private void textBox46_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox47_Leave(object sender, EventArgs e)
+        {
+            string value = textBox47.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox47.Text = val.ToString("C");
+        }
+
+        private void textBox47_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox48_Leave(object sender, EventArgs e)
+        {
+            string value = textBox48.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox48.Text = val.ToString("C");
+        }
+
+        private void textBox48_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox49_Leave(object sender, EventArgs e)
+        {
+            string value = textBox49.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox49.Text = val.ToString("C");
+        }
+
+        private void textBox49_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox50_Leave(object sender, EventArgs e)
+        {
+            string value = textBox50.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox50.Text = val.ToString("C");
+        }
+
+        private void textBox50_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void textBox7_Leave(object sender, EventArgs e)
+        {
+            string value = textBox7.Text.Replace(",", "").Replace("$", "");
+            decimal val;
+            if (decimal.TryParse(value, out val))
+                textBox7.Text = val.ToString("C");
+        }
+
+        private void textBox7_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
         }
 
 

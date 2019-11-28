@@ -117,7 +117,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Common.cs" />
-    <Compile Include="Conn_cl.cs" />
     <Compile Include="Dates.cs" />
     <Compile Include="Dialogs.cs" />
     <Compile Include="Environment.cs" />
