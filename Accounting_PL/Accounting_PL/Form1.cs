@@ -474,6 +474,7 @@ namespace Accounting_PL
 
 
 
+            // https://ourcodeworld.com/articles/read/382/creating-a-scanning-application-in-winforms-with-csharp
 
             // Use scanner/Printer
             string lcPrinter = comboBox1.Text.Trim();
