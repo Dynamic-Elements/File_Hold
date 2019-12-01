@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Odbc;
-using System.Data.OleDb;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -22,6 +20,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VFPToolkit;
+using WIA;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -434,6 +433,7 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Button2_Click(object sender, EventArgs e)
         {
+
             /// Notes
             /// https://www.syncfusion.com/kb/9144/how-to-convert-scanned-image-to-searchable-pdf-by-processing-ocr
             /// https://help.syncfusion.com/file-formats/pdf/working-with-ocr?_ga=2.194924142.216447619.1574224028-344549646.1574224028 
@@ -456,6 +456,67 @@ namespace Accounting_PL
             /// https://docs.microsoft.com/en-us/azure/sql-database/?view=sql-server-ver15
             /// https://www.vintasoft.com/docs/vsimaging-dotnet/Programming-Ocr-Save_OCR_results.html#SaveOcrResultsToTextFile
             /// file:///C:/Program%20Files/gs/gs9.50/doc/Readme.htm
+            /// 
+
+
+            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+            try
+            {
+                // Determine whether the directory exists.
+                if (!Directory.Exists(lscfolder))
+                {
+                    /// If it does not exist then create it. 
+                    DirectoryInfo di = Directory.CreateDirectory(lscfolder);
+                }
+
+            }
+            catch { }
+
+
+
+
+            // Use scanner/Printer
+            string lcPrinter = comboBox1.Text.Trim();
+
+            // Create a DeviceManager instance
+            var deviceManager = new DeviceManager();
+
+            // Create an empty variable to store the scanner instance
+            DeviceInfo firstScannerAvailable = lcPrinter; //  null;
+
+            // Loop through the list of devices to choose the first available
+            for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
+            {
+                // Skip the device if it's not a scanner
+                if (deviceManager.DeviceInfos[i].Type != WiaDeviceType.ScannerDeviceType)
+                {
+                    continue;
+                }
+
+                firstScannerAvailable = deviceManager.DeviceInfos[i];
+
+                break;
+            }
+
+            // Connect to the first available scanner
+            var device = firstScannerAvailable.Connect();
+
+            // Select the scanner
+            var scannerItem = device.Items[1];
+
+            // Retrieve a image in JPEG format and store it into a variable
+            var imageFile = (ImageFile)scannerItem.Transfer(FormatID.wiaFormatJPEG);
+
+            // Save the image in some path with filename
+            var path = lscfolder + "\\ScanFile.jpeg";  //  @"C:\Users\<username>\Desktop\scan.jpeg";
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            // Save image !
+            imageFile.SaveFile(path);
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
