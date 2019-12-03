@@ -47,6 +47,9 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            ListScanners();
+
             string lcServer = "playgroup.database.windows.net";
             string lcODBC = "ODBC Driver 17 for SQL Server";
             string lcDB = "tb_HelpingHand";
@@ -64,10 +67,10 @@ namespace Accounting_PL
             textBox1.Text = lastSunday;
             textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
 
-            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
-            {
-                comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
-            }
+            //for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
+            //{
+            //    comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
+            //}
 
             string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='" + textBox1.Text.Trim() + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
@@ -222,6 +225,37 @@ namespace Accounting_PL
             cnn.Close();
 
         }
+
+        /// <summary>
+        /// This will loop through to find all the connected Printers & Scanners
+        /// </summary>
+        private void ListScanners()
+        {
+            // Clear the ListBox.
+            comboBox1.Items.Clear();
+
+            // Create a DeviceManager instance
+            var deviceManager = new DeviceManager();
+
+            // Loop through the list of devices and add the name to the listbox
+            for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
+            {
+                // Add the device only if it's a scanner
+                if (deviceManager.DeviceInfos[i].Type != WiaDeviceType.ScannerDeviceType)
+                {
+                    continue;
+                }
+
+                // Add the Scanner device to the listbox (the entire DeviceInfos object)
+                // Important: we store an object of type scanner (which ToString method returns the name of the scanner)
+                comboBox1.Items.Add(
+                    new Scanner(deviceManager.DeviceInfos[i])
+                );
+            }
+        }
+
+
+
 
         /// <summary>
         /// Excel Code
@@ -472,52 +506,67 @@ namespace Accounting_PL
             }
             catch { }
 
-
-
             // https://ourcodeworld.com/articles/read/382/creating-a-scanning-application-in-winforms-with-csharp
             // https://ithoughthecamewithyou.com/post/scanning-from-the-adf-using-wia-in-c
+
             // Use scanner/Printer
-            string lcPrinter = comboBox1.Text.Trim();
+            Scanner device = null;
 
-            // Create a DeviceManager instance
-            var deviceManager = new DeviceManager();
-
-            // Create an empty variable to store the scanner instance
-            DeviceInfo firstScannerAvailable = lcPrinter; //  null;
-
-            // Loop through the list of devices to choose the first available
-            for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
+            this.Invoke(new MethodInvoker(delegate ()
             {
-                // Skip the device if it's not a scanner
-                if (deviceManager.DeviceInfos[i].Type != WiaDeviceType.ScannerDeviceType)
-                {
-                    continue;
-                }
+                device = comboBox1.SelectedItem as Scanner;
+            }));
 
-                firstScannerAvailable = deviceManager.DeviceInfos[i];
-
-                break;
+            if (device == null)
+            {
+                MessageBox.Show("You need to select first an scanner device from the list",
+                                "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (String.IsNullOrEmpty(textBox2.Text))
+            {
+                MessageBox.Show("Provide a filename",
+                                "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
-            // Connect to the first available scanner
-            var device = firstScannerAvailable.Connect();
+            ImageFile image = new ImageFile();
+            image = device.ScanJPEG();
+            //string imageExtension = "";
 
-            // Select the scanner
-            var scannerItem = device.Items[1];
+            //this.Invoke(new MethodInvoker(delegate ()
+            //{
+            //    switch (comboBox1.SelectedIndex)
+            //    {
+            //        case 0:
+            //            image = device.ScanPNG();
+            //            imageExtension = ".png";
+            //            break;
+            //        case 1:
+            //            image = device.ScanJPEG();
+            //            imageExtension = ".jpeg";
+            //            break;
+            //        case 2:
+            //            image = device.ScanTIFF();
+            //            imageExtension = ".tiff";
+            //            break;
+            //    }
+            //}));
 
-            // Retrieve a image in JPEG format and store it into a variable
-            var imageFile = (ImageFile)scannerItem.Transfer(FormatID.wiaFormatJPEG);
 
-            // Save the image in some path with filename
-            var path = lscfolder + "\\ScanFile.jpeg";  //  @"C:\Users\<username>\Desktop\scan.jpeg";
+            // Save the image
+            // var path = Path.Combine(textBox1.Text, textBox2.Text + imageExtension);
+            var path = lscfolder + "ScanFile.jpeg";
 
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
-            // Save image !
-            imageFile.SaveFile(path);
+            image.SaveFile(path);
+
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -526,28 +575,28 @@ namespace Accounting_PL
             //Create PDF graphics for a page
             PdfGraphics graphics = page.Graphics;
             //Load the image from the disk
-            PdfBitmap image = new PdfBitmap("Input.jpg");
+            PdfBitmap image1 = new PdfBitmap(path);   //  "Input.jpg"
             //Draw the image
-            graphics.DrawImage(image, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
+            graphics.DrawImage(image1, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
             //Save the document into stream
             MemoryStream stream = new MemoryStream();
             document.Save(stream);
             //Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
-            using (OCRProcessor processor = new OCRProcessor(@"/Tesseract Binaries/"))
+            using (OCRProcessor processor = new OCRProcessor(@"../../Tesseract Binaries/"))
             {
                 //Load a PDF document
                 PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
                 //Set OCR language to process
                 processor.Settings.Language = Languages.English;
                 //Process OCR by providing the PDF document and Tesseract data
-                processor.PerformOCR(lDoc, @"/Tessdata/");
+                processor.PerformOCR(lDoc, @"\TessData\");  //  @"/Tessdata/"    @"../../../../Tessdata/"   @"D:\File_Hold\Accounting_PL\packages\Tesseract.Data.English.3.4.0\build\tessdata\"
                 //Save the OCR processed PDF document in the disk
-                lDoc.Save("OCR.pdf");
+                lDoc.Save(@"D:\File_Hold\Accounting_PL\Scanned_Documents\OCR.pdf");
                 //Close the document
                 lDoc.Close(true);
             }
             //This will open the PDF file so, the result will be seen in default PDF viewer
-            Process.Start("OCR.pdf");
+            //  Process.Start("OCR.pdf");
 
 
         }

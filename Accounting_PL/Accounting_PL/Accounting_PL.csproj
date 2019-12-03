@@ -136,6 +136,7 @@
     <Compile Include="Math.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanner.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="VfpData.cs" />
     <EmbeddedResource Include="BrowseForm.resx">
