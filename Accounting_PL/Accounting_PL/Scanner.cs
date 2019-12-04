@@ -187,30 +187,30 @@ namespace Accounting_PL
             catch (COMException e)
             {
                 // Display the exception in the console.
-                Console.WriteLine(e.ToString());
+                MessageBox.Show(e.ToString());
 
                 uint errorCode = (uint)e.ErrorCode;
 
                 // Catch the most common exceptions
                 if (errorCode == 0x80210006)
                 {
-                    Console.WriteLine("The scanner is busy or isn't ready");
+                    MessageBox.Show("The scanner is busy or isn't ready");
                 }
                 else if (errorCode == 0x80210064)
                 {
-                    Console.WriteLine("The scanning process has been cancelled.");
+                    MessageBox.Show("The scanning process has been cancelled.");
                 }
                 else if (errorCode == 0x8021000C)
                 {
-                    Console.WriteLine("There is an incorrect setting on the WIA device.");
+                    MessageBox.Show("There is an incorrect setting on the WIA device.");
                 }
                 else if (errorCode == 0x80210005)
                 {
-                    Console.WriteLine("The device is offline. Make sure the device is powered on and connected to the PC.");
+                    MessageBox.Show("The device is offline. Make sure the device is powered on and connected to the PC.");
                 }
                 else if (errorCode == 0x80210001)
                 {
-                    Console.WriteLine("An unknown error has occurred with the WIA device.");
+                    MessageBox.Show("An unknown error has occurred with the WIA device.");
                 }
                 else
                 {

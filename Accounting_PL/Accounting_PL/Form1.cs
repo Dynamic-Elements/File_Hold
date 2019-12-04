@@ -19,6 +19,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tesseract;
 using VFPToolkit;
 using WIA;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -33,8 +34,7 @@ namespace Accounting_PL
         string curDir = Files.AddBS(Files.CurDir());
         // MessageBox.Show("here " + curDir);
         string baseCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")));
-        // MessageBox.Show("here " + baseCurDir);
-
+        //  MessageBox.Show("here " + baseCurDir);
         public Form1()
         {
             InitializeComponent();
@@ -66,11 +66,6 @@ namespace Accounting_PL
 
             textBox1.Text = lastSunday;
             textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
-
-            //for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
-            //{
-            //    comboBox1.Items.Add(PrinterSettings.InstalledPrinters[i]);
-            //}
 
             string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='" + textBox1.Text.Trim() + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
@@ -248,10 +243,11 @@ namespace Accounting_PL
 
                 // Add the Scanner device to the listbox (the entire DeviceInfos object)
                 // Important: we store an object of type scanner (which ToString method returns the name of the scanner)
-                comboBox1.Items.Add(
-                    new Scanner(deviceManager.DeviceInfos[i])
-                );
+                comboBox1.Items.Add(new Scanner(deviceManager.DeviceInfos[i]));
             }
+
+            comboBox1.SelectedIndex = 0;
+
         }
 
 
@@ -534,27 +530,6 @@ namespace Accounting_PL
 
             ImageFile image = new ImageFile();
             image = device.ScanJPEG();
-            //string imageExtension = "";
-
-            //this.Invoke(new MethodInvoker(delegate ()
-            //{
-            //    switch (comboBox1.SelectedIndex)
-            //    {
-            //        case 0:
-            //            image = device.ScanPNG();
-            //            imageExtension = ".png";
-            //            break;
-            //        case 1:
-            //            image = device.ScanJPEG();
-            //            imageExtension = ".jpeg";
-            //            break;
-            //        case 2:
-            //            image = device.ScanTIFF();
-            //            imageExtension = ".tiff";
-            //            break;
-            //    }
-            //}));
-
 
             // Save the image
             // var path = Path.Combine(textBox1.Text, textBox2.Text + imageExtension);
@@ -567,6 +542,12 @@ namespace Accounting_PL
 
             image.SaveFile(path);
 
+            string lcNewFile = lscfolder + "Scan_OCR_File.pdf";
+
+            string lcTess = baseCurDir + "Accounting_PL\\bin\\Debug\\tessdata\\";
+            // MessageBox.Show(lcTess);
+
+            //  https://csharp.hotexamples.com/examples/-/Tesseract/-/php-tesseract-class-examples.html
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -589,9 +570,9 @@ namespace Accounting_PL
                 //Set OCR language to process
                 processor.Settings.Language = Languages.English;
                 //Process OCR by providing the PDF document and Tesseract data
-                processor.PerformOCR(lDoc, @"\TessData\");  //  @"/Tessdata/"    @"../../../../Tessdata/"   @"D:\File_Hold\Accounting_PL\packages\Tesseract.Data.English.3.4.0\build\tessdata\"
+                processor.PerformOCR(lDoc, @"tessdata\\", true);
                 //Save the OCR processed PDF document in the disk
-                lDoc.Save(@"D:\File_Hold\Accounting_PL\Scanned_Documents\OCR.pdf");
+                lDoc.Save(lcNewFile);
                 //Close the document
                 lDoc.Close(true);
             }
