@@ -246,7 +246,8 @@ namespace Accounting_PL
                 comboBox1.Items.Add(new Scanner(deviceManager.DeviceInfos[i]));
             }
 
-            comboBox1.SelectedIndex = 0;
+            if (comboBox1.Items.Count > 0)
+                comboBox1.SelectedIndex = 0;
 
         }
 
@@ -505,6 +506,8 @@ namespace Accounting_PL
             // https://ourcodeworld.com/articles/read/382/creating-a-scanning-application-in-winforms-with-csharp
             // https://ithoughthecamewithyou.com/post/scanning-from-the-adf-using-wia-in-c
 
+            //  https://csharp.hotexamples.com/examples/-/Tesseract/-/php-tesseract-class-examples.html
+
             // Use scanner/Printer
             Scanner device = null;
 
@@ -532,7 +535,6 @@ namespace Accounting_PL
             image = device.ScanJPEG();
 
             // Save the image
-            // var path = Path.Combine(textBox1.Text, textBox2.Text + imageExtension);
             var path = lscfolder + "ScanFile.jpeg";
 
             if (File.Exists(path))
@@ -543,11 +545,6 @@ namespace Accounting_PL
             image.SaveFile(path);
 
             string lcNewFile = lscfolder + "Scan_OCR_File.pdf";
-
-            string lcTess = baseCurDir + "Accounting_PL\\bin\\Debug\\tessdata\\";
-            // MessageBox.Show(lcTess);
-
-            //  https://csharp.hotexamples.com/examples/-/Tesseract/-/php-tesseract-class-examples.html
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -567,12 +564,25 @@ namespace Accounting_PL
             {
                 //Load a PDF document
                 PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
+
                 //Set OCR language to process
                 processor.Settings.Language = Languages.English;
+
+                //Enable the AutoDetectRotation
+                processor.Settings.AutoDetectRotation = true;
+
+                //Enable native call  
+                processor.Settings.EnableNativeCall = true;
+
                 //Process OCR by providing the PDF document and Tesseract data
-                processor.PerformOCR(lDoc, @"tessdata\\", true);
+                String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");  //  processor.PerformOCR(lDoc, @"../Tessdata/", true);   //  @"../../Tessdata/"
+
                 //Save the OCR processed PDF document in the disk
                 lDoc.Save(lcNewFile);
+
+                //Writes the text to the file
+                File.WriteAllText(lscfolder + "ExtractedText.txt", text);
+
                 //Close the document
                 lDoc.Close(true);
             }
