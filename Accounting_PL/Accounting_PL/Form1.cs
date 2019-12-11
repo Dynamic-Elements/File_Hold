@@ -232,6 +232,10 @@ namespace Accounting_PL
             // Create a DeviceManager instance
             var deviceManager = new DeviceManager();
 
+            int ivv = deviceManager.DeviceInfos.Count;
+
+            MessageBox.Show(ivv.ToString());
+
             // Loop through the list of devices and add the name to the listbox
             for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
             {
@@ -534,8 +538,11 @@ namespace Accounting_PL
             ImageFile image = new ImageFile();
             image = device.ScanJPEG();
 
+            // Testing Random number for multiple runs
+            var rand = new Random();
+
             // Save the image
-            var path = lscfolder + "ScanFile.jpeg";
+            var path = lscfolder + "ScanFile"+ rand.Next(10,100) + ".jpeg";
 
             if (File.Exists(path))
             {
@@ -544,7 +551,7 @@ namespace Accounting_PL
 
             image.SaveFile(path);
 
-            string lcNewFile = lscfolder + "Scan_OCR_File.pdf";
+            string lcNewFile = lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -687,30 +694,33 @@ namespace Accounting_PL
             // This will calculate all the totals of each grouping
             // textBox6.Text = Convert.ToString((Convert.ToInt32(textBox1.Text) + Convert.ToInt32()));
 
-            // Food
-            textBox4.Text = Convert.ToString(Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
-                Convert.ToInt32(textBox75.Text) + Convert.ToInt32(textBox69.Text) + Convert.ToInt32(textBox68.Text));
+            try
+            {
+                // Food
+                textBox4.Text = Convert.ToString(Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
+                    Convert.ToInt32(textBox75.Text) + Convert.ToInt32(textBox69.Text) + Convert.ToInt32(textBox68.Text));
 
-            // Expenses
-            textBox7.Text = Convert.ToString((Convert.ToInt32(textBox27.Text) + Convert.ToInt32(textBox26.Text) + Convert.ToInt32(textBox25.Text) +
-                Convert.ToInt32(textBox24.Text) + Convert.ToInt32(textBox23.Text) + Convert.ToInt32(textBox22.Text) + Convert.ToInt32(textBox28.Text) +
-                Convert.ToInt32(textBox30.Text) + Convert.ToInt32(textBox29.Text) + Convert.ToInt32(textBox32.Text) + Convert.ToInt32(textBox31.Text) +
-                Convert.ToInt32(textBox21.Text) + Convert.ToInt32(textBox20.Text) + Convert.ToInt32(textBox34.Text) + Convert.ToInt32(textBox33.Text) +
-                Convert.ToInt32(textBox19.Text) + Convert.ToInt32(textBox35.Text) + Convert.ToInt32(textBox36.Text) + Convert.ToInt32(textBox37.Text) +
-                Convert.ToInt32(textBox38.Text) + Convert.ToInt32(textBox39.Text) + Convert.ToInt32(textBox43.Text) + Convert.ToInt32(textBox42.Text) +
-                Convert.ToInt32(textBox44.Text) + Convert.ToInt32(textBox41.Text) + Convert.ToInt32(textBox40.Text) + Convert.ToInt32(textBox18.Text) +
-                Convert.ToInt32(textBox45.Text) + Convert.ToInt32(textBox46.Text) + Convert.ToInt32(textBox47.Text) + Convert.ToInt32(textBox48.Text) +
-                Convert.ToInt32(textBox49.Text) + Convert.ToInt32(textBox50.Text)));
+                // Expenses
+                textBox7.Text = Convert.ToString((Convert.ToInt32(textBox27.Text) + Convert.ToInt32(textBox26.Text) + Convert.ToInt32(textBox25.Text) +
+                    Convert.ToInt32(textBox24.Text) + Convert.ToInt32(textBox23.Text) + Convert.ToInt32(textBox22.Text) + Convert.ToInt32(textBox28.Text) +
+                    Convert.ToInt32(textBox30.Text) + Convert.ToInt32(textBox29.Text) + Convert.ToInt32(textBox32.Text) + Convert.ToInt32(textBox31.Text) +
+                    Convert.ToInt32(textBox21.Text) + Convert.ToInt32(textBox20.Text) + Convert.ToInt32(textBox34.Text) + Convert.ToInt32(textBox33.Text) +
+                    Convert.ToInt32(textBox19.Text) + Convert.ToInt32(textBox35.Text) + Convert.ToInt32(textBox36.Text) + Convert.ToInt32(textBox37.Text) +
+                    Convert.ToInt32(textBox38.Text) + Convert.ToInt32(textBox39.Text) + Convert.ToInt32(textBox43.Text) + Convert.ToInt32(textBox42.Text) +
+                    Convert.ToInt32(textBox44.Text) + Convert.ToInt32(textBox41.Text) + Convert.ToInt32(textBox40.Text) + Convert.ToInt32(textBox18.Text) +
+                    Convert.ToInt32(textBox45.Text) + Convert.ToInt32(textBox46.Text) + Convert.ToInt32(textBox47.Text) + Convert.ToInt32(textBox48.Text) +
+                    Convert.ToInt32(textBox49.Text) + Convert.ToInt32(textBox50.Text)));
 
-            // Labor
-            textBox5.Text = Convert.ToString(Convert.ToInt32(textBox90.Text) + Convert.ToInt32(textBox89.Text) + Convert.ToInt32(textBox88.Text) +
-                Convert.ToInt32(textBox87.Text) + Convert.ToInt32(textBox86.Text) + Convert.ToInt32(textBox85.Text) + Convert.ToInt32(textBox74.Text) +
-                Convert.ToInt32(textBox72.Text) + Convert.ToInt32(textBox71.Text) + Convert.ToInt32(textBox70.Text));
+                // Labor
+                textBox5.Text = Convert.ToString(Convert.ToInt32(textBox90.Text) + Convert.ToInt32(textBox89.Text) + Convert.ToInt32(textBox88.Text) +
+                    Convert.ToInt32(textBox87.Text) + Convert.ToInt32(textBox86.Text) + Convert.ToInt32(textBox85.Text) + Convert.ToInt32(textBox74.Text) +
+                    Convert.ToInt32(textBox72.Text) + Convert.ToInt32(textBox71.Text) + Convert.ToInt32(textBox70.Text));
 
-            // Overhead
-            textBox6.Text = Convert.ToString(Convert.ToInt32(textBox83.Text) + Convert.ToInt32(textBox82.Text) + Convert.ToInt32(textBox81.Text) +
-                Convert.ToInt32(textBox80.Text) + Convert.ToInt32(textBox79.Text) + Convert.ToInt32(textBox78.Text) + Convert.ToInt32(textBox73.Text));
-
+                // Overhead
+                textBox6.Text = Convert.ToString(Convert.ToInt32(textBox83.Text) + Convert.ToInt32(textBox82.Text) + Convert.ToInt32(textBox81.Text) +
+                    Convert.ToInt32(textBox80.Text) + Convert.ToInt32(textBox79.Text) + Convert.ToInt32(textBox78.Text) + Convert.ToInt32(textBox73.Text));
+            }
+            catch { }
         }
 
 
