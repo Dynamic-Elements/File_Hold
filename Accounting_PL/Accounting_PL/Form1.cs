@@ -497,7 +497,7 @@ namespace Accounting_PL
                 if (!Directory.Exists(lscfolder))
                 {
                     /// If it does not exist then create it. 
-                    DirectoryInfo di = Directory.CreateDirectory(lscfolder);
+                    Directory.CreateDirectory(lscfolder);
                 }
 
             }
@@ -575,7 +575,7 @@ namespace Accounting_PL
                 processor.Settings.EnableNativeCall = true;
 
                 //Process OCR by providing the PDF document and Tesseract data
-                String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");  //  processor.PerformOCR(lDoc, @"../Tessdata/", true);   //  @"../../Tessdata/"
+                String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
 
                 //Save the OCR processed PDF document in the disk
                 lDoc.Save(lcNewFile);
@@ -588,6 +588,13 @@ namespace Accounting_PL
             }
             //This will open the PDF file so, the result will be seen in default PDF viewer
             //  Process.Start("OCR.pdf");
+
+            string line = null;
+            TextReader readFile = new StreamReader(lscfolder + "ExtractedText.txt");
+            line = readFile.ReadToEnd();
+            MessageBox.Show(line);
+            readFile.Close();
+            readFile = null;
 
 
         }
