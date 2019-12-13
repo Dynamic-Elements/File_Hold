@@ -231,10 +231,6 @@ namespace Accounting_PL
             // Create a DeviceManager instance
             var deviceManager = new DeviceManager();
 
-            // int ivv = deviceManager.DeviceInfos.Count;
-
-            // MessageBox.Show(ivv.ToString());
-
             // Loop through the list of devices and add the name to the listbox
             for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
             {
@@ -541,7 +537,7 @@ namespace Accounting_PL
 
             // Save the image
             var path = lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
-
+            
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -691,7 +687,6 @@ namespace Accounting_PL
         {
             // This will calculate all the totals of each grouping
             // textBox6.Text = Convert.ToString((Convert.ToInt32(textBox1.Text) + Convert.ToInt32()));
-
 
             // Food
             int result = int.Parse(textBox84.Text) + int.Parse(textBox77.Text) +
