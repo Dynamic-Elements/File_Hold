@@ -27,67 +27,6 @@ namespace Accounting_PL
         /// Scan a image with PNG Format
         /// </summary>
         /// <returns></returns>
-        public ImageFile ScanPNG()
-        {
-            // Connect to the device and instruct it to scan
-            // Connect to the device
-            var device = this._deviceInfo.Connect();
-
-            // Select the scanner
-            CommonDialogClass dlg = new CommonDialogClass();
-
-            var item = device.Items[1];
-
-            try
-            {
-                AdjustScannerSettings(item, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
-
-                object scanResult = dlg.ShowTransfer(item, WIA.FormatID.wiaFormatPNG, true);
-
-                if (scanResult != null)
-                {
-                    var imageFile = (ImageFile)scanResult;
-
-                    // Return the imageFile
-                    return imageFile;
-                }
-            }
-            catch (COMException e)
-            {
-                // Display the exception in the console.
-                Console.WriteLine(e.ToString());
-
-                uint errorCode = (uint)e.ErrorCode;
-
-                // Catch the most common exceptions
-                if (errorCode == 0x80210006)
-                {
-                    Console.WriteLine("The scanner is busy or isn't ready");
-                }
-                else if (errorCode == 0x80210064)
-                {
-                    Console.WriteLine("The scanning process has been cancelled.");
-                }
-                else if (errorCode == 0x8021000C)
-                {
-                    Console.WriteLine("There is an incorrect setting on the WIA device.");
-                }
-                else if (errorCode == 0x80210005)
-                {
-                    Console.WriteLine("The device is offline. Make sure the device is powered on and connected to the PC.");
-                }
-                else if (errorCode == 0x80210001)
-                {
-                    Console.WriteLine("An unknown error has occurred with the WIA device.");
-                }
-                else
-                {
-                    MessageBox.Show("A non catched error occurred, check the console", "Error", MessageBoxButtons.OK);
-                }
-            }
-
-            return new ImageFile();
-        }
 
         /// <summary>
         /// Scan a image with JPEG Format
@@ -155,71 +94,6 @@ namespace Accounting_PL
             return new ImageFile();
         }
 
-        /// <summary>
-        /// Scan a image with TIFF Format
-        /// </summary>
-        /// <returns></returns>
-        public ImageFile ScanTIFF()
-        {
-            // Connect to the device and instruct it to scan
-            // Connect to the device
-            var device = this._deviceInfo.Connect();
-
-            // Select the scanner
-            CommonDialogClass dlg = new CommonDialogClass();
-
-            var item = device.Items[1];
-
-            try
-            {
-                AdjustScannerSettings(item, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
-
-                object scanResult = dlg.ShowTransfer(item, WIA.FormatID.wiaFormatTIFF, true);
-
-                if (scanResult != null)
-                {
-                    var imageFile = (ImageFile)scanResult;
-
-                    // Return the imageFile
-                    return imageFile;
-                }
-            }
-            catch (COMException e)
-            {
-                // Display the exception in the console.
-                MessageBox.Show(e.ToString());
-
-                uint errorCode = (uint)e.ErrorCode;
-
-                // Catch the most common exceptions
-                if (errorCode == 0x80210006)
-                {
-                    MessageBox.Show("The scanner is busy or isn't ready");
-                }
-                else if (errorCode == 0x80210064)
-                {
-                    MessageBox.Show("The scanning process has been cancelled.");
-                }
-                else if (errorCode == 0x8021000C)
-                {
-                    MessageBox.Show("There is an incorrect setting on the WIA device.");
-                }
-                else if (errorCode == 0x80210005)
-                {
-                    MessageBox.Show("The device is offline. Make sure the device is powered on and connected to the PC.");
-                }
-                else if (errorCode == 0x80210001)
-                {
-                    MessageBox.Show("An unknown error has occurred with the WIA device.");
-                }
-                else
-                {
-                    MessageBox.Show("A non catched error occurred, check the console", "Error", MessageBoxButtons.OK);
-                }
-            }
-
-            return new ImageFile();
-        }
 
         /// <summary>
         /// Adjusts the settings of the scanner with the providen parameters.

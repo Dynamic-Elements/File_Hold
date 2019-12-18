@@ -487,7 +487,6 @@ namespace Accounting_PL
             /// file:///C:/Program%20Files/gs/gs9.50/doc/Readme.htm
             /// 
 
-
             string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
             try
             {
@@ -529,23 +528,21 @@ namespace Accounting_PL
                 return;
             }
 
-            ImageFile image = new ImageFile();
-            image = device.ScanJPEG();
-
             // Testing Random number for multiple runs
             var rand = new Random();
-
             // Save the image
-            var path = lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
+            var path = lscfolder + "ScanFile.jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
+
+            ImageFile image = new ImageFile();
             
+            image = device.ScanJPEG();
+
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
             image.SaveFile(path);
-
-            string lcNewFile = lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -554,9 +551,9 @@ namespace Accounting_PL
             //Create PDF graphics for a page
             PdfGraphics graphics = page.Graphics;
             //Load the image from the disk
-            PdfBitmap image1 = new PdfBitmap(path);   //  "Input.jpg"
+            PdfBitmap imageFile = new PdfBitmap(path);   //  "Input.jpg"
             //Draw the image
-            graphics.DrawImage(image1, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
+            graphics.DrawImage(imageFile, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
             //Save the document into stream
             MemoryStream stream = new MemoryStream();
             document.Save(stream);
@@ -577,6 +574,9 @@ namespace Accounting_PL
 
                 //Process OCR by providing the PDF document and Tesseract data
                 String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
+
+                // Save the PDF file
+                string lcNewFile = lscfolder + "Scan_OCR_File.pdf";  //  lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";
 
                 //Save the OCR processed PDF document in the disk
                 lDoc.Save(lcNewFile);
