@@ -30,6 +30,8 @@ namespace Accounting_PL
     public partial class Form1 : Form
     {
 
+        ADFScan _scanner;
+
         string appPath = AppDomain.CurrentDomain.BaseDirectory;
         string curDir = Files.AddBS(Files.CurDir());
         // MessageBox.Show("here " + curDir);
@@ -1750,6 +1752,29 @@ namespace Accounting_PL
         private void textBox9_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            _scanner = new ADFScan();
+            _scanner.Scanning += new EventHandler<WiaImageEventArgs>(_scanner_Scanning);
+            _scanner.ScanComplete += new EventHandler(_scanner_ScanComplete);
+            //  ScanColor selectedColor = 1;  // (ScanColor)_colors[comboBox1.SelectedIndex];
+            //  int selectedColor = 1;
+            //  int dpi = 300;  //  (int)numericUpDown1.Value;
+            _scanner.BeginScan(1, 300);
+        }
+        
+        void _scanner_ScanComplete(object sender, EventArgs e)
+        {
+            MessageBox.Show("Scan Complete");
+        }
+        void _scanner_Scanning(object sender, WiaImageEventArgs e)
+        {
+            int count = 0;
+            string filename = textBox1.Text + "image" + (count++).ToString() + ".jpg";
+            //  listBox1.Items.Add(filename);
+            e.ScannedImage.Save(filename, ImageFormat.Jpeg);//FILES ARE RETURNED AS BITMAPS
         }
 
 

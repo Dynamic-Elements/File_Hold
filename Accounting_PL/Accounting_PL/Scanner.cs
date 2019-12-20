@@ -24,11 +24,6 @@ namespace Accounting_PL
         }
 
         /// <summary>
-        /// Scan a image with PNG Format
-        /// </summary>
-        /// <returns></returns>
-
-        /// <summary>
         /// Scan a image with JPEG Format
         /// </summary>
         /// <returns></returns>
