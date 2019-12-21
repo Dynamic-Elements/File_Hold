@@ -50,18 +50,16 @@ namespace Accounting_PL
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            ListScanners();
-
-            string lcServer = "playgroup.database.windows.net";
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "tb_HelpingHand";
-            // string lcPort = "3306";  //  Port=" + lcPort + ";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "Smartman55";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
+            //string lcServer = "playgroup.database.windows.net";
+            //string lcODBC = "ODBC Driver 17 for SQL Server";
+            //string lcDB = "tb_HelpingHand";
+            //// string lcPort = "3306";  //  Port=" + lcPort + ";
+            //string lcUser = "tbmaster";
+            //string lcProv = "SQLOLEDB";
+            //string lcPass = "Smartman55";
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            //cnn.Open();
 
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
@@ -69,192 +67,160 @@ namespace Accounting_PL
             textBox1.Text = lastSunday;
             textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
 
-            string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            OdbcDataReader reader = cmd.ExecuteReader();
-            // MessageBox.Show(Convert.ToString(reader.GetOrdinal("NetSales")));
+            //string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
+            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //OdbcDataReader reader = cmd.ExecuteReader();
+            //// MessageBox.Show(Convert.ToString(reader.GetOrdinal("NetSales")));
 
-            if (reader.HasRows)
-            {
+            //if (reader.HasRows)
+            //{
 
-                textBox3.Text = reader["NetSales"].ToString();
-                textBox8.Text = reader["Healthcare"].ToString();
-                textBox9.Text = reader["Retirement"].ToString();
+            //    textBox3.Text = reader["NetSales"].ToString();
+            //    textBox8.Text = reader["Healthcare"].ToString();
+            //    textBox9.Text = reader["Retirement"].ToString();
 
-                textBox84.Text = reader["PrimSupp"].ToString();
-                textBox77.Text = reader["OthSupp"].ToString();
-                textBox76.Text = reader["Bread"].ToString();
-                textBox75.Text = reader["Beverage"].ToString();
-                textBox69.Text = reader["Produce"].ToString();
-                textBox68.Text = reader["CarbonDioxide"].ToString();
-                textBox4.Text = reader["FoodCost"].ToString();
+            //    textBox84.Text = reader["PrimSupp"].ToString();
+            //    textBox77.Text = reader["OthSupp"].ToString();
+            //    textBox76.Text = reader["Bread"].ToString();
+            //    textBox75.Text = reader["Beverage"].ToString();
+            //    textBox69.Text = reader["Produce"].ToString();
+            //    textBox68.Text = reader["CarbonDioxide"].ToString();
+            //    textBox4.Text = reader["FoodCost"].ToString();
 
-                textBox83.Text = reader["Mortgage"].ToString();
-                textBox82.Text = reader["LoanPayment"].ToString();
-                textBox81.Text = reader["Association"].ToString();
-                textBox80.Text = reader["PropertyTax"].ToString();
-                textBox79.Text = reader["AdvertisingCoop"].ToString();
-                textBox78.Text = reader["NationalAdvertise"].ToString();
-                textBox73.Text = reader["LicensingFee"].ToString();
-                textBox6.Text = reader["OverheadCost"].ToString();
+            //    textBox83.Text = reader["Mortgage"].ToString();
+            //    textBox82.Text = reader["LoanPayment"].ToString();
+            //    textBox81.Text = reader["Association"].ToString();
+            //    textBox80.Text = reader["PropertyTax"].ToString();
+            //    textBox79.Text = reader["AdvertisingCoop"].ToString();
+            //    textBox78.Text = reader["NationalAdvertise"].ToString();
+            //    textBox73.Text = reader["LicensingFee"].ToString();
+            //    textBox6.Text = reader["OverheadCost"].ToString();
 
-                textBox27.Text = reader["Accounting"].ToString();
-                textBox26.Text = reader["Bank"].ToString();
-                textBox25.Text = reader["CreditCard"].ToString();
-                textBox24.Text = reader["Fuel"].ToString();
-                textBox23.Text = reader["Legal"].ToString();
-                textBox22.Text = reader["License"].ToString();
-                textBox28.Text = reader["PayrollProc"].ToString();
-                textBox30.Text = reader["Insurance"].ToString();
-                textBox29.Text = reader["WorkersComp"].ToString();
-                textBox32.Text = reader["Advertising"].ToString();
-                textBox31.Text = reader["Charitable"].ToString();
-                textBox21.Text = reader["Auto"].ToString();
-                textBox20.Text = reader["CashShortage"].ToString();
-                textBox34.Text = reader["Electrical"].ToString();
-                textBox33.Text = reader["General"].ToString();
-                textBox19.Text = reader["HVAC"].ToString();
-                textBox35.Text = reader["Lawn"].ToString();
-                textBox36.Text = reader["Painting"].ToString();
-                textBox37.Text = reader["Plumbing"].ToString();
-                textBox38.Text = reader["Remodeling"].ToString();
-                textBox39.Text = reader["Structural"].ToString();
-                textBox43.Text = reader["DishMachine"].ToString();
-                textBox42.Text = reader["Janitorial"].ToString();
-                textBox44.Text = reader["Office"].ToString();
-                textBox41.Text = reader["Restaurant"].ToString();
-                textBox40.Text = reader["Uniforms"].ToString();
-                textBox18.Text = reader["Data"].ToString();
-                textBox45.Text = reader["Electricity"].ToString();
-                textBox46.Text = reader["Music"].ToString();
-                textBox47.Text = reader["NaturalGas"].ToString();
-                textBox48.Text = reader["Security"].ToString();
-                textBox49.Text = reader["Trash"].ToString();
-                textBox50.Text = reader["WaterSewer"].ToString();
-                textBox7.Text = reader["ExpenseCost"].ToString();
+            //    textBox27.Text = reader["Accounting"].ToString();
+            //    textBox26.Text = reader["Bank"].ToString();
+            //    textBox25.Text = reader["CreditCard"].ToString();
+            //    textBox24.Text = reader["Fuel"].ToString();
+            //    textBox23.Text = reader["Legal"].ToString();
+            //    textBox22.Text = reader["License"].ToString();
+            //    textBox28.Text = reader["PayrollProc"].ToString();
+            //    textBox30.Text = reader["Insurance"].ToString();
+            //    textBox29.Text = reader["WorkersComp"].ToString();
+            //    textBox32.Text = reader["Advertising"].ToString();
+            //    textBox31.Text = reader["Charitable"].ToString();
+            //    textBox21.Text = reader["Auto"].ToString();
+            //    textBox20.Text = reader["CashShortage"].ToString();
+            //    textBox34.Text = reader["Electrical"].ToString();
+            //    textBox33.Text = reader["General"].ToString();
+            //    textBox19.Text = reader["HVAC"].ToString();
+            //    textBox35.Text = reader["Lawn"].ToString();
+            //    textBox36.Text = reader["Painting"].ToString();
+            //    textBox37.Text = reader["Plumbing"].ToString();
+            //    textBox38.Text = reader["Remodeling"].ToString();
+            //    textBox39.Text = reader["Structural"].ToString();
+            //    textBox43.Text = reader["DishMachine"].ToString();
+            //    textBox42.Text = reader["Janitorial"].ToString();
+            //    textBox44.Text = reader["Office"].ToString();
+            //    textBox41.Text = reader["Restaurant"].ToString();
+            //    textBox40.Text = reader["Uniforms"].ToString();
+            //    textBox18.Text = reader["Data"].ToString();
+            //    textBox45.Text = reader["Electricity"].ToString();
+            //    textBox46.Text = reader["Music"].ToString();
+            //    textBox47.Text = reader["NaturalGas"].ToString();
+            //    textBox48.Text = reader["Security"].ToString();
+            //    textBox49.Text = reader["Trash"].ToString();
+            //    textBox50.Text = reader["WaterSewer"].ToString();
+            //    textBox7.Text = reader["ExpenseCost"].ToString();
 
-                textBox90.Text = reader["HostCashier"].ToString();
-                textBox89.Text = reader["Cooks"].ToString();
-                textBox88.Text = reader["Servers"].ToString();
-                textBox87.Text = reader["DMO"].ToString();
-                textBox86.Text = reader["Supervisor"].ToString();
-                textBox85.Text = reader["Overtime"].ToString();
-                textBox74.Text = reader["GeneralManager"].ToString();
-                textBox72.Text = reader["Manager"].ToString();
-                textBox71.Text = reader["Bonus"].ToString();
-                textBox70.Text = reader["PayrollTax"].ToString();
-                textBox5.Text = reader["LaborCost"].ToString();
+            //    textBox90.Text = reader["HostCashier"].ToString();
+            //    textBox89.Text = reader["Cooks"].ToString();
+            //    textBox88.Text = reader["Servers"].ToString();
+            //    textBox87.Text = reader["DMO"].ToString();
+            //    textBox86.Text = reader["Supervisor"].ToString();
+            //    textBox85.Text = reader["Overtime"].ToString();
+            //    textBox74.Text = reader["GeneralManager"].ToString();
+            //    textBox72.Text = reader["Manager"].ToString();
+            //    textBox71.Text = reader["Bonus"].ToString();
+            //    textBox70.Text = reader["PayrollTax"].ToString();
+            //    textBox5.Text = reader["LaborCost"].ToString();
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
-                textBox3.Text = "0.00";
-                textBox8.Text = "0.00";
-                textBox9.Text = "0.00";
+            //    textBox3.Text = "0.00";
+            //    textBox8.Text = "0.00";
+            //    textBox9.Text = "0.00";
 
-                textBox84.Text = "0.00";
-                textBox77.Text = "0.00";
-                textBox76.Text = "0.00";
-                textBox75.Text = "0.00";
-                textBox69.Text = "0.00";
-                textBox68.Text = "0.00";
-                textBox4.Text = "0.00";
+            //    textBox84.Text = "0.00";
+            //    textBox77.Text = "0.00";
+            //    textBox76.Text = "0.00";
+            //    textBox75.Text = "0.00";
+            //    textBox69.Text = "0.00";
+            //    textBox68.Text = "0.00";
+            //    textBox4.Text = "0.00";
 
-                textBox83.Text = "0.00";
-                textBox82.Text = "0.00";
-                textBox81.Text = "0.00";
-                textBox80.Text = "0.00";
-                textBox79.Text = "0.00";
-                textBox78.Text = "0.00";
-                textBox73.Text = "0.00";
-                textBox6.Text = "0.00";
+            //    textBox83.Text = "0.00";
+            //    textBox82.Text = "0.00";
+            //    textBox81.Text = "0.00";
+            //    textBox80.Text = "0.00";
+            //    textBox79.Text = "0.00";
+            //    textBox78.Text = "0.00";
+            //    textBox73.Text = "0.00";
+            //    textBox6.Text = "0.00";
 
-                textBox27.Text = "0.00";
-                textBox26.Text = "0.00";
-                textBox25.Text = "0.00";
-                textBox24.Text = "0.00";
-                textBox23.Text = "0.00";
-                textBox22.Text = "0.00";
-                textBox28.Text = "0.00";
-                textBox30.Text = "0.00";
-                textBox29.Text = "0.00";
-                textBox32.Text = "0.00";
-                textBox31.Text = "0.00";
-                textBox21.Text = "0.00";
-                textBox20.Text = "0.00";
-                textBox34.Text = "0.00";
-                textBox33.Text = "0.00";
-                textBox19.Text = "0.00";
-                textBox35.Text = "0.00";
-                textBox36.Text = "0.00";
-                textBox37.Text = "0.00";
-                textBox38.Text = "0.00";
-                textBox39.Text = "0.00";
-                textBox43.Text = "0.00";
-                textBox42.Text = "0.00";
-                textBox44.Text = "0.00";
-                textBox41.Text = "0.00";
-                textBox40.Text = "0.00";
-                textBox18.Text = "0.00";
-                textBox45.Text = "0.00";
-                textBox46.Text = "0.00";
-                textBox47.Text = "0.00";
-                textBox48.Text = "0.00";
-                textBox49.Text = "0.00";
-                textBox50.Text = "0.00";
-                textBox7.Text = "0.00";
+            //    textBox27.Text = "0.00";
+            //    textBox26.Text = "0.00";
+            //    textBox25.Text = "0.00";
+            //    textBox24.Text = "0.00";
+            //    textBox23.Text = "0.00";
+            //    textBox22.Text = "0.00";
+            //    textBox28.Text = "0.00";
+            //    textBox30.Text = "0.00";
+            //    textBox29.Text = "0.00";
+            //    textBox32.Text = "0.00";
+            //    textBox31.Text = "0.00";
+            //    textBox21.Text = "0.00";
+            //    textBox20.Text = "0.00";
+            //    textBox34.Text = "0.00";
+            //    textBox33.Text = "0.00";
+            //    textBox19.Text = "0.00";
+            //    textBox35.Text = "0.00";
+            //    textBox36.Text = "0.00";
+            //    textBox37.Text = "0.00";
+            //    textBox38.Text = "0.00";
+            //    textBox39.Text = "0.00";
+            //    textBox43.Text = "0.00";
+            //    textBox42.Text = "0.00";
+            //    textBox44.Text = "0.00";
+            //    textBox41.Text = "0.00";
+            //    textBox40.Text = "0.00";
+            //    textBox18.Text = "0.00";
+            //    textBox45.Text = "0.00";
+            //    textBox46.Text = "0.00";
+            //    textBox47.Text = "0.00";
+            //    textBox48.Text = "0.00";
+            //    textBox49.Text = "0.00";
+            //    textBox50.Text = "0.00";
+            //    textBox7.Text = "0.00";
 
-                textBox90.Text = "0.00";
-                textBox89.Text = "0.00";
-                textBox88.Text = "0.00";
-                textBox87.Text = "0.00";
-                textBox86.Text = "0.00";
-                textBox85.Text = "0.00";
-                textBox74.Text = "0.00";
-                textBox72.Text = "0.00";
-                textBox71.Text = "0.00";
-                textBox70.Text = "0.00";
-                textBox5.Text = "0.00";
+            //    textBox90.Text = "0.00";
+            //    textBox89.Text = "0.00";
+            //    textBox88.Text = "0.00";
+            //    textBox87.Text = "0.00";
+            //    textBox86.Text = "0.00";
+            //    textBox85.Text = "0.00";
+            //    textBox74.Text = "0.00";
+            //    textBox72.Text = "0.00";
+            //    textBox71.Text = "0.00";
+            //    textBox70.Text = "0.00";
+            //    textBox5.Text = "0.00";
 
-            }
-            cnn.Close();
-
-        }
-
-        /// <summary>
-        /// This will loop through to find all the connected Printers & Scanners
-        /// </summary>
-        private void ListScanners()
-        {
-            // Clear the ListBox.
-            comboBox1.Items.Clear();
-
-            // Create a DeviceManager instance
-            var deviceManager = new DeviceManager();
-
-            // Loop through the list of devices and add the name to the listbox
-            for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
-            {
-                // Add the device only if it's a scanner
-                if (deviceManager.DeviceInfos[i].Type != WiaDeviceType.ScannerDeviceType)
-                {
-                    continue;
-                }
-
-                // Add the Scanner device to the listbox (the entire DeviceInfos object)
-                // Important: we store an object of type scanner (which ToString method returns the name of the scanner)
-                comboBox1.Items.Add(new Scanner(deviceManager.DeviceInfos[i]));
-            }
-
-            if (comboBox1.Items.Count > 0)
-                comboBox1.SelectedIndex = 0;
+            //}
+            //cnn.Close();
 
         }
 
-
-
-
+        
         /// <summary>
         /// Excel Code
         /// </summary>
@@ -536,7 +502,7 @@ namespace Accounting_PL
             var path = lscfolder + "ScanFile.jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
 
             ImageFile image = new ImageFile();
-            
+
             image = device.ScanJPEG();
 
             if (File.Exists(path))
@@ -1758,23 +1724,23 @@ namespace Accounting_PL
         {
             _scanner = new ADFScan();
             _scanner.Scanning += new EventHandler<WiaImageEventArgs>(_scanner_Scanning);
-            _scanner.ScanComplete += new EventHandler(_scanner_ScanComplete);
-            //  ScanColor selectedColor = 1;  // (ScanColor)_colors[comboBox1.SelectedIndex];
-            //  int selectedColor = 1;
-            //  int dpi = 300;  //  (int)numericUpDown1.Value;
-            _scanner.BeginScan(1, 300);
+            int selectedColor = 1;
+            int dpi = 300;  //  (int)numericUpDown1.Value;
+            _scanner.BeginScan(selectedColor, dpi);
         }
-        
-        void _scanner_ScanComplete(object sender, EventArgs e)
-        {
-            MessageBox.Show("Scan Complete");
-        }
+
         void _scanner_Scanning(object sender, WiaImageEventArgs e)
         {
+            string value = "Name of Document";
+            InputBox("What do you want to call the document", "Type a name:", ref value);
+
+            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+            // Testing Random number for multiple runs
+            var rand = new Random();
             int count = 0;
-            string filename = textBox1.Text + "image" + (count++).ToString() + ".jpg";
-            //  listBox1.Items.Add(filename);
-            e.ScannedImage.Save(filename, ImageFormat.Jpeg);//FILES ARE RETURNED AS BITMAPS
+
+            string filename = lscfolder + value + "_" + rand.Next(5, 100) + "_Test" + count++.ToString() + ".jpeg";
+            e.ScannedImage.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);  //FILES ARE RETURNED AS BITMAPS
         }
 
 
@@ -1820,6 +1786,52 @@ namespace Accounting_PL
 
         //    // return cnn;
         //}
+
+
+
+
+
+        public static DialogResult InputBox(string title, string promptText, ref string value)
+        {
+            Form form = new Form();
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+            textBox.Text = value;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(9, 20, 372, 13);
+            textBox.SetBounds(12, 36, 372, 20);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new Size(396, 107);
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new Size(System.Math.Max(300, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+            value = textBox.Text;
+            return dialogResult;
+        }
 
     }
 
@@ -1867,5 +1879,4 @@ namespace Accounting_PL
     //        return dataum;
     //    }
     //}
-
 }

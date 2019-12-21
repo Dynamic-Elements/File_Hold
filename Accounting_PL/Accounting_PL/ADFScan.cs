@@ -18,6 +18,8 @@ namespace Accounting_PL
     class ADFScan
     {
 
+        private Form1 f1;
+
         public void BeginScan(int color, int dotsperinch)
         {
             Scan(color, dotsperinch);
@@ -28,7 +30,7 @@ namespace Accounting_PL
         void Scan(int clr, int dpi)
         {
             string deviceid;
-            //Choose Scanner
+            // Choose Scanner
             CommonDialogClass class1 = new CommonDialogClass();
             Device d = class1.ShowSelectDevice(WiaDeviceType.UnspecifiedDeviceType, true, false);
             if (d != null)
@@ -40,6 +42,7 @@ namespace Accounting_PL
                 //no scanner chosen
                 return;
             }
+
             WIA.CommonDialog WiaCommonDialog = new CommonDialogClass();
             bool hasMorePages = true;
             int x = 0;
@@ -53,7 +56,7 @@ namespace Accounting_PL
                 {
                     if (info.DeviceID == deviceid)
                     {
-                        Properties infoprop = null;
+                        WIA.Properties infoprop = null;
                         infoprop = info.Properties;
                         //connect to scanner
                         WiaDev = info.Connect();
@@ -69,7 +72,7 @@ namespace Accounting_PL
                 Item.Properties["6148"].set_Value(dpi);
                 try
                 {//WATCH OUT THE FORMAT HERE DOES NOT MAKE A DIFFERENCE... .net will load it as a BITMAP!
-                    img = (ImageFile)WiaCommonDialog.ShowTransfer(Item, FormatID.wiaFormatJPEG, false);
+                    img = (ImageFile)WiaCommonDialog.ShowTransfer(Item, WIA.FormatID.wiaFormatJPEG, false);
                     //process image:
                     //Save to file and open as .net IMAGE
                     string varImageFileName = Path.GetTempFileName();
