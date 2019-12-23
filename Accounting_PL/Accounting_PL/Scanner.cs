@@ -25,14 +25,29 @@ namespace Accounting_PL
         /// <returns></returns>
         public ImageFile ScanJPEG()
         {
+
+            string deviceid;
+            // Choose Scanner
+            CommonDialogClass class1 = new CommonDialogClass();
+            Device d = class1.ShowSelectDevice(WiaDeviceType.UnspecifiedDeviceType, true, false);
+            if (d != null)
+            {
+                 deviceid = d.DeviceID;
+            }
+            else
+            {
+                //no scanner chosen
+                // return;
+            }
+
             // Connect to the device and instruct it to scan
             // Connect to the device
             var device = this._deviceInfo.Connect();
 
             // Select the scanner
             CommonDialogClass dlg = new CommonDialogClass();
-
             var item = device.Items[1];
+
 
             try
             {
@@ -97,7 +112,7 @@ namespace Accounting_PL
         /// <param name="scanHeightPixels"></param>
         /// <param name="brightnessPercents"></param>
         /// <param name="contrastPercents">Modify the contrast percent</param>
-        /// <param name="colorMode">Set the color mode</param>
+        /// <param name="colorMode">Set the color mode</param>   AdjustScannerSettings(item, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
         private static void AdjustScannerSettings(IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel, int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
         {
             const string WIA_SCAN_COLOR_MODE = "6146";

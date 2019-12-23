@@ -63,9 +63,13 @@ namespace Accounting_PL
 
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
-
+            var lYear = lastSunday.Substring(lastSunday.Length - 4, 4);
             textBox1.Text = lastSunday;
-            textBox2.Text = lastSunday.Substring(lastSunday.Length - 4, 4);   // Yr.Substring(0,4);
+            textBox2.Text = lYear;   // Yr.Substring(0,4);
+
+            if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
+                MessageBox.Show("Leap year!");
+
 
             //string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
             //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
@@ -220,7 +224,7 @@ namespace Accounting_PL
 
         }
 
-        
+
         /// <summary>
         /// Excel Code
         /// </summary>
@@ -473,44 +477,33 @@ namespace Accounting_PL
 
             //  https://csharp.hotexamples.com/examples/-/Tesseract/-/php-tesseract-class-examples.html
 
-            // Use scanner/Printer
-            Scanner device = null;
+            int resolution = 300;       // 150  300  600
+            int width_pixel = 2550;     // 1250  2550  5100
+            int height_pixel = 3200;    // 1700  3200  6400
+            int color_mode = 1;
 
-            this.Invoke(new MethodInvoker(delegate ()
-            {
-                device = comboBox1.SelectedItem as Scanner;
-            }));
-
-            if (device == null)
-            {
-                MessageBox.Show("You need to select first an scanner device from the list",
-                                "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            else if (String.IsNullOrEmpty(textBox2.Text))
-            {
-                MessageBox.Show("Provide a filename",
-                                "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            CommonDialogClass class1 = new CommonDialogClass();
+            Device d = class1.ShowSelectDevice(WiaDeviceType.UnspecifiedDeviceType, true, false);
 
             // Testing Random number for multiple runs
             var rand = new Random();
             // Save the image
-            var path = lscfolder + "ScanFile.jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
-
-            ImageFile image = new ImageFile();
-
-            image = device.ScanJPEG();
+            var path = lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
 
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
-            image.SaveFile(path);
+            List<System.Drawing.Image> images = null;
+            images = WIAScan.AutoScan(d.DeviceID, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
+            saveImageAsFile(path);
+
+            // ImageFile image = new ImageFile();
+
+            // image = device.ScanJPEG();
+
+            // image.SaveFile(path);
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -657,10 +650,10 @@ namespace Accounting_PL
             // textBox6.Text = Convert.ToString((Convert.ToInt32(textBox1.Text) + Convert.ToInt32()));
 
             // Food
-            int result = int.Parse(textBox84.Text) + int.Parse(textBox77.Text) +
-                int.Parse(textBox76.Text) + int.Parse(textBox75.Text) + int.Parse(textBox69.Text) +
-                int.Parse(textBox68.Text);
-            textBox4.Text = result.ToString();
+            //int result = int.Parse(textBox84.Text) + int.Parse(textBox77.Text) +
+            //    int.Parse(textBox76.Text) + int.Parse(textBox75.Text) + int.Parse(textBox69.Text) +
+            //    int.Parse(textBox68.Text);
+            //textBox4.Text = result.ToString();
 
 
             //(Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
@@ -1724,23 +1717,90 @@ namespace Accounting_PL
         {
             _scanner = new ADFScan();
             _scanner.Scanning += new EventHandler<WiaImageEventArgs>(_scanner_Scanning);
-            int selectedColor = 1;
-            int dpi = 300;  //  (int)numericUpDown1.Value;
-            _scanner.BeginScan(selectedColor, dpi);
+            int resolution = 600;       // 150  300  600
+            int width_pixel = 5100;     // 1250  2550  5100
+            int height_pixel = 6400;    // 1700  3200  6400
+            int color_mode = 1;         // 
+            _scanner.BeginScan(color_mode, resolution, width_pixel, height_pixel);
         }
 
         void _scanner_Scanning(object sender, WiaImageEventArgs e)
         {
+            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+            try
+            {
+                // Determine whether the directory exists.
+                if (!Directory.Exists(lscfolder))
+                {
+                    /// If it does not exist then create it. 
+                    Directory.CreateDirectory(lscfolder);
+                }
+
+            }
+            catch { }
             string value = "Name of Document";
             InputBox("What do you want to call the document", "Type a name:", ref value);
 
-            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
             // Testing Random number for multiple runs
             var rand = new Random();
             int count = 0;
 
             string filename = lscfolder + value + "_" + rand.Next(5, 100) + "_Test" + count++.ToString() + ".jpeg";
             e.ScannedImage.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);  //FILES ARE RETURNED AS BITMAPS
+
+            //Create a new PDF document
+            PdfDocument document = new PdfDocument();
+            //Add a page to the document
+            PdfPage page = document.Pages.Add();
+            //Create PDF graphics for a page
+            PdfGraphics graphics = page.Graphics;
+            //Load the image from the disk
+            PdfBitmap imageFile = new PdfBitmap(filename);   //  "Input.jpg"
+                                                             //Draw the image
+            graphics.DrawImage(imageFile, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
+            //Save the document into stream
+            MemoryStream stream = new MemoryStream();
+            document.Save(stream);
+            //Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
+            using (OCRProcessor processor = new OCRProcessor(@"../../Tesseract Binaries/"))
+            {
+                //Load a PDF document
+                PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
+
+                //Set OCR language to process
+                processor.Settings.Language = Languages.English;
+
+                //Enable the AutoDetectRotation
+                processor.Settings.AutoDetectRotation = true;
+
+                //Enable native call  
+                processor.Settings.EnableNativeCall = true;
+
+                //Process OCR by providing the PDF document and Tesseract data
+                String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
+
+                // Save the PDF file
+                string lcNewFile = lscfolder + "Scan_OCR_File" + rand.Next(5, 100) + ".pdf";  //  lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";
+
+                //Save the OCR processed PDF document in the disk
+                lDoc.Save(lcNewFile);
+
+                //Writes the text to the file
+                File.WriteAllText(lscfolder + "ExtractedText" + rand.Next(5, 100) + ".txt", text);
+
+                //Close the document
+                lDoc.Close(true);
+            }
+            //This will open the PDF file so, the result will be seen in default PDF viewer
+            //  Process.Start("OCR.pdf");
+
+            string line = null;
+            TextReader readFile = new StreamReader(lscfolder + "ExtractedText.txt");
+            line = readFile.ReadToEnd();
+            MessageBox.Show(line);
+            readFile.Close();
+            readFile = null;
+
         }
 
 

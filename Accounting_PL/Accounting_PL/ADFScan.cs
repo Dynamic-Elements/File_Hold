@@ -6,28 +6,16 @@ using System.IO;
 namespace Accounting_PL
 {
 
-    public class WiaImageEventArgs : EventArgs
-    {
-        public WiaImageEventArgs(Image img)
-        {
-            ScannedImage = img;
-        }
-        public Image ScannedImage { get; private set; }
-    }
-
     class ADFScan
     {
-
-        private Form1 f1;
-
-        public void BeginScan(int color, int dotsperinch)
+        public void BeginScan(int color, int dotsperinch, int width_pix, int height_pix)
         {
-            Scan(color, dotsperinch);
+            Scan(color, dotsperinch, width_pix, height_pix);
         }
         public event EventHandler<WiaImageEventArgs> Scanning;
         public event EventHandler ScanComplete;
 
-        void Scan(int clr, int dpi)
+        void Scan(int clr, int dpi, int width, int height)
         {
             string deviceid;
             // Choose Scanner
@@ -66,12 +54,23 @@ namespace Accounting_PL
                 //Start Scan
                 ImageFile img = null;
                 Item Item = WiaDev.Items[1] as Item;
-                //set properties //BIG SNAG!! if you call WiaDev.Items[1] apprently it erases the item from memory so you cant call it again
-                Item.Properties["6146"].set_Value((int)clr); //Item MUST be stored in a variable THEN the properties must be set.
+                //  set properties //BIG SNAG!! if you call WiaDev.Items[1] apprently it erases the item from memory so you cant call it again
+                Item.Properties["6146"].set_Value((int)clr); //  Item MUST be stored in a variable THEN the properties must be set.
                 Item.Properties["6147"].set_Value(dpi);
                 Item.Properties["6148"].set_Value(dpi);
+
+                Item.Properties["6149"].set_Value(0);
+                Item.Properties["6150"].set_Value(0);
+
+                Item.Properties["6151"].set_Value(width);
+                Item.Properties["6152"].set_Value(height);
+
+                Item.Properties["6154"].set_Value(0);
+                Item.Properties["6155"].set_Value(0);     // Item.Properties[""].set_Value();
+
+
                 try
-                {//WATCH OUT THE FORMAT HERE DOES NOT MAKE A DIFFERENCE... .net will load it as a BITMAP!
+                {//  WATCH OUT THE FORMAT HERE DOES NOT MAKE A DIFFERENCE... .net will load it as a BITMAP!
                     img = (ImageFile)WiaCommonDialog.ShowTransfer(Item, WIA.FormatID.wiaFormatJPEG, false);
                     //process image:
                     //Save to file and open as .net IMAGE
@@ -159,4 +158,14 @@ namespace Accounting_PL
         }
         #endregion
     }
+
+    public class WiaImageEventArgs : EventArgs
+    {
+        public WiaImageEventArgs(Image img)
+        {
+            ScannedImage = img;
+        }
+        public Image ScannedImage { get; private set; }
+    }
+
 }
