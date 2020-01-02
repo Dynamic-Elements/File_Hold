@@ -2,35 +2,23 @@
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Parsing;
+using ScanIt;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Odbc;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
+using System.Windows.Forms;
+using System.Data.Odbc;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Tesseract;
 using VFPToolkit;
-using WIA;
 using Excel = Microsoft.Office.Interop.Excel;
-
+using System.Threading;
 
 namespace Accounting_PL
 {
     public partial class Form1 : Form
     {
-
-        ADFScan _scanner;
 
         string appPath = AppDomain.CurrentDomain.BaseDirectory;
         string curDir = Files.AddBS(Files.CurDir());
@@ -151,73 +139,73 @@ namespace Accounting_PL
             //else
             //{
 
-            //    textBox3.Text = "0.00";
-            //    textBox8.Text = "0.00";
-            //    textBox9.Text = "0.00";
+            textBox3.Text = "0.00";
+            textBox8.Text = "0.00";
+            textBox9.Text = "0.00";
 
-            //    textBox84.Text = "0.00";
-            //    textBox77.Text = "0.00";
-            //    textBox76.Text = "0.00";
-            //    textBox75.Text = "0.00";
-            //    textBox69.Text = "0.00";
-            //    textBox68.Text = "0.00";
-            //    textBox4.Text = "0.00";
+            textBox84.Text = "0.00";
+            textBox77.Text = "0.00";
+            textBox76.Text = "0.00";
+            textBox75.Text = "0.00";
+            textBox69.Text = "0.00";
+            textBox68.Text = "0.00";
+            textBox4.Text = "0.00";
 
-            //    textBox83.Text = "0.00";
-            //    textBox82.Text = "0.00";
-            //    textBox81.Text = "0.00";
-            //    textBox80.Text = "0.00";
-            //    textBox79.Text = "0.00";
-            //    textBox78.Text = "0.00";
-            //    textBox73.Text = "0.00";
-            //    textBox6.Text = "0.00";
+            textBox83.Text = "0.00";
+            textBox82.Text = "0.00";
+            textBox81.Text = "0.00";
+            textBox80.Text = "0.00";
+            textBox79.Text = "0.00";
+            textBox78.Text = "0.00";
+            textBox73.Text = "0.00";
+            textBox6.Text = "0.00";
 
-            //    textBox27.Text = "0.00";
-            //    textBox26.Text = "0.00";
-            //    textBox25.Text = "0.00";
-            //    textBox24.Text = "0.00";
-            //    textBox23.Text = "0.00";
-            //    textBox22.Text = "0.00";
-            //    textBox28.Text = "0.00";
-            //    textBox30.Text = "0.00";
-            //    textBox29.Text = "0.00";
-            //    textBox32.Text = "0.00";
-            //    textBox31.Text = "0.00";
-            //    textBox21.Text = "0.00";
-            //    textBox20.Text = "0.00";
-            //    textBox34.Text = "0.00";
-            //    textBox33.Text = "0.00";
-            //    textBox19.Text = "0.00";
-            //    textBox35.Text = "0.00";
-            //    textBox36.Text = "0.00";
-            //    textBox37.Text = "0.00";
-            //    textBox38.Text = "0.00";
-            //    textBox39.Text = "0.00";
-            //    textBox43.Text = "0.00";
-            //    textBox42.Text = "0.00";
-            //    textBox44.Text = "0.00";
-            //    textBox41.Text = "0.00";
-            //    textBox40.Text = "0.00";
-            //    textBox18.Text = "0.00";
-            //    textBox45.Text = "0.00";
-            //    textBox46.Text = "0.00";
-            //    textBox47.Text = "0.00";
-            //    textBox48.Text = "0.00";
-            //    textBox49.Text = "0.00";
-            //    textBox50.Text = "0.00";
-            //    textBox7.Text = "0.00";
+            textBox27.Text = "0.00";
+            textBox26.Text = "0.00";
+            textBox25.Text = "0.00";
+            textBox24.Text = "0.00";
+            textBox23.Text = "0.00";
+            textBox22.Text = "0.00";
+            textBox28.Text = "0.00";
+            textBox30.Text = "0.00";
+            textBox29.Text = "0.00";
+            textBox32.Text = "0.00";
+            textBox31.Text = "0.00";
+            textBox21.Text = "0.00";
+            textBox20.Text = "0.00";
+            textBox34.Text = "0.00";
+            textBox33.Text = "0.00";
+            textBox19.Text = "0.00";
+            textBox35.Text = "0.00";
+            textBox36.Text = "0.00";
+            textBox37.Text = "0.00";
+            textBox38.Text = "0.00";
+            textBox39.Text = "0.00";
+            textBox43.Text = "0.00";
+            textBox42.Text = "0.00";
+            textBox44.Text = "0.00";
+            textBox41.Text = "0.00";
+            textBox40.Text = "0.00";
+            textBox18.Text = "0.00";
+            textBox45.Text = "0.00";
+            textBox46.Text = "0.00";
+            textBox47.Text = "0.00";
+            textBox48.Text = "0.00";
+            textBox49.Text = "0.00";
+            textBox50.Text = "0.00";
+            textBox7.Text = "0.00";
 
-            //    textBox90.Text = "0.00";
-            //    textBox89.Text = "0.00";
-            //    textBox88.Text = "0.00";
-            //    textBox87.Text = "0.00";
-            //    textBox86.Text = "0.00";
-            //    textBox85.Text = "0.00";
-            //    textBox74.Text = "0.00";
-            //    textBox72.Text = "0.00";
-            //    textBox71.Text = "0.00";
-            //    textBox70.Text = "0.00";
-            //    textBox5.Text = "0.00";
+            textBox90.Text = "0.00";
+            textBox89.Text = "0.00";
+            textBox88.Text = "0.00";
+            textBox87.Text = "0.00";
+            textBox86.Text = "0.00";
+            textBox85.Text = "0.00";
+            textBox74.Text = "0.00";
+            textBox72.Text = "0.00";
+            textBox71.Text = "0.00";
+            textBox70.Text = "0.00";
+            textBox5.Text = "0.00";
 
             //}
             //cnn.Close();
@@ -232,6 +220,10 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Button1_Click(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
+
             Excel.Application xlApp;
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
@@ -426,6 +418,25 @@ namespace Accounting_PL
 
 
 
+
+        //void _scanner_ScanComplete(object sender, EventArgs e)
+        //{
+        //    MessageBox.Show("Scan Complete");
+        //}
+        //void _scanner_Scanning(object sender, WiaImageEventArgs e)
+        //{//e.ScannedImage is a System.Drawing.Image
+
+        //    string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+        //    // Testing Random number for multiple runs
+        //    var rand = new Random();
+        //    // Save the image
+        //    var filename = lscfolder + "ScanFile_Test_" + rand.Next(10, 100) + ".jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
+        //    e.ScannedImage.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg); //FILES ARE RETURNED AS BITMAPS
+
+        //}
+
+
+
         /// <summary>
         /// Scanner Button
         /// This will handle the scanner feature.
@@ -435,29 +446,7 @@ namespace Accounting_PL
         private void Button2_Click(object sender, EventArgs e)
         {
 
-            /// Notes
-            /// https://www.syncfusion.com/kb/9144/how-to-convert-scanned-image-to-searchable-pdf-by-processing-ocr
-            /// https://help.syncfusion.com/file-formats/pdf/working-with-ocr?_ga=2.194924142.216447619.1574224028-344549646.1574224028 
-            ///  
-            /// 
-            /// https://www.scanitto.com/
-            /// https://www.vintasoft.com/download.html
-            /// http://www.viscomsoft.com/
-            /// https://duckduckgo.com/?q=c%23+ocr+scanning+documents+and+texts&t=ffab&atb=v1-1&ia=web
-            /// https://www.codingame.com/playgrounds/10058/scanned-pdf-to-ocr-textsearchable-pdf-using-c
-            /// https://asprise.com/royalty-free-library/c%23-sharp.net-ocr-source-code-examples-demos.html
-            /// https://github.com/tesseract-ocr/tesseract
-            /// https://itextpdf.com/en/products/itext-7/pdfxfa
-            /// https://www.nuget.org/packages/itext7/
-            /// https://ghostscript.com/download/gsdnld.html
-            /// https://docs.microsoft.com/en-us/sql/azure-data-studio/quickstart-postgres?view=sql-server-ver15
-            /// https://www.mssqltips.com/sqlservertip/3662/sql-server-and-postgresql-linked-server-configuration--part-2/
-            /// https://www.vintasoft.com/vsocr-dotnet-index.html
-
-            /// https://docs.microsoft.com/en-us/azure/sql-database/?view=sql-server-ver15
-            /// https://www.vintasoft.com/docs/vsimaging-dotnet/Programming-Ocr-Save_OCR_results.html#SaveOcrResultsToTextFile
-            /// file:///C:/Program%20Files/gs/gs9.50/doc/Readme.htm
-            /// 
+            updateCalculations();
 
             string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
             try
@@ -472,38 +461,27 @@ namespace Accounting_PL
             }
             catch { }
 
-            // https://ourcodeworld.com/articles/read/382/creating-a-scanning-application-in-winforms-with-csharp
-            // https://ithoughthecamewithyou.com/post/scanning-from-the-adf-using-wia-in-c
+            //ADFScan scanner = new ADFScan();
+            //scanner.Scanning += new EventHandler<WiaImageEventArgs>(_scanner_Scanning);
+            //scanner.ScanComplete += new EventHandler(_scanner_ScanComplete);
+            //ScanColor selectedColor = ScanColor.Color;
+            //int dpi = 600;//some scanners have a problem if you set a lower DPI
+            //scanner.BeginScan(selectedColor, dpi);
+            ////ADFScan will now raise a Scanning event for EACH document scanned.
+            //then scan complete once there are no more documents to scan.
 
-            //  https://csharp.hotexamples.com/examples/-/Tesseract/-/php-tesseract-class-examples.html
 
-            int resolution = 300;       // 150  300  600
-            int width_pixel = 2550;     // 1250  2550  5100
-            int height_pixel = 3200;    // 1700  3200  6400
-            int color_mode = 1;
-
-            CommonDialogClass class1 = new CommonDialogClass();
-            Device d = class1.ShowSelectDevice(WiaDeviceType.UnspecifiedDeviceType, true, false);
-
-            // Testing Random number for multiple runs
-            var rand = new Random();
-            // Save the image
-            var path = lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
+            //             var path = lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";  //  lscfolder + "ScanFile" + rand.Next(10, 100) + ".jpeg";
+            // var path = @"E:\Group Policy No\";
+            var path = lscfolder;
+            WiaWrapper obj = new WiaWrapper();
+            obj.SelectScanner();
+            obj.Scan(false, 300, path, true, false);  // 150  300  600
 
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
-
-            List<System.Drawing.Image> images = null;
-            images = WIAScan.AutoScan(d.DeviceID, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
-            saveImageAsFile(path);
-
-            // ImageFile image = new ImageFile();
-
-            // image = device.ScanJPEG();
-
-            // image.SaveFile(path);
 
             //Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -647,38 +625,108 @@ namespace Accounting_PL
         private void updateCalculations()
         {
             // This will calculate all the totals of each grouping
-            // textBox6.Text = Convert.ToString((Convert.ToInt32(textBox1.Text) + Convert.ToInt32()));
 
-            // Food
-            //int result = int.Parse(textBox84.Text) + int.Parse(textBox77.Text) +
-            //    int.Parse(textBox76.Text) + int.Parse(textBox75.Text) + int.Parse(textBox69.Text) +
-            //    int.Parse(textBox68.Text);
-            //textBox4.Text = result.ToString();
+            try  //  string txt = textBox.Text.Replace(",", "").Replace("$", "");  Convert.ToDecimal()
+            {
+                // Food
+                decimal totalamtFood = 0m;
+                string txt84 = textBox84.Text.Replace(",", "").Replace("$", "");
+                string txt77 = textBox77.Text.Replace(",", "").Replace("$", "");
+                string txt76 = textBox76.Text.Replace(",", "").Replace("$", "");
+                string txt75 = textBox75.Text.Replace(",", "").Replace("$", "");
+                string txt69 = textBox69.Text.Replace(",", "").Replace("$", "");
+                string txt68 = textBox68.Text.Replace(",", "").Replace("$", "");
+
+                totalamtFood = Convert.ToDecimal(txt84) + Convert.ToDecimal(txt77) + Convert.ToDecimal(txt76) +
+                   Convert.ToDecimal(txt75) + Convert.ToDecimal(txt69) + Convert.ToDecimal(txt68);
+
+                textBox4.Text = totalamtFood.ToString("C");
 
 
-            //(Convert.ToInt32(textBox84.Text) + Convert.ToInt32(textBox77.Text) + Convert.ToInt32(textBox76.Text) +
-            //    Convert.ToInt32(textBox75.Text) + Convert.ToInt32(textBox69.Text) + Convert.ToInt32(textBox68.Text)).ToString();
+                // Expenses
+                decimal totalamtExpenses = 0m;
+                string txt27 = textBox27.Text.Replace(",", "").Replace("$", "");
+                string txt26 = textBox26.Text.Replace(",", "").Replace("$", "");
+                string txt25 = textBox25.Text.Replace(",", "").Replace("$", "");
+                string txt24 = textBox24.Text.Replace(",", "").Replace("$", "");
+                string txt23 = textBox23.Text.Replace(",", "").Replace("$", "");
+                string txt22 = textBox22.Text.Replace(",", "").Replace("$", "");
+                string txt28 = textBox28.Text.Replace(",", "").Replace("$", "");
+                string txt30 = textBox30.Text.Replace(",", "").Replace("$", "");
+                string txt29 = textBox29.Text.Replace(",", "").Replace("$", "");
+                string txt32 = textBox32.Text.Replace(",", "").Replace("$", "");
+                string txt31 = textBox31.Text.Replace(",", "").Replace("$", "");
+                string txt21 = textBox21.Text.Replace(",", "").Replace("$", "");
+                string txt20 = textBox20.Text.Replace(",", "").Replace("$", "");
+                string txt34 = textBox34.Text.Replace(",", "").Replace("$", "");
+                string txt33 = textBox33.Text.Replace(",", "").Replace("$", "");
+                string txt19 = textBox19.Text.Replace(",", "").Replace("$", "");
+                string txt35 = textBox35.Text.Replace(",", "").Replace("$", "");
+                string txt36 = textBox36.Text.Replace(",", "").Replace("$", "");
+                string txt37 = textBox37.Text.Replace(",", "").Replace("$", "");
+                string txt38 = textBox38.Text.Replace(",", "").Replace("$", "");
+                string txt39 = textBox39.Text.Replace(",", "").Replace("$", "");
+                string txt43 = textBox43.Text.Replace(",", "").Replace("$", "");
+                string txt42 = textBox42.Text.Replace(",", "").Replace("$", "");
+                string txt44 = textBox44.Text.Replace(",", "").Replace("$", "");
+                string txt41 = textBox41.Text.Replace(",", "").Replace("$", "");
+                string txt40 = textBox40.Text.Replace(",", "").Replace("$", "");
+                string txt18 = textBox18.Text.Replace(",", "").Replace("$", "");
+                string txt45 = textBox45.Text.Replace(",", "").Replace("$", "");
+                string txt46 = textBox46.Text.Replace(",", "").Replace("$", "");
+                string txt47 = textBox47.Text.Replace(",", "").Replace("$", "");
+                string txt48 = textBox48.Text.Replace(",", "").Replace("$", "");
+                string txt49 = textBox49.Text.Replace(",", "").Replace("$", "");
+                string txt50 = textBox50.Text.Replace(",", "").Replace("$", "");
 
-            //// Expenses
-            //textBox7.Text = (Convert.ToInt32(textBox27.Text) + Convert.ToInt32(textBox26.Text) + Convert.ToInt32(textBox25.Text) +
-            //    Convert.ToInt32(textBox24.Text) + Convert.ToInt32(textBox23.Text) + Convert.ToInt32(textBox22.Text) + Convert.ToInt32(textBox28.Text) +
-            //    Convert.ToInt32(textBox30.Text) + Convert.ToInt32(textBox29.Text) + Convert.ToInt32(textBox32.Text) + Convert.ToInt32(textBox31.Text) +
-            //    Convert.ToInt32(textBox21.Text) + Convert.ToInt32(textBox20.Text) + Convert.ToInt32(textBox34.Text) + Convert.ToInt32(textBox33.Text) +
-            //    Convert.ToInt32(textBox19.Text) + Convert.ToInt32(textBox35.Text) + Convert.ToInt32(textBox36.Text) + Convert.ToInt32(textBox37.Text) +
-            //    Convert.ToInt32(textBox38.Text) + Convert.ToInt32(textBox39.Text) + Convert.ToInt32(textBox43.Text) + Convert.ToInt32(textBox42.Text) +
-            //    Convert.ToInt32(textBox44.Text) + Convert.ToInt32(textBox41.Text) + Convert.ToInt32(textBox40.Text) + Convert.ToInt32(textBox18.Text) +
-            //    Convert.ToInt32(textBox45.Text) + Convert.ToInt32(textBox46.Text) + Convert.ToInt32(textBox47.Text) + Convert.ToInt32(textBox48.Text) +
-            //    Convert.ToInt32(textBox49.Text) + Convert.ToInt32(textBox50.Text)).ToString();
+                totalamtExpenses = Convert.ToDecimal(txt27) + Convert.ToDecimal(txt26) + Convert.ToDecimal(txt25) + Convert.ToDecimal(txt24) + Convert.ToDecimal(txt23) +
+                    Convert.ToDecimal(txt22) + Convert.ToDecimal(txt28) + Convert.ToDecimal(txt30) + Convert.ToDecimal(txt29) + Convert.ToDecimal(txt32) +
+                    Convert.ToDecimal(txt31) + Convert.ToDecimal(txt21) + Convert.ToDecimal(txt20) + Convert.ToDecimal(txt34) + Convert.ToDecimal(txt33) +
+                    Convert.ToDecimal(txt19) + Convert.ToDecimal(txt35) + Convert.ToDecimal(txt36) + Convert.ToDecimal(txt37) + Convert.ToDecimal(txt38) +
+                    Convert.ToDecimal(txt39) + Convert.ToDecimal(txt43) + Convert.ToDecimal(txt42) + Convert.ToDecimal(txt44) + Convert.ToDecimal(txt41) +
+                    Convert.ToDecimal(txt40) + Convert.ToDecimal(txt18) + Convert.ToDecimal(txt45) + Convert.ToDecimal(txt46) + Convert.ToDecimal(txt47) +
+                    Convert.ToDecimal(txt48) + Convert.ToDecimal(txt49) + Convert.ToDecimal(txt50);
 
-            //// Labor
-            //textBox5.Text = (Convert.ToInt32(textBox90.Text) + Convert.ToInt32(textBox89.Text) + Convert.ToInt32(textBox88.Text) +
-            //    Convert.ToInt32(textBox87.Text) + Convert.ToInt32(textBox86.Text) + Convert.ToInt32(textBox85.Text) + Convert.ToInt32(textBox74.Text) +
-            //    Convert.ToInt32(textBox72.Text) + Convert.ToInt32(textBox71.Text) + Convert.ToInt32(textBox70.Text)).ToString();
+                textBox7.Text = totalamtExpenses.ToString("C");
 
-            //// Overhead
-            //textBox6.Text = (Convert.ToInt32(textBox83.Text) + Convert.ToInt32(textBox82.Text) + Convert.ToInt32(textBox81.Text) +
-            //    Convert.ToInt32(textBox80.Text) + Convert.ToInt32(textBox79.Text) + Convert.ToInt32(textBox78.Text) +
-            //    Convert.ToInt32(textBox73.Text)).ToString();
+
+                // Labor
+                decimal totalamtLabor = 0m;
+                string txt90 = textBox90.Text.Replace(",", "").Replace("$", "");
+                string txt89 = textBox89.Text.Replace(",", "").Replace("$", "");
+                string txt88 = textBox88.Text.Replace(",", "").Replace("$", "");
+                string txt87 = textBox87.Text.Replace(",", "").Replace("$", "");
+                string txt86 = textBox86.Text.Replace(",", "").Replace("$", "");
+                string txt85 = textBox85.Text.Replace(",", "").Replace("$", "");
+                string txt74 = textBox74.Text.Replace(",", "").Replace("$", "");
+                string txt72 = textBox72.Text.Replace(",", "").Replace("$", "");
+                string txt71 = textBox71.Text.Replace(",", "").Replace("$", "");
+                string txt70 = textBox70.Text.Replace(",", "").Replace("$", "");
+
+                totalamtLabor = Convert.ToDecimal(txt90) + Convert.ToDecimal(txt89) + Convert.ToDecimal(txt88) + Convert.ToDecimal(txt87) +
+                    Convert.ToDecimal(txt86) + Convert.ToDecimal(txt85) + Convert.ToDecimal(txt74) + Convert.ToDecimal(txt72) +
+                    Convert.ToDecimal(txt71) + Convert.ToDecimal(txt70);
+
+                textBox5.Text = totalamtLabor.ToString("C");
+
+
+                // Overhead
+                decimal totalamtOverhead = 0m;
+                string txt83 = textBox83.Text.Replace(",", "").Replace("$", "");
+                string txt82 = textBox82.Text.Replace(",", "").Replace("$", "");
+                string txt81 = textBox81.Text.Replace(",", "").Replace("$", "");
+                string txt80 = textBox80.Text.Replace(",", "").Replace("$", "");
+                string txt79 = textBox79.Text.Replace(",", "").Replace("$", "");
+                string txt78 = textBox78.Text.Replace(",", "").Replace("$", "");
+                string txt73 = textBox73.Text.Replace(",", "").Replace("$", "");
+
+                totalamtOverhead = Convert.ToDecimal(txt83) + Convert.ToDecimal(txt82) + Convert.ToDecimal(txt81) + Convert.ToDecimal(txt80) +
+                    Convert.ToDecimal(txt79) + Convert.ToDecimal(txt78) + Convert.ToDecimal(txt73);
+
+                textBox6.Text = totalamtOverhead.ToString("C");
+
+            }
+            catch { }
 
         }
 
@@ -896,6 +944,9 @@ namespace Accounting_PL
 
         private void textBox3_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox3.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -909,6 +960,9 @@ namespace Accounting_PL
 
         private void textBox84_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox84.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -922,6 +976,9 @@ namespace Accounting_PL
 
         private void textBox77_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox77.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -935,6 +992,9 @@ namespace Accounting_PL
 
         private void textBox76_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox76.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -948,6 +1008,9 @@ namespace Accounting_PL
 
         private void textBox75_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox75.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -961,6 +1024,9 @@ namespace Accounting_PL
 
         private void textBox69_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox69.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -974,6 +1040,9 @@ namespace Accounting_PL
 
         private void textBox68_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox68.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -987,6 +1056,9 @@ namespace Accounting_PL
 
         private void textBox4_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox4.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1000,6 +1072,9 @@ namespace Accounting_PL
 
         private void textBox90_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox90.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1013,6 +1088,9 @@ namespace Accounting_PL
 
         private void textBox89_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox89.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1026,6 +1104,9 @@ namespace Accounting_PL
 
         private void textBox88_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox88.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1039,6 +1120,9 @@ namespace Accounting_PL
 
         private void textBox87_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox87.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1052,6 +1136,9 @@ namespace Accounting_PL
 
         private void textBox86_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox86.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1065,6 +1152,9 @@ namespace Accounting_PL
 
         private void textBox85_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox85.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1078,6 +1168,9 @@ namespace Accounting_PL
 
         private void textBox74_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox74.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1091,6 +1184,9 @@ namespace Accounting_PL
 
         private void textBox72_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox72.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1104,6 +1200,9 @@ namespace Accounting_PL
 
         private void textBox71_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox71.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1117,6 +1216,9 @@ namespace Accounting_PL
 
         private void textBox70_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox70.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1130,6 +1232,9 @@ namespace Accounting_PL
 
         private void textBox5_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox5.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1143,6 +1248,9 @@ namespace Accounting_PL
 
         private void textBox83_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox83.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1156,6 +1264,9 @@ namespace Accounting_PL
 
         private void textBox82_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox82.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1169,6 +1280,9 @@ namespace Accounting_PL
 
         private void textBox81_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox81.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1182,6 +1296,9 @@ namespace Accounting_PL
 
         private void textBox80_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox80.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1195,6 +1312,9 @@ namespace Accounting_PL
 
         private void textBox79_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox79.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1208,6 +1328,9 @@ namespace Accounting_PL
 
         private void textBox78_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox78.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1221,6 +1344,9 @@ namespace Accounting_PL
 
         private void textBox73_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox73.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1234,6 +1360,9 @@ namespace Accounting_PL
 
         private void textBox6_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox6.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1247,6 +1376,9 @@ namespace Accounting_PL
 
         private void textBox27_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox27.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1260,6 +1392,9 @@ namespace Accounting_PL
 
         private void textBox26_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox26.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1273,6 +1408,9 @@ namespace Accounting_PL
 
         private void textBox25_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox25.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1286,6 +1424,9 @@ namespace Accounting_PL
 
         private void textBox24_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox24.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1299,6 +1440,9 @@ namespace Accounting_PL
 
         private void textBox23_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox23.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1312,6 +1456,9 @@ namespace Accounting_PL
 
         private void textBox22_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox22.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1325,6 +1472,9 @@ namespace Accounting_PL
 
         private void textBox28_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox28.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1338,6 +1488,9 @@ namespace Accounting_PL
 
         private void textBox30_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox30.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1351,6 +1504,9 @@ namespace Accounting_PL
 
         private void textBox29_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox29.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1364,6 +1520,9 @@ namespace Accounting_PL
 
         private void textBox32_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox32.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1377,6 +1536,9 @@ namespace Accounting_PL
 
         private void textBox31_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox31.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1390,6 +1552,9 @@ namespace Accounting_PL
 
         private void textBox21_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox21.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1403,6 +1568,9 @@ namespace Accounting_PL
 
         private void textBox20_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox20.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1416,6 +1584,9 @@ namespace Accounting_PL
 
         private void textBox34_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox34.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1429,6 +1600,9 @@ namespace Accounting_PL
 
         private void textBox33_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox33.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1442,6 +1616,9 @@ namespace Accounting_PL
 
         private void textBox19_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox19.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1455,6 +1632,9 @@ namespace Accounting_PL
 
         private void textBox35_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox35.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1468,6 +1648,9 @@ namespace Accounting_PL
 
         private void textBox36_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox36.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1481,6 +1664,9 @@ namespace Accounting_PL
 
         private void textBox37_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox37.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1494,6 +1680,9 @@ namespace Accounting_PL
 
         private void textBox38_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox38.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1507,6 +1696,9 @@ namespace Accounting_PL
 
         private void textBox39_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox39.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1520,6 +1712,9 @@ namespace Accounting_PL
 
         private void textBox43_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox43.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1533,6 +1728,9 @@ namespace Accounting_PL
 
         private void textBox42_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox42.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1546,6 +1744,9 @@ namespace Accounting_PL
 
         private void textBox44_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox44.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1559,6 +1760,9 @@ namespace Accounting_PL
 
         private void textBox41_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox41.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1572,6 +1776,9 @@ namespace Accounting_PL
 
         private void textBox40_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox40.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1585,6 +1792,9 @@ namespace Accounting_PL
 
         private void textBox18_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox18.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1598,6 +1808,9 @@ namespace Accounting_PL
 
         private void textBox45_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox45.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1611,6 +1824,9 @@ namespace Accounting_PL
 
         private void textBox46_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox46.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1624,6 +1840,9 @@ namespace Accounting_PL
 
         private void textBox47_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox47.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1637,6 +1856,9 @@ namespace Accounting_PL
 
         private void textBox48_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox48.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1650,6 +1872,9 @@ namespace Accounting_PL
 
         private void textBox49_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox49.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1663,6 +1888,9 @@ namespace Accounting_PL
 
         private void textBox50_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox50.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1676,6 +1904,9 @@ namespace Accounting_PL
 
         private void textBox7_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox7.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1689,6 +1920,9 @@ namespace Accounting_PL
 
         private void textBox8_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox8.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1702,6 +1936,9 @@ namespace Accounting_PL
 
         private void textBox9_Leave(object sender, EventArgs e)
         {
+
+            updateCalculations();
+
             string value = textBox9.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
@@ -1712,97 +1949,6 @@ namespace Accounting_PL
         {
             e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
         }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            _scanner = new ADFScan();
-            _scanner.Scanning += new EventHandler<WiaImageEventArgs>(_scanner_Scanning);
-            int resolution = 600;       // 150  300  600
-            int width_pixel = 5100;     // 1250  2550  5100
-            int height_pixel = 6400;    // 1700  3200  6400
-            int color_mode = 1;         // 
-            _scanner.BeginScan(color_mode, resolution, width_pixel, height_pixel);
-        }
-
-        void _scanner_Scanning(object sender, WiaImageEventArgs e)
-        {
-            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
-            try
-            {
-                // Determine whether the directory exists.
-                if (!Directory.Exists(lscfolder))
-                {
-                    /// If it does not exist then create it. 
-                    Directory.CreateDirectory(lscfolder);
-                }
-
-            }
-            catch { }
-            string value = "Name of Document";
-            InputBox("What do you want to call the document", "Type a name:", ref value);
-
-            // Testing Random number for multiple runs
-            var rand = new Random();
-            int count = 0;
-
-            string filename = lscfolder + value + "_" + rand.Next(5, 100) + "_Test" + count++.ToString() + ".jpeg";
-            e.ScannedImage.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);  //FILES ARE RETURNED AS BITMAPS
-
-            //Create a new PDF document
-            PdfDocument document = new PdfDocument();
-            //Add a page to the document
-            PdfPage page = document.Pages.Add();
-            //Create PDF graphics for a page
-            PdfGraphics graphics = page.Graphics;
-            //Load the image from the disk
-            PdfBitmap imageFile = new PdfBitmap(filename);   //  "Input.jpg"
-                                                             //Draw the image
-            graphics.DrawImage(imageFile, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
-            //Save the document into stream
-            MemoryStream stream = new MemoryStream();
-            document.Save(stream);
-            //Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
-            using (OCRProcessor processor = new OCRProcessor(@"../../Tesseract Binaries/"))
-            {
-                //Load a PDF document
-                PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
-
-                //Set OCR language to process
-                processor.Settings.Language = Languages.English;
-
-                //Enable the AutoDetectRotation
-                processor.Settings.AutoDetectRotation = true;
-
-                //Enable native call  
-                processor.Settings.EnableNativeCall = true;
-
-                //Process OCR by providing the PDF document and Tesseract data
-                String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
-
-                // Save the PDF file
-                string lcNewFile = lscfolder + "Scan_OCR_File" + rand.Next(5, 100) + ".pdf";  //  lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";
-
-                //Save the OCR processed PDF document in the disk
-                lDoc.Save(lcNewFile);
-
-                //Writes the text to the file
-                File.WriteAllText(lscfolder + "ExtractedText" + rand.Next(5, 100) + ".txt", text);
-
-                //Close the document
-                lDoc.Close(true);
-            }
-            //This will open the PDF file so, the result will be seen in default PDF viewer
-            //  Process.Start("OCR.pdf");
-
-            string line = null;
-            TextReader readFile = new StreamReader(lscfolder + "ExtractedText.txt");
-            line = readFile.ReadToEnd();
-            MessageBox.Show(line);
-            readFile.Close();
-            readFile = null;
-
-        }
-
 
         //public static string lConn(OdbcConnection conn)
         //{

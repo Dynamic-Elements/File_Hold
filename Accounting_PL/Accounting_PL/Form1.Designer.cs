@@ -186,7 +186,6 @@
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox9 = new System.Windows.Forms.TextBox();
-            this.button8 = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -223,7 +222,7 @@
             this.textBox1.Location = new System.Drawing.Point(114, 254);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(96, 26);
-            this.textBox1.TabIndex = 2;
+            this.textBox1.TabIndex = 1;
             // 
             // label1
             // 
@@ -1032,7 +1031,7 @@
             this.panel2.Location = new System.Drawing.Point(286, 24);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(298, 271);
-            this.panel2.TabIndex = 74;
+            this.panel2.TabIndex = 5;
             this.panel2.Visible = false;
             // 
             // textBox4
@@ -1041,7 +1040,7 @@
             this.textBox4.Location = new System.Drawing.Point(145, 230);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(140, 26);
-            this.textBox4.TabIndex = 23;
+            this.textBox4.TabIndex = 6;
             this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox4_KeyPress);
             this.textBox4.Leave += new System.EventHandler(this.textBox4_Leave);
             // 
@@ -1069,7 +1068,7 @@
             this.textBox68.Location = new System.Drawing.Point(145, 180);
             this.textBox68.Name = "textBox68";
             this.textBox68.Size = new System.Drawing.Size(140, 26);
-            this.textBox68.TabIndex = 12;
+            this.textBox68.TabIndex = 5;
             this.textBox68.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox68_KeyPress);
             this.textBox68.Leave += new System.EventHandler(this.textBox68_Leave);
             // 
@@ -1079,7 +1078,7 @@
             this.textBox69.Location = new System.Drawing.Point(145, 155);
             this.textBox69.Name = "textBox69";
             this.textBox69.Size = new System.Drawing.Size(140, 26);
-            this.textBox69.TabIndex = 11;
+            this.textBox69.TabIndex = 4;
             this.textBox69.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox69_KeyPress);
             this.textBox69.Leave += new System.EventHandler(this.textBox69_Leave);
             // 
@@ -1089,7 +1088,7 @@
             this.textBox75.Location = new System.Drawing.Point(145, 130);
             this.textBox75.Name = "textBox75";
             this.textBox75.Size = new System.Drawing.Size(140, 26);
-            this.textBox75.TabIndex = 10;
+            this.textBox75.TabIndex = 3;
             this.textBox75.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox75_KeyPress);
             this.textBox75.Leave += new System.EventHandler(this.textBox75_Leave);
             // 
@@ -1099,7 +1098,7 @@
             this.textBox76.Location = new System.Drawing.Point(145, 105);
             this.textBox76.Name = "textBox76";
             this.textBox76.Size = new System.Drawing.Size(140, 26);
-            this.textBox76.TabIndex = 9;
+            this.textBox76.TabIndex = 2;
             this.textBox76.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox76_KeyPress);
             this.textBox76.Leave += new System.EventHandler(this.textBox76_Leave);
             // 
@@ -1109,7 +1108,7 @@
             this.textBox77.Location = new System.Drawing.Point(145, 80);
             this.textBox77.Name = "textBox77";
             this.textBox77.Size = new System.Drawing.Size(140, 26);
-            this.textBox77.TabIndex = 8;
+            this.textBox77.TabIndex = 1;
             this.textBox77.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox77_KeyPress);
             this.textBox77.Leave += new System.EventHandler(this.textBox77_Leave);
             // 
@@ -1119,7 +1118,7 @@
             this.textBox84.Location = new System.Drawing.Point(145, 55);
             this.textBox84.Name = "textBox84";
             this.textBox84.Size = new System.Drawing.Size(140, 26);
-            this.textBox84.TabIndex = 7;
+            this.textBox84.TabIndex = 0;
             this.textBox84.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox84_KeyPress);
             this.textBox84.Leave += new System.EventHandler(this.textBox84_Leave);
             // 
@@ -1218,7 +1217,7 @@
             this.textBox6.Location = new System.Drawing.Point(185, 241);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(140, 26);
-            this.textBox6.TabIndex = 27;
+            this.textBox6.TabIndex = 7;
             this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox6_KeyPress);
             this.textBox6.Leave += new System.EventHandler(this.textBox6_Leave);
             // 
@@ -1236,7 +1235,7 @@
             this.textBox73.Location = new System.Drawing.Point(185, 198);
             this.textBox73.Name = "textBox73";
             this.textBox73.Size = new System.Drawing.Size(140, 26);
-            this.textBox73.TabIndex = 25;
+            this.textBox73.TabIndex = 6;
             this.textBox73.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox73_KeyPress);
             this.textBox73.Leave += new System.EventHandler(this.textBox73_Leave);
             // 
@@ -1263,7 +1262,7 @@
             this.textBox78.Location = new System.Drawing.Point(185, 173);
             this.textBox78.Name = "textBox78";
             this.textBox78.Size = new System.Drawing.Size(140, 26);
-            this.textBox78.TabIndex = 12;
+            this.textBox78.TabIndex = 5;
             this.textBox78.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox78_KeyPress);
             this.textBox78.Leave += new System.EventHandler(this.textBox78_Leave);
             // 
@@ -1272,7 +1271,7 @@
             this.textBox79.Location = new System.Drawing.Point(185, 148);
             this.textBox79.Name = "textBox79";
             this.textBox79.Size = new System.Drawing.Size(140, 26);
-            this.textBox79.TabIndex = 11;
+            this.textBox79.TabIndex = 4;
             this.textBox79.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox79_KeyPress);
             this.textBox79.Leave += new System.EventHandler(this.textBox79_Leave);
             // 
@@ -1281,7 +1280,7 @@
             this.textBox80.Location = new System.Drawing.Point(185, 123);
             this.textBox80.Name = "textBox80";
             this.textBox80.Size = new System.Drawing.Size(140, 26);
-            this.textBox80.TabIndex = 10;
+            this.textBox80.TabIndex = 3;
             this.textBox80.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox80_KeyPress);
             this.textBox80.Leave += new System.EventHandler(this.textBox80_Leave);
             // 
@@ -1290,7 +1289,7 @@
             this.textBox81.Location = new System.Drawing.Point(185, 98);
             this.textBox81.Name = "textBox81";
             this.textBox81.Size = new System.Drawing.Size(140, 26);
-            this.textBox81.TabIndex = 9;
+            this.textBox81.TabIndex = 2;
             this.textBox81.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox81_KeyPress);
             this.textBox81.Leave += new System.EventHandler(this.textBox81_Leave);
             // 
@@ -1299,7 +1298,7 @@
             this.textBox82.Location = new System.Drawing.Point(185, 73);
             this.textBox82.Name = "textBox82";
             this.textBox82.Size = new System.Drawing.Size(140, 26);
-            this.textBox82.TabIndex = 8;
+            this.textBox82.TabIndex = 1;
             this.textBox82.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox82_KeyPress);
             this.textBox82.Leave += new System.EventHandler(this.textBox82_Leave);
             // 
@@ -1308,7 +1307,7 @@
             this.textBox83.Location = new System.Drawing.Point(185, 48);
             this.textBox83.Name = "textBox83";
             this.textBox83.Size = new System.Drawing.Size(140, 26);
-            this.textBox83.TabIndex = 7;
+            this.textBox83.TabIndex = 0;
             this.textBox83.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox83_KeyPress);
             this.textBox83.Leave += new System.EventHandler(this.textBox83_Leave);
             // 
@@ -1708,7 +1707,7 @@
             this.textBox2.Location = new System.Drawing.Point(114, 230);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(96, 26);
-            this.textBox2.TabIndex = 80;
+            this.textBox2.TabIndex = 0;
             // 
             // button7
             // 
@@ -1738,7 +1737,7 @@
             this.textBox3.Location = new System.Drawing.Point(114, 278);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(130, 26);
-            this.textBox3.TabIndex = 81;
+            this.textBox3.TabIndex = 2;
             this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
             this.textBox3.Leave += new System.EventHandler(this.textBox3_Leave);
             // 
@@ -1758,7 +1757,7 @@
             this.textBox8.Location = new System.Drawing.Point(114, 316);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(130, 26);
-            this.textBox8.TabIndex = 84;
+            this.textBox8.TabIndex = 3;
             this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox8_KeyPress);
             this.textBox8.Leave += new System.EventHandler(this.textBox8_Leave);
             // 
@@ -1778,26 +1777,15 @@
             this.textBox9.Location = new System.Drawing.Point(114, 341);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(130, 26);
-            this.textBox9.TabIndex = 86;
+            this.textBox9.TabIndex = 4;
             this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox9_KeyPress);
             this.textBox9.Leave += new System.EventHandler(this.textBox9_Leave);
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(97, 410);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 76;
-            this.button8.Text = "button8";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(895, 640);
-            this.Controls.Add(this.button8);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.textBox9);
             this.Controls.Add(this.label9);
@@ -1996,7 +1984,6 @@
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.Button button8;
     }
 }
 
