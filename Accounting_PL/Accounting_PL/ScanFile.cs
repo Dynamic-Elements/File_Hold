@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
 using WIA;
 
 namespace ScanIt
@@ -137,6 +134,8 @@ namespace ScanIt
             Property documentHandlingSelect = null;
             Property documentHandlingStatus = null;
 
+            //  bool hasMorePages = true;   // maybe
+
             string test = string.Empty;
 
             foreach (Property prop in wia.Properties)
@@ -152,9 +151,15 @@ namespace ScanIt
                     documentHandlingStatus = prop;
             }
 
-            if ((System.Convert.ToUInt32(documentHandlingSelect.get_Value()) & 0x00000001) != 0)
+            //  hasMorePages = false; //  assume there are no more pages  // maybe
+            if (documentHandlingSelect != null)
+            //may not exist on flatbed scanner but required for feeder
             {
-                return ((System.Convert.ToUInt32(documentHandlingStatus.get_Value()) & 0x00000001) != 0);
+                //check for document feeder
+                if ((Convert.ToUInt32(documentHandlingSelect.get_Value()) & 0x00000001) != 0)  // Convert.ToUInt32(documentHandlingSelect.get_Value()) & WIA_DPS_DOCUMENT_HANDLING_SELECT.FEEDER) != 0  //  0x00000001
+                {
+                    return ((Convert.ToUInt32(documentHandlingStatus.get_Value()) & 0x00000001) != 0);  //  return ((Convert.ToUInt32(documentHandlingStatus.get_Value()) & 0x00000001) != 0)  WIA_DPS_DOCUMENT_HANDLING_STATUS.FEED_READY) != 0
+                }
             }
 
             string tester = test;
@@ -538,11 +543,12 @@ namespace ScanIt
         }
     }
 
+  
     internal class NewScanner
     {
     }
 
-    internal class WIA_PROPERTIES
+    class WIA_PROPERTIES
     {
         public const uint WIA_DIP_FIRST = 2;
         public const uint WIA_DPA_FIRST = WIA_DIP_FIRST + WIA_RESERVED_FOR_NEW_PROPS;
