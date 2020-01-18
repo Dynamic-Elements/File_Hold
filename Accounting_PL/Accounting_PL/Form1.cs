@@ -58,9 +58,11 @@ namespace Accounting_PL
             textBox2.Text = lYear;   // Yr.Substring(0,4);
 
             if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
-                MessageBox.Show("Leap year!");
+                checkBox3.Checked = true;
+            // MessageBox.Show("Leap year!");
 
 
+            // dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
             //string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
             //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             //OdbcDataReader reader = cmd.ExecuteReader();
@@ -522,87 +524,13 @@ namespace Accounting_PL
 
         }
 
-
-        /// <summary>
-        /// Food button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button3_Click(object sender, EventArgs e)
+        private void addItemsForm(string nTitle)
         {
-            panel2.Visible = true;
-            panel2.BringToFront();
-            panel3.Visible = false;
-            panel3.SendToBack();
-            panel4.Visible = false;
-            panel4.SendToBack();
-            panel5.Visible = false;
-            panel5.SendToBack();
 
-            updateCalculations();
+            Form2 f2 = new Form2(nTitle);
+            f2.Show();
 
         }
-
-        /// <summary>
-        /// Labor Button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button4_Click(object sender, EventArgs e)
-        {
-            panel2.Visible = false;
-            panel2.SendToBack();
-            panel3.Visible = false;
-            panel3.SendToBack();
-            panel4.Visible = false;
-            panel4.SendToBack();
-            panel5.Visible = true;
-            panel5.BringToFront();
-
-            updateCalculations();
-
-        }
-
-        /// <summary>
-        /// Expenses Button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button5_Click(object sender, EventArgs e)
-        {
-            panel2.Visible = false;
-            panel2.SendToBack();
-            panel3.Visible = true;
-            panel3.BringToFront();
-            panel4.Visible = false;
-            panel4.SendToBack();
-            panel5.Visible = false;
-            panel5.SendToBack();
-
-            updateCalculations();
-
-        }
-
-        /// <summary>
-        /// Overhead Button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button6_Click(object sender, EventArgs e)
-        {
-            panel2.Visible = false;
-            panel2.SendToBack();
-            panel3.Visible = false;
-            panel3.SendToBack();
-            panel4.Visible = true;
-            panel4.BringToFront();
-            panel5.Visible = false;
-            panel5.SendToBack();
-
-            updateCalculations();
-
-        }
-
 
 
         private void updateCalculations()
@@ -2032,7 +1960,35 @@ namespace Accounting_PL
             return dialogResult;
         }
 
-        
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabControl1.TabPages["Food"])
+                addItemsForm("FOOD");  // This works
+
+            switch (this.tabControl1.SelectedIndex)
+            {
+                case 0:
+                    addItemsForm("FOOD");
+                    break;
+                case 1:
+                    addItemsForm("EXPENSES");
+                    break;
+                case 2:
+                    addItemsForm("LABOR");
+                    break;
+                case 3:
+                    addItemsForm("OVERHEAD");
+                    break;
+                default:
+                    addItemsForm("FOOD");
+                    break;
+            }
+
+            updateCalculations();
+
+        }
+
     }
 
     //public class Conn_cl
