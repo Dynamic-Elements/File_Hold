@@ -455,10 +455,10 @@ namespace Accounting_PL
                 duplex = true;
 
             var path = lscfolder;
-            int dpi = 600;  // 150  300  600
+            int dpi = 1200;  // 150  300  600  720  1200  1270  1440
             WiaWrapper obj = new WiaWrapper();
             obj.SelectScanner();
-            obj.Scan(false, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
+            obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
 
             FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
             string value = "Document Name";
