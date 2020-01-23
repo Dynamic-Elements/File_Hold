@@ -51,14 +51,16 @@ namespace Accounting_PL
             //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             //cnn.Open();
 
+            textBox10.Text = "FOOD";
+
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = lastSunday.Substring(lastSunday.Length - 4, 4);
             textBox1.Text = lastSunday;
             textBox2.Text = lYear;   // Yr.Substring(0,4);
 
-            if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
-                checkBox3.Checked = true;
+            //if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
+            //    checkBox3.Checked = true;
             // MessageBox.Show("Leap year!");
 
 
@@ -520,15 +522,6 @@ namespace Accounting_PL
             // MessageBox.Show(line);
             readFile.Close();
             readFile = null;
-
-
-        }
-
-        private void addItemsForm(string nTitle)
-        {
-
-            Form2 f2 = new Form2(nTitle);
-            f2.Show();
 
         }
 
@@ -1917,7 +1910,6 @@ namespace Accounting_PL
 
 
 
-
         public static DialogResult InputBox(string title, string promptText, ref string value)
         {
             Form form = new Form();
@@ -1963,32 +1955,54 @@ namespace Accounting_PL
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabControl1.TabPages["Food"])
-                addItemsForm("FOOD");  // This works
+            textBox10.Text = "FOOD";
 
             switch (this.tabControl1.SelectedIndex)
             {
                 case 0:
-                    addItemsForm("FOOD");
+                    textBox10.Text = "FOOD";
                     break;
+
                 case 1:
-                    addItemsForm("EXPENSES");
+                    textBox10.Text = "EXPENSES";
                     break;
+
                 case 2:
-                    addItemsForm("LABOR");
+                    textBox10.Text = "LABOR";
                     break;
+
                 case 3:
-                    addItemsForm("OVERHEAD");
+                    textBox10.Text = "OVERHEAD";
                     break;
+
                 default:
-                    addItemsForm("FOOD");
+                    textBox10.Text = "FOOD";
                     break;
+
             }
 
             updateCalculations();
 
         }
 
+        private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
+        {
+            // Add columns together
+            decimal totalSalary = 0;
+            decimal amt = 0;
+
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                var value = dataGridView1.Rows[i].Cells[4].Value;
+                if (value != DBNull.Value)
+                {
+                    amt = Convert.ToDecimal(value);
+                    totalSalary += amt;
+                }
+            }
+
+            textBox11.Text = totalSalary.ToString("C");
+        }
     }
 
     //public class Conn_cl

@@ -181,12 +181,22 @@
             this.tabExpense = new System.Windows.Forms.TabPage();
             this.tabLabor = new System.Windows.Forms.TabPage();
             this.tabOver = new System.Windows.Forms.TabPage();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.txtVendor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtInvoiceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtInvoice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtCategory = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.txtAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabFood.SuspendLayout();
             this.tabExpense.SuspendLayout();
             this.tabLabor.SuspendLayout();
             this.tabOver.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -1784,22 +1794,90 @@
             this.tabOver.Text = "Overhead";
             this.tabOver.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // dataGridView1
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(114, 187);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(75, 17);
-            this.checkBox3.TabIndex = 23;
-            this.checkBox3.Text = "Leap Year";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.txtVendor,
+            this.txtInvoiceDate,
+            this.txtInvoice,
+            this.txtCategory,
+            this.txtAmt});
+            this.dataGridView1.Location = new System.Drawing.Point(788, 60);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(546, 132);
+            this.dataGridView1.TabIndex = 92;
+            this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
+            // 
+            // txtVendor
+            // 
+            this.txtVendor.HeaderText = "Vender";
+            this.txtVendor.Name = "txtVendor";
+            // 
+            // txtInvoiceDate
+            // 
+            this.txtInvoiceDate.HeaderText = "Invoice Date";
+            this.txtInvoiceDate.Name = "txtInvoiceDate";
+            // 
+            // txtInvoice
+            // 
+            this.txtInvoice.HeaderText = "Invoice #";
+            this.txtInvoice.Name = "txtInvoice";
+            // 
+            // txtCategory
+            // 
+            this.txtCategory.HeaderText = "Category";
+            this.txtCategory.Name = "txtCategory";
+            // 
+            // txtAmt
+            // 
+            this.txtAmt.HeaderText = "Amount";
+            this.txtAmt.Name = "txtAmt";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(995, 34);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.ReadOnly = true;
+            this.textBox10.Size = new System.Drawing.Size(131, 20);
+            this.textBox10.TabIndex = 93;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1228, 224);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 94;
+            this.button3.Text = "Apply";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(1203, 198);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.ReadOnly = true;
+            this.textBox11.Size = new System.Drawing.Size(131, 20);
+            this.textBox11.TabIndex = 95;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(1166, 204);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.TabIndex = 96;
+            this.label8.Text = "Total";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(789, 621);
-            this.Controls.Add(this.checkBox3);
+            this.ClientSize = new System.Drawing.Size(1340, 621);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.textBox11);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.textBox10);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
@@ -1829,6 +1907,7 @@
             this.tabLabor.PerformLayout();
             this.tabOver.ResumeLayout(false);
             this.tabOver.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1989,7 +2068,16 @@
         private System.Windows.Forms.TabPage tabExpense;
         private System.Windows.Forms.TabPage tabLabor;
         private System.Windows.Forms.TabPage tabOver;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtVendor;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtInvoiceDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtInvoice;
+        private System.Windows.Forms.DataGridViewComboBoxColumn txtCategory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtAmt;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label8;
     }
 }
 
