@@ -191,6 +191,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabFood.SuspendLayout();
             this.tabExpense.SuspendLayout();
@@ -1868,11 +1869,23 @@
             this.label8.TabIndex = 96;
             this.label8.Text = "Total";
             // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(12, 476);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(80, 17);
+            this.checkBox3.TabIndex = 23;
+            this.checkBox3.Text = "checkBox3";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1340, 621);
+            this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.textBox11);
             this.Controls.Add(this.button3);
@@ -2078,6 +2091,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }
 

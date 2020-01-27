@@ -40,24 +40,40 @@ namespace Accounting_PL
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            //string lcServer = "playgroup.database.windows.net";
-            //string lcODBC = "ODBC Driver 17 for SQL Server";
-            //string lcDB = "tb_HelpingHand";
-            //// string lcPort = "3306";  //  Port=" + lcPort + ";
-            //string lcUser = "tbmaster";
-            //string lcProv = "SQLOLEDB";
-            //string lcPass = "Smartman55";
-            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            //cnn.Open();
+            var date = DateTime.Now;
+            var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
+            var lYear = DateTime.Now.Year.ToString();
+            textBox1.Text = lastSunday;
+            textBox2.Text = lYear;   // Yr.Substring(0,4);
+
+
+            string lcServer = "dynamicelements.database.windows.net";
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "dynamicelements";
+            // string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+
+
+            string lcSQL = "SELECT * from dynamicelements..tb_Config where Year='" + lYear + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
+            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            OdbcDataReader reader = cmd.ExecuteReader();
+
+            bool fiscialLeapYear;
+            if (reader.HasRows)
+            {
+                fiscialLeapYear = true;
+                checkBox3.Checked = true;
+            }
+            else { }
 
             textBox10.Text = "FOOD";
 
-            var date = DateTime.Now;
-            var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
-            var lYear = lastSunday.Substring(lastSunday.Length - 4, 4);
-            textBox1.Text = lastSunday;
-            textBox2.Text = lYear;   // Yr.Substring(0,4);
+
 
             //if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
             //    checkBox3.Checked = true;
@@ -214,7 +230,14 @@ namespace Accounting_PL
             textBox5.Text = "0.00";
 
             //}
-            //cnn.Close();
+            cnn.Close();
+
+
+
+            // https://cloud.google.com/vision/docs/ocr#vision_text_detection-csharp
+            // https://developers.google.com/vision/android/text-overview
+            // https://cloud.google.com/vision/docs/pdf
+
 
         }
 
@@ -263,6 +286,20 @@ namespace Accounting_PL
             // xlWorkSheet.Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1);
             //  xlWorkBook.Worksheets.Add();
 
+            //iWeeksPerMonth = 4  sMonth = "January"
+            //iWeeksPerMonth = 4  sMonth = "February"
+            //iWeeksPerMonth = 5  sMonth = "March"
+            //iWeeksPerMonth = 4  sMonth = "April"
+            //iWeeksPerMonth = 4  sMonth = "May"
+            //iWeeksPerMonth = 5  sMonth = "June"
+            //iWeeksPerMonth = 4  sMonth = "July"
+            //iWeeksPerMonth = 4  sMonth = "August"
+            //iWeeksPerMonth = 5  sMonth = "September"
+            //iWeeksPerMonth = 4  sMonth = "October"
+            //iWeeksPerMonth = 4  sMonth = "November"
+            //iWeeksPerMonth = 5 or iWeeksPerMonth = 6  sMonth = "December"
+
+
             var coll = new Excel.Worksheet[14];
 
             for (int i = 1; i < 14; i++)
@@ -297,11 +334,29 @@ namespace Accounting_PL
                 coll[i].Cells[3, 8] = "$";
                 coll[i].Cells[3, 9] = "%";
 
-                //  coll[i].Cells[1, 10] = "Dates";
-                //  coll[i].Range["j1:k1"].Merge();
-                //  coll[i].Cells[2, 10] = "Week 5";
-                //  coll[i].Cells[3, 10] = "$";
-                //  coll[i].Cells[3, 11] = "%";
+                if (i == 3 || i == 6 || i == 9 || i == 12)  // Extra week
+                {
+
+                    coll[i].Cells[1, 10] = "Dates";
+                    coll[i].Range["j1:k1"].Merge();
+                    coll[i].Cells[2, 10] = "Week 5";
+                    coll[i].Cells[3, 10] = "$";
+                    coll[i].Cells[3, 11] = "%";
+
+                }
+                else { }
+
+                if (checkBox3.Checked == true && i == 12)  // Extra week
+                {
+
+                    coll[i].Cells[1, 12] = "Dates";
+                    coll[i].Range["j1:k1"].Merge();
+                    coll[i].Cells[2, 12] = "Week 6";
+                    coll[i].Cells[3, 12] = "$";
+                    coll[i].Cells[3, 13] = "%";
+
+                }
+                else { }
 
                 coll[i].Cells[4, 1] = "Net Sales";
                 coll[i].Cells[4, 1].Font.Bold = true;
