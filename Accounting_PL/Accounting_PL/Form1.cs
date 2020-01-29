@@ -3,7 +3,9 @@ using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Parsing;
 using ScanIt;
+using IronOcr;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Data.Odbc;
@@ -81,7 +83,7 @@ namespace Accounting_PL
 
 
             // dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
-            //string lcSQL = "SELECT * from tb_HelpingHand..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
+            //string lcSQL = "SELECT * from dynamicelements..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
             //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             //OdbcDataReader reader = cmd.ExecuteReader();
             //// MessageBox.Show(Convert.ToString(reader.GetOrdinal("NetSales")));
@@ -503,80 +505,113 @@ namespace Accounting_PL
             }
             catch { }
 
-            bool adf = false;  // checkBox1
-            bool duplex = false;  // checkBox2
-            if (checkBox1.Checked)
-                adf = true;
+            //bool adf = false;  // checkBox1
+            //bool duplex = false;  // checkBox2
+            //if (checkBox1.Checked)
+            //    adf = true;
 
-            if (checkBox2.Checked)
-                duplex = true;
+            //if (checkBox2.Checked)
+            //    duplex = true;
 
-            var path = lscfolder;
-            int dpi = 1200;  // 150  300  600  720  1200  1270  1440
-            WiaWrapper obj = new WiaWrapper();
-            obj.SelectScanner();
-            obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
+            //var path = lscfolder;
+            //int dpi = 600;  // 150  300  600  720  1200  1270  1440
+            //WiaWrapper obj = new WiaWrapper();
+            //obj.SelectScanner();
+            //obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
 
-            FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
-            string value = "Document Name";
-            if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
+            //FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
+            //string value = "Document Name";
+            //if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
+            //{
+            //    Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
+            //}
+            //File.Move(oldnewestFile.FullName, Name);
+
+            //var Ocr = new IronOcr.AutoOcr();
+            //var Result = Ocr.Read(@"C:\path\to\image.png");
+            //Console.WriteLine(Result.Text);
+
+            var Ocr = new IronOcr.AdvancedOcr()
             {
-                Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
-            }
-            File.Move(oldnewestFile.FullName, Name);
+                CleanBackgroundNoise = true,
+                EnhanceContrast = true,
+                EnhanceResolution = true,
+                Language = IronOcr.Languages.English.OcrLanguagePack,
+                Strategy = IronOcr.AdvancedOcr.OcrStrategy.Advanced,
+                ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
+                DetectWhiteTextOnDarkBackgrounds = true,
+                InputImageType = AdvancedOcr.InputTypes.Document,
+                RotateAndStraighten = true,
+                ReadBarCodes = false,
+                ColorDepth = 4
+            };
 
-            //Create a new PDF document
-            PdfDocument document = new PdfDocument();
-            //Add a page to the document
-            PdfPage page = document.Pages.Add();
-            //Create PDF graphics for a page
-            PdfGraphics graphics = page.Graphics;
-            //Load the image from the disk
-            PdfBitmap imageFile = new PdfBitmap(Name);   //  "Input.jpg"  path
-            //Draw the image
-            graphics.DrawImage(imageFile, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
-            //Save the document into stream
-            MemoryStream stream = new MemoryStream();
-            document.Save(stream);
-            //Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
-            using (OCRProcessor processor = new OCRProcessor(@"../../Tesseract Binaries/"))
-            {
-                //Load a PDF document
-                PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
+            var testDocument = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents\test_02.jpg";
+            // var testDocument = Name;
+            var Results = Ocr.Read(testDocument);
+            // var Results = Ocr.Read(Name);
+            // Console.WriteLine(Results.Text);
+            MessageBox.Show(Results.Text);
 
-                //Set OCR language to process
-                processor.Settings.Language = Languages.English;
-
-                //Enable the AutoDetectRotation
-                processor.Settings.AutoDetectRotation = true;
-
-                //Enable native call  
-                processor.Settings.EnableNativeCall = true;
-
-                //Process OCR by providing the PDF document and Tesseract data
-                String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
-
-                // Save the PDF file
-                string lcNewFile = oldnewestFile.DirectoryName + "\\" + value + ".pdf";  //  lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";  lscfolder + "Scan_OCR_File.pdf";
-
-                //Save the OCR processed PDF document in the disk
-                lDoc.Save(lcNewFile);
-
-                //Writes the text to the file
-                File.WriteAllText(oldnewestFile.DirectoryName + "\\" + value + ".txt", text);  //  lscfolder + "ExtractedText.txt"
-
-                //Close the document
-                lDoc.Close(true);
-            }
-            //This will open the PDF file so, the result will be seen in default PDF viewer
-            //  Process.Start("OCR.pdf");
-
-            string line = null;
-            TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
-            line = readFile.ReadToEnd();
+            //string line = null;
+            //TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
+            //line = readFile.ReadToEnd();
             // MessageBox.Show(line);
-            readFile.Close();
-            readFile = null;
+            //readFile.Close();
+            //readFile = null;
+
+            ////Create a new PDF document
+            //PdfDocument document = new PdfDocument();
+            ////Add a page to the document
+            //PdfPage page = document.Pages.Add();
+            ////Create PDF graphics for a page
+            //PdfGraphics graphics = page.Graphics;
+            ////Load the image from the disk
+            //PdfBitmap imageFile = new PdfBitmap(Name);   //  "Input.jpg"  path
+            ////Draw the image
+            //graphics.DrawImage(imageFile, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
+            ////Save the document into stream
+            //MemoryStream stream = new MemoryStream();
+            //document.Save(stream);
+            ////Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
+            //using (OCRProcessor processor = new OCRProcessor(@"../../Tesseract Binaries/"))
+            //{
+            //    //Load a PDF document
+            //    PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
+
+            //    //Set OCR language to process
+            //    processor.Settings.Language = Languages.English;
+
+            //    //Enable the AutoDetectRotation
+            //    processor.Settings.AutoDetectRotation = true;
+
+            //    //Enable native call  
+            //    processor.Settings.EnableNativeCall = true;
+
+            //    //Process OCR by providing the PDF document and Tesseract data
+            //    String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
+
+            //    // Save the PDF file
+            //    string lcNewFile = oldnewestFile.DirectoryName + "\\" + value + ".pdf";  //  lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";  lscfolder + "Scan_OCR_File.pdf";
+
+            //    //Save the OCR processed PDF document in the disk
+            //    lDoc.Save(lcNewFile);
+
+            //    //Writes the text to the file
+            //    File.WriteAllText(oldnewestFile.DirectoryName + "\\" + value + ".txt", text);  //  lscfolder + "ExtractedText.txt"
+
+            //    //Close the document
+            //    lDoc.Close(true);
+            //}
+            ////This will open the PDF file so, the result will be seen in default PDF viewer
+            ////  Process.Start("OCR.pdf");
+
+            //string line = null;
+            //TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
+            //line = readFile.ReadToEnd();
+            //// MessageBox.Show(line);
+            //readFile.Close();
+            //readFile = null;
 
         }
 
@@ -2057,6 +2092,43 @@ namespace Accounting_PL
             }
 
             textBox11.Text = totalSalary.ToString("C");
+        }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            var ldate = monthCalendar1.SelectionRange.Start.Date;  // .ToShortDateString()
+            var nextSunday = Dates.DTOC(ldate.AddDays(7 - (int)ldate.DayOfWeek));
+            var lcyear = Dates.CTOD(nextSunday).Year.ToString();
+
+            textBox1.Text = nextSunday;
+            textBox2.Text = lcyear;
+
+            string lcServer = "dynamicelements.database.windows.net";
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "dynamicelements";
+            // string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+
+            string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where Week='" + nextSunday + "'";
+            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            OdbcDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+
+            }
+            else
+            {
+
+            }
+
+            cnn.Close();
+
         }
     }
 
