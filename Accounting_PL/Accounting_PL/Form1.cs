@@ -45,11 +45,11 @@ namespace Accounting_PL
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();
-            textBox1.Text = lastSunday;
-            textBox2.Text = lYear;   // Yr.Substring(0,4);
+            txtWeek.Text = lastSunday;
+            txtYear.Text = lYear;   // Yr.Substring(0,4);
 
 
-            string lcServer = "dynamicelements.database.windows.net";
+            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
             string lcODBC = "ODBC Driver 17 for SQL Server";
             string lcDB = "dynamicelements";
             // string lcPort = "3306";  //  Port=" + lcPort + ";
@@ -73,8 +73,7 @@ namespace Accounting_PL
             }
             else { }
 
-            textBox10.Text = "FOOD";
-
+            txtInvHold.Text = "FOOD";
 
 
             //if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
@@ -83,155 +82,155 @@ namespace Accounting_PL
 
 
             // dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
-            //string lcSQL = "SELECT * from dynamicelements..tb_datahold where Week='12/30/2018'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
-            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            //OdbcDataReader reader = cmd.ExecuteReader();
+            string lcSQLa = "select * from vw_OrderLogs where week='" + lastSunday + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "  12/30/2018
+            OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
+            OdbcDataReader readera = cmda.ExecuteReader();
             //// MessageBox.Show(Convert.ToString(reader.GetOrdinal("NetSales")));
 
-            //if (reader.HasRows)
-            //{
+            if (readera.HasRows)
+            {
 
-            //    textBox3.Text = reader["NetSales"].ToString();
-            //    textBox8.Text = reader["Healthcare"].ToString();
-            //    textBox9.Text = reader["Retirement"].ToString();
+                txtNetSales.Text = readera["NetSales"].ToString();
+                txtRetire.Text = readera["Healthcare"].ToString();
+                txtHealth.Text = readera["Retirement"].ToString();
 
-            //    textBox84.Text = reader["PrimSupp"].ToString();
-            //    textBox77.Text = reader["OthSupp"].ToString();
-            //    textBox76.Text = reader["Bread"].ToString();
-            //    textBox75.Text = reader["Beverage"].ToString();
-            //    textBox69.Text = reader["Produce"].ToString();
-            //    textBox68.Text = reader["CarbonDioxide"].ToString();
-            //    textBox4.Text = reader["FoodCost"].ToString();
+                txtPrimSup.Text = readera["PrimSupp"].ToString();
+                txtOtherSupp.Text = readera["OthSupp"].ToString();
+                txtBread.Text = readera["Bread"].ToString();
+                txtBev.Text = readera["Beverage"].ToString();
+                txtProd.Text = readera["Produce"].ToString();
+                txtCarbDio.Text = readera["CarbonDioxide"].ToString();
+                txtFoodTot.Text = readera["FoodCost"].ToString();
 
-            //    textBox83.Text = reader["Mortgage"].ToString();
-            //    textBox82.Text = reader["LoanPayment"].ToString();
-            //    textBox81.Text = reader["Association"].ToString();
-            //    textBox80.Text = reader["PropertyTax"].ToString();
-            //    textBox79.Text = reader["AdvertisingCoop"].ToString();
-            //    textBox78.Text = reader["NationalAdvertise"].ToString();
-            //    textBox73.Text = reader["LicensingFee"].ToString();
-            //    textBox6.Text = reader["OverheadCost"].ToString();
+                txtMortgage.Text = readera["Mortgage"].ToString();
+                txtLoan.Text = readera["LoanPayment"].ToString();
+                txtAssociation.Text = readera["Association"].ToString();
+                txtPropTax.Text = readera["PropertyTax"].ToString();
+                txtAdvCoop.Text = readera["AdvertisingCoop"].ToString();
+                txtNationalAdv.Text = readera["NationalAdvertise"].ToString();
+                txtLicenseFee.Text = readera["LicensingFee"].ToString();
+                txtTotOverhead.Text = readera["OverheadCost"].ToString();
 
-            //    textBox27.Text = reader["Accounting"].ToString();
-            //    textBox26.Text = reader["Bank"].ToString();
-            //    textBox25.Text = reader["CreditCard"].ToString();
-            //    textBox24.Text = reader["Fuel"].ToString();
-            //    textBox23.Text = reader["Legal"].ToString();
-            //    textBox22.Text = reader["License"].ToString();
-            //    textBox28.Text = reader["PayrollProc"].ToString();
-            //    textBox30.Text = reader["Insurance"].ToString();
-            //    textBox29.Text = reader["WorkersComp"].ToString();
-            //    textBox32.Text = reader["Advertising"].ToString();
-            //    textBox31.Text = reader["Charitable"].ToString();
-            //    textBox21.Text = reader["Auto"].ToString();
-            //    textBox20.Text = reader["CashShortage"].ToString();
-            //    textBox34.Text = reader["Electrical"].ToString();
-            //    textBox33.Text = reader["General"].ToString();
-            //    textBox19.Text = reader["HVAC"].ToString();
-            //    textBox35.Text = reader["Lawn"].ToString();
-            //    textBox36.Text = reader["Painting"].ToString();
-            //    textBox37.Text = reader["Plumbing"].ToString();
-            //    textBox38.Text = reader["Remodeling"].ToString();
-            //    textBox39.Text = reader["Structural"].ToString();
-            //    textBox43.Text = reader["DishMachine"].ToString();
-            //    textBox42.Text = reader["Janitorial"].ToString();
-            //    textBox44.Text = reader["Office"].ToString();
-            //    textBox41.Text = reader["Restaurant"].ToString();
-            //    textBox40.Text = reader["Uniforms"].ToString();
-            //    textBox18.Text = reader["Data"].ToString();
-            //    textBox45.Text = reader["Electricity"].ToString();
-            //    textBox46.Text = reader["Music"].ToString();
-            //    textBox47.Text = reader["NaturalGas"].ToString();
-            //    textBox48.Text = reader["Security"].ToString();
-            //    textBox49.Text = reader["Trash"].ToString();
-            //    textBox50.Text = reader["WaterSewer"].ToString();
-            //    textBox7.Text = reader["ExpenseCost"].ToString();
+                txtAccount.Text = readera["Accounting"].ToString();
+                txtBank.Text = readera["Bank"].ToString();
+                txtCC.Text = readera["CreditCard"].ToString();
+                txtFuel.Text = readera["Fuel"].ToString();
+                txtLegal.Text = readera["Legal"].ToString();
+                txtLicense.Text = readera["License"].ToString();
+                txtPayroll.Text = readera["PayrollProc"].ToString();
+                txtInsur.Text = readera["Insurance"].ToString();
+                txtWorkComp.Text = readera["WorkersComp"].ToString();
+                txtAdvertising.Text = readera["Advertising"].ToString();
+                txtCharitableComp.Text = readera["Charitable"].ToString();
+                txtAuto.Text = readera["Auto"].ToString();
+                txtCashShort.Text = readera["CashShortage"].ToString();
+                txtElectrical.Text = readera["Electrical"].ToString();
+                txtGeneral.Text = readera["General"].ToString();
+                txtHVAC.Text = readera["HVAC"].ToString();
+                txtLawn.Text = readera["Lawn"].ToString();
+                txtPaint.Text = readera["Painting"].ToString();
+                txtPlumb.Text = readera["Plumbing"].ToString();
+                txtRemodel.Text = readera["Remodeling"].ToString();
+                txtStructural.Text = readera["Structural"].ToString();
+                txtDishMach.Text = readera["DishMachine"].ToString();
+                txtJanitorial.Text = readera["Janitorial"].ToString();
+                txtOffice.Text = readera["Office"].ToString();
+                txtRestaurant.Text = readera["Restaurant"].ToString();
+                txtUniform.Text = readera["Uniforms"].ToString();
+                txtDataTele.Text = readera["Data"].ToString();
+                txtElectricity.Text = readera["Electricity"].ToString();
+                txtMusic.Text = readera["Music"].ToString();
+                txtNatGas.Text = readera["NaturalGas"].ToString();
+                txtSecurity.Text = readera["Security"].ToString();
+                txtTrash.Text = readera["Trash"].ToString();
+                txtWater.Text = readera["WaterSewer"].ToString();
+                txtTotExpense.Text = readera["ExpenseCost"].ToString();
 
-            //    textBox90.Text = reader["HostCashier"].ToString();
-            //    textBox89.Text = reader["Cooks"].ToString();
-            //    textBox88.Text = reader["Servers"].ToString();
-            //    textBox87.Text = reader["DMO"].ToString();
-            //    textBox86.Text = reader["Supervisor"].ToString();
-            //    textBox85.Text = reader["Overtime"].ToString();
-            //    textBox74.Text = reader["GeneralManager"].ToString();
-            //    textBox72.Text = reader["Manager"].ToString();
-            //    textBox71.Text = reader["Bonus"].ToString();
-            //    textBox70.Text = reader["PayrollTax"].ToString();
-            //    textBox5.Text = reader["LaborCost"].ToString();
+                txtHost.Text = readera["HostCashier"].ToString();
+                txtCooks.Text = readera["Cooks"].ToString();
+                txtServers.Text = readera["Servers"].ToString();
+                txtDMO.Text = readera["DMO"].ToString();
+                txtSupervisor.Text = readera["Supervisor"].ToString();
+                txtOvertime.Text = readera["Overtime"].ToString();
+                txtGenManager.Text = readera["GeneralManager"].ToString();
+                txtManager.Text = readera["Manager"].ToString();
+                txtBonus.Text = readera["Bonus"].ToString();
+                txtPayrollTax.Text = readera["PayrollTax"].ToString();
+                txtTotLabor.Text = readera["LaborCost"].ToString();
 
-            //}
-            //else
-            //{
+            }
+            else
+            {
 
-            textBox3.Text = "0.00";
-            textBox8.Text = "0.00";
-            textBox9.Text = "0.00";
+                txtNetSales.Text = "0.00";
+                txtRetire.Text = "0.00";
+                txtHealth.Text = "0.00";
 
-            textBox84.Text = "0.00";
-            textBox77.Text = "0.00";
-            textBox76.Text = "0.00";
-            textBox75.Text = "0.00";
-            textBox69.Text = "0.00";
-            textBox68.Text = "0.00";
-            textBox4.Text = "0.00";
+                txtPrimSup.Text = "0.00";
+                txtOtherSupp.Text = "0.00";
+                txtBread.Text = "0.00";
+                txtBev.Text = "0.00";
+                txtProd.Text = "0.00";
+                txtCarbDio.Text = "0.00";
+                txtFoodTot.Text = "0.00";
 
-            textBox83.Text = "0.00";
-            textBox82.Text = "0.00";
-            textBox81.Text = "0.00";
-            textBox80.Text = "0.00";
-            textBox79.Text = "0.00";
-            textBox78.Text = "0.00";
-            textBox73.Text = "0.00";
-            textBox6.Text = "0.00";
+                txtMortgage.Text = "0.00";
+                txtLoan.Text = "0.00";
+                txtAssociation.Text = "0.00";
+                txtPropTax.Text = "0.00";
+                txtAdvCoop.Text = "0.00";
+                txtNationalAdv.Text = "0.00";
+                txtLicenseFee.Text = "0.00";
+                txtTotOverhead.Text = "0.00";
 
-            textBox27.Text = "0.00";
-            textBox26.Text = "0.00";
-            textBox25.Text = "0.00";
-            textBox24.Text = "0.00";
-            textBox23.Text = "0.00";
-            textBox22.Text = "0.00";
-            textBox28.Text = "0.00";
-            textBox30.Text = "0.00";
-            textBox29.Text = "0.00";
-            textBox32.Text = "0.00";
-            textBox31.Text = "0.00";
-            textBox21.Text = "0.00";
-            textBox20.Text = "0.00";
-            textBox34.Text = "0.00";
-            textBox33.Text = "0.00";
-            textBox19.Text = "0.00";
-            textBox35.Text = "0.00";
-            textBox36.Text = "0.00";
-            textBox37.Text = "0.00";
-            textBox38.Text = "0.00";
-            textBox39.Text = "0.00";
-            textBox43.Text = "0.00";
-            textBox42.Text = "0.00";
-            textBox44.Text = "0.00";
-            textBox41.Text = "0.00";
-            textBox40.Text = "0.00";
-            textBox18.Text = "0.00";
-            textBox45.Text = "0.00";
-            textBox46.Text = "0.00";
-            textBox47.Text = "0.00";
-            textBox48.Text = "0.00";
-            textBox49.Text = "0.00";
-            textBox50.Text = "0.00";
-            textBox7.Text = "0.00";
+                txtAccount.Text = "0.00";
+                txtBank.Text = "0.00";
+                txtCC.Text = "0.00";
+                txtFuel.Text = "0.00";
+                txtLegal.Text = "0.00";
+                txtLicense.Text = "0.00";
+                txtPayroll.Text = "0.00";
+                txtInsur.Text = "0.00";
+                txtWorkComp.Text = "0.00";
+                txtAdvertising.Text = "0.00";
+                txtCharitableComp.Text = "0.00";
+                txtAuto.Text = "0.00";
+                txtCashShort.Text = "0.00";
+                txtElectrical.Text = "0.00";
+                txtGeneral.Text = "0.00";
+                txtHVAC.Text = "0.00";
+                txtLawn.Text = "0.00";
+                txtPaint.Text = "0.00";
+                txtPlumb.Text = "0.00";
+                txtRemodel.Text = "0.00";
+                txtStructural.Text = "0.00";
+                txtDishMach.Text = "0.00";
+                txtJanitorial.Text = "0.00";
+                txtOffice.Text = "0.00";
+                txtRestaurant.Text = "0.00";
+                txtUniform.Text = "0.00";
+                txtDataTele.Text = "0.00";
+                txtElectricity.Text = "0.00";
+                txtMusic.Text = "0.00";
+                txtNatGas.Text = "0.00";
+                txtSecurity.Text = "0.00";
+                txtTrash.Text = "0.00";
+                txtWater.Text = "0.00";
+                txtTotExpense.Text = "0.00";
 
-            textBox90.Text = "0.00";
-            textBox89.Text = "0.00";
-            textBox88.Text = "0.00";
-            textBox87.Text = "0.00";
-            textBox86.Text = "0.00";
-            textBox85.Text = "0.00";
-            textBox74.Text = "0.00";
-            textBox72.Text = "0.00";
-            textBox71.Text = "0.00";
-            textBox70.Text = "0.00";
-            textBox5.Text = "0.00";
+                txtHost.Text = "0.00";
+                txtCooks.Text = "0.00";
+                txtServers.Text = "0.00";
+                txtDMO.Text = "0.00";
+                txtSupervisor.Text = "0.00";
+                txtOvertime.Text = "0.00";
+                txtGenManager.Text = "0.00";
+                txtManager.Text = "0.00";
+                txtBonus.Text = "0.00";
+                txtPayrollTax.Text = "0.00";
+                txtTotLabor.Text = "0.00";
 
-            //}
+            }
             cnn.Close();
 
 
@@ -624,54 +623,54 @@ namespace Accounting_PL
             {
                 // Food
                 decimal totalamtFood = 0m;
-                string txt84 = textBox84.Text.Replace(",", "").Replace("$", "");
-                string txt77 = textBox77.Text.Replace(",", "").Replace("$", "");
-                string txt76 = textBox76.Text.Replace(",", "").Replace("$", "");
-                string txt75 = textBox75.Text.Replace(",", "").Replace("$", "");
-                string txt69 = textBox69.Text.Replace(",", "").Replace("$", "");
-                string txt68 = textBox68.Text.Replace(",", "").Replace("$", "");
+                string txt84 = txtPrimSup.Text.Replace(",", "").Replace("$", "");
+                string txt77 = txtOtherSupp.Text.Replace(",", "").Replace("$", "");
+                string txt76 = txtBread.Text.Replace(",", "").Replace("$", "");
+                string txt75 = txtBev.Text.Replace(",", "").Replace("$", "");
+                string txt69 = txtProd.Text.Replace(",", "").Replace("$", "");
+                string txt68 = txtCarbDio.Text.Replace(",", "").Replace("$", "");
 
                 totalamtFood = Convert.ToDecimal(txt84) + Convert.ToDecimal(txt77) + Convert.ToDecimal(txt76) +
                    Convert.ToDecimal(txt75) + Convert.ToDecimal(txt69) + Convert.ToDecimal(txt68);
 
-                textBox4.Text = totalamtFood.ToString("C");
+                txtFoodTot.Text = totalamtFood.ToString("C");
 
 
                 // Expenses
                 decimal totalamtExpenses = 0m;
-                string txt27 = textBox27.Text.Replace(",", "").Replace("$", "");
-                string txt26 = textBox26.Text.Replace(",", "").Replace("$", "");
-                string txt25 = textBox25.Text.Replace(",", "").Replace("$", "");
-                string txt24 = textBox24.Text.Replace(",", "").Replace("$", "");
-                string txt23 = textBox23.Text.Replace(",", "").Replace("$", "");
-                string txt22 = textBox22.Text.Replace(",", "").Replace("$", "");
-                string txt28 = textBox28.Text.Replace(",", "").Replace("$", "");
-                string txt30 = textBox30.Text.Replace(",", "").Replace("$", "");
-                string txt29 = textBox29.Text.Replace(",", "").Replace("$", "");
-                string txt32 = textBox32.Text.Replace(",", "").Replace("$", "");
-                string txt31 = textBox31.Text.Replace(",", "").Replace("$", "");
-                string txt21 = textBox21.Text.Replace(",", "").Replace("$", "");
-                string txt20 = textBox20.Text.Replace(",", "").Replace("$", "");
-                string txt34 = textBox34.Text.Replace(",", "").Replace("$", "");
-                string txt33 = textBox33.Text.Replace(",", "").Replace("$", "");
-                string txt19 = textBox19.Text.Replace(",", "").Replace("$", "");
-                string txt35 = textBox35.Text.Replace(",", "").Replace("$", "");
-                string txt36 = textBox36.Text.Replace(",", "").Replace("$", "");
-                string txt37 = textBox37.Text.Replace(",", "").Replace("$", "");
-                string txt38 = textBox38.Text.Replace(",", "").Replace("$", "");
-                string txt39 = textBox39.Text.Replace(",", "").Replace("$", "");
-                string txt43 = textBox43.Text.Replace(",", "").Replace("$", "");
-                string txt42 = textBox42.Text.Replace(",", "").Replace("$", "");
-                string txt44 = textBox44.Text.Replace(",", "").Replace("$", "");
-                string txt41 = textBox41.Text.Replace(",", "").Replace("$", "");
-                string txt40 = textBox40.Text.Replace(",", "").Replace("$", "");
-                string txt18 = textBox18.Text.Replace(",", "").Replace("$", "");
-                string txt45 = textBox45.Text.Replace(",", "").Replace("$", "");
-                string txt46 = textBox46.Text.Replace(",", "").Replace("$", "");
-                string txt47 = textBox47.Text.Replace(",", "").Replace("$", "");
-                string txt48 = textBox48.Text.Replace(",", "").Replace("$", "");
-                string txt49 = textBox49.Text.Replace(",", "").Replace("$", "");
-                string txt50 = textBox50.Text.Replace(",", "").Replace("$", "");
+                string txt27 = txtAccount.Text.Replace(",", "").Replace("$", "");
+                string txt26 = txtBank.Text.Replace(",", "").Replace("$", "");
+                string txt25 = txtCC.Text.Replace(",", "").Replace("$", "");
+                string txt24 = txtFuel.Text.Replace(",", "").Replace("$", "");
+                string txt23 = txtLegal.Text.Replace(",", "").Replace("$", "");
+                string txt22 = txtLicense.Text.Replace(",", "").Replace("$", "");
+                string txt28 = txtPayroll.Text.Replace(",", "").Replace("$", "");
+                string txt30 = txtInsur.Text.Replace(",", "").Replace("$", "");
+                string txt29 = txtWorkComp.Text.Replace(",", "").Replace("$", "");
+                string txt32 = txtAdvertising.Text.Replace(",", "").Replace("$", "");
+                string txt31 = txtCharitableComp.Text.Replace(",", "").Replace("$", "");
+                string txt21 = txtAuto.Text.Replace(",", "").Replace("$", "");
+                string txt20 = txtCashShort.Text.Replace(",", "").Replace("$", "");
+                string txt34 = txtElectrical.Text.Replace(",", "").Replace("$", "");
+                string txt33 = txtGeneral.Text.Replace(",", "").Replace("$", "");
+                string txt19 = txtHVAC.Text.Replace(",", "").Replace("$", "");
+                string txt35 = txtLawn.Text.Replace(",", "").Replace("$", "");
+                string txt36 = txtPaint.Text.Replace(",", "").Replace("$", "");
+                string txt37 = txtPlumb.Text.Replace(",", "").Replace("$", "");
+                string txt38 = txtRemodel.Text.Replace(",", "").Replace("$", "");
+                string txt39 = txtStructural.Text.Replace(",", "").Replace("$", "");
+                string txt43 = txtDishMach.Text.Replace(",", "").Replace("$", "");
+                string txt42 = txtJanitorial.Text.Replace(",", "").Replace("$", "");
+                string txt44 = txtOffice.Text.Replace(",", "").Replace("$", "");
+                string txt41 = txtRestaurant.Text.Replace(",", "").Replace("$", "");
+                string txt40 = txtUniform.Text.Replace(",", "").Replace("$", "");
+                string txt18 = txtDataTele.Text.Replace(",", "").Replace("$", "");
+                string txt45 = txtElectricity.Text.Replace(",", "").Replace("$", "");
+                string txt46 = txtMusic.Text.Replace(",", "").Replace("$", "");
+                string txt47 = txtNatGas.Text.Replace(",", "").Replace("$", "");
+                string txt48 = txtSecurity.Text.Replace(",", "").Replace("$", "");
+                string txt49 = txtTrash.Text.Replace(",", "").Replace("$", "");
+                string txt50 = txtWater.Text.Replace(",", "").Replace("$", "");
 
                 totalamtExpenses = Convert.ToDecimal(txt27) + Convert.ToDecimal(txt26) + Convert.ToDecimal(txt25) + Convert.ToDecimal(txt24) + Convert.ToDecimal(txt23) +
                     Convert.ToDecimal(txt22) + Convert.ToDecimal(txt28) + Convert.ToDecimal(txt30) + Convert.ToDecimal(txt29) + Convert.ToDecimal(txt32) +
@@ -681,43 +680,43 @@ namespace Accounting_PL
                     Convert.ToDecimal(txt40) + Convert.ToDecimal(txt18) + Convert.ToDecimal(txt45) + Convert.ToDecimal(txt46) + Convert.ToDecimal(txt47) +
                     Convert.ToDecimal(txt48) + Convert.ToDecimal(txt49) + Convert.ToDecimal(txt50);
 
-                textBox7.Text = totalamtExpenses.ToString("C");
+                txtTotExpense.Text = totalamtExpenses.ToString("C");
 
 
                 // Labor
                 decimal totalamtLabor = 0m;
-                string txt90 = textBox90.Text.Replace(",", "").Replace("$", "");
-                string txt89 = textBox89.Text.Replace(",", "").Replace("$", "");
-                string txt88 = textBox88.Text.Replace(",", "").Replace("$", "");
-                string txt87 = textBox87.Text.Replace(",", "").Replace("$", "");
-                string txt86 = textBox86.Text.Replace(",", "").Replace("$", "");
-                string txt85 = textBox85.Text.Replace(",", "").Replace("$", "");
-                string txt74 = textBox74.Text.Replace(",", "").Replace("$", "");
-                string txt72 = textBox72.Text.Replace(",", "").Replace("$", "");
-                string txt71 = textBox71.Text.Replace(",", "").Replace("$", "");
-                string txt70 = textBox70.Text.Replace(",", "").Replace("$", "");
+                string txt90 = txtHost.Text.Replace(",", "").Replace("$", "");
+                string txt89 = txtCooks.Text.Replace(",", "").Replace("$", "");
+                string txt88 = txtServers.Text.Replace(",", "").Replace("$", "");
+                string txt87 = txtDMO.Text.Replace(",", "").Replace("$", "");
+                string txt86 = txtSupervisor.Text.Replace(",", "").Replace("$", "");
+                string txt85 = txtOvertime.Text.Replace(",", "").Replace("$", "");
+                string txt74 = txtGenManager.Text.Replace(",", "").Replace("$", "");
+                string txt72 = txtManager.Text.Replace(",", "").Replace("$", "");
+                string txt71 = txtBonus.Text.Replace(",", "").Replace("$", "");
+                string txt70 = txtPayrollTax.Text.Replace(",", "").Replace("$", "");
 
                 totalamtLabor = Convert.ToDecimal(txt90) + Convert.ToDecimal(txt89) + Convert.ToDecimal(txt88) + Convert.ToDecimal(txt87) +
                     Convert.ToDecimal(txt86) + Convert.ToDecimal(txt85) + Convert.ToDecimal(txt74) + Convert.ToDecimal(txt72) +
                     Convert.ToDecimal(txt71) + Convert.ToDecimal(txt70);
 
-                textBox5.Text = totalamtLabor.ToString("C");
+                txtTotLabor.Text = totalamtLabor.ToString("C");
 
 
                 // Overhead
                 decimal totalamtOverhead = 0m;
-                string txt83 = textBox83.Text.Replace(",", "").Replace("$", "");
-                string txt82 = textBox82.Text.Replace(",", "").Replace("$", "");
-                string txt81 = textBox81.Text.Replace(",", "").Replace("$", "");
-                string txt80 = textBox80.Text.Replace(",", "").Replace("$", "");
-                string txt79 = textBox79.Text.Replace(",", "").Replace("$", "");
-                string txt78 = textBox78.Text.Replace(",", "").Replace("$", "");
-                string txt73 = textBox73.Text.Replace(",", "").Replace("$", "");
+                string txt83 = txtMortgage.Text.Replace(",", "").Replace("$", "");
+                string txt82 = txtLoan.Text.Replace(",", "").Replace("$", "");
+                string txt81 = txtAssociation.Text.Replace(",", "").Replace("$", "");
+                string txt80 = txtPropTax.Text.Replace(",", "").Replace("$", "");
+                string txt79 = txtAdvCoop.Text.Replace(",", "").Replace("$", "");
+                string txt78 = txtNationalAdv.Text.Replace(",", "").Replace("$", "");
+                string txt73 = txtLicenseFee.Text.Replace(",", "").Replace("$", "");
 
                 totalamtOverhead = Convert.ToDecimal(txt83) + Convert.ToDecimal(txt82) + Convert.ToDecimal(txt81) + Convert.ToDecimal(txt80) +
                     Convert.ToDecimal(txt79) + Convert.ToDecimal(txt78) + Convert.ToDecimal(txt73);
 
-                textBox6.Text = totalamtOverhead.ToString("C");
+                txtTotOverhead.Text = totalamtOverhead.ToString("C");
 
             }
             catch { }
@@ -735,75 +734,75 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string lcYear = textBox2.Text.Trim();
-            string lcEOW = textBox1.Text.Trim();
-            string lcNetSales = textBox3.Text.Trim();
-            string lcHealth = textBox8.Text.Trim();
-            string lcRetire = textBox9.Text.Trim();
+            string lcYear = txtYear.Text.Trim();
+            string lcEOW = txtWeek.Text.Trim();
+            string lcNetSales = txtNetSales.Text.Trim();
+            string lcHealth = txtRetire.Text.Trim();
+            string lcRetire = txtHealth.Text.Trim();
 
-            string lcfPrimSupp = textBox84.Text.Trim();
-            string lcfOthSupp = textBox77.Text.Trim();
-            string lcfBread = textBox76.Text.Trim();
-            string lcfBev = textBox75.Text.Trim();
-            string lcfProd = textBox69.Text.Trim();
-            string lcfCarbon = textBox68.Text.Trim();
-            string lcfTotFood = textBox4.Text.Trim();
+            string lcfPrimSupp = txtPrimSup.Text.Trim();
+            string lcfOthSupp = txtOtherSupp.Text.Trim();
+            string lcfBread = txtBread.Text.Trim();
+            string lcfBev = txtBev.Text.Trim();
+            string lcfProd = txtProd.Text.Trim();
+            string lcfCarbon = txtCarbDio.Text.Trim();
+            string lcfTotFood = txtFoodTot.Text.Trim();
 
-            string lcoMort = textBox83.Text.Trim();
-            string lcoLoan = textBox82.Text.Trim();
-            string lcoAssoc = textBox81.Text.Trim();
-            string lcoPropTax = textBox80.Text.Trim();
-            string lcoAdvCoop = textBox79.Text.Trim();
-            string lcoNatAdver = textBox78.Text.Trim();
-            string lcoLicenseFee = textBox73.Text.Trim();
-            string lcoTotOverhead = textBox6.Text.Trim();
+            string lcoMort = txtMortgage.Text.Trim();
+            string lcoLoan = txtLoan.Text.Trim();
+            string lcoAssoc = txtAssociation.Text.Trim();
+            string lcoPropTax = txtPropTax.Text.Trim();
+            string lcoAdvCoop = txtAdvCoop.Text.Trim();
+            string lcoNatAdver = txtNationalAdv.Text.Trim();
+            string lcoLicenseFee = txtLicenseFee.Text.Trim();
+            string lcoTotOverhead = txtTotOverhead.Text.Trim();
 
-            string lceAccount = textBox27.Text.Trim();
-            string lceBank = textBox26.Text.Trim();
-            string lceCC = textBox25.Text.Trim();
-            string lceFuel = textBox24.Text.Trim();
-            string lceLegal = textBox23.Text.Trim();
-            string lceLicensePerm = textBox22.Text.Trim();
-            string lcePayroll = textBox28.Text.Trim();
-            string lceInsur = textBox30.Text.Trim();
-            string lceWorkComp = textBox29.Text.Trim();
-            string lceAdvertise = textBox32.Text.Trim();
-            string lceCharitable = textBox31.Text.Trim();
-            string lceAuto = textBox21.Text.Trim();
-            string lceCash = textBox20.Text.Trim();
-            string lceElect = textBox34.Text.Trim();
-            string lceGeneral = textBox33.Text.Trim();
-            string lceHVAC = textBox19.Text.Trim();
-            string lceLawn = textBox35.Text.Trim();
-            string lcePaint = textBox36.Text.Trim();
-            string lcePlumb = textBox37.Text.Trim();
-            string lceRemodel = textBox38.Text.Trim();
-            string lceStruct = textBox39.Text.Trim();
-            string lceDishMach = textBox43.Text.Trim();
-            string lceJanitorial = textBox42.Text.Trim();
-            string lceOfficeComp = textBox44.Text.Trim();
-            string lceRestaurant = textBox41.Text.Trim();
-            string lceUniform = textBox40.Text.Trim();
-            string lceData = textBox18.Text.Trim();
-            string lceElectric = textBox45.Text.Trim();
-            string lceMusic = textBox46.Text.Trim();
-            string lceNatGas = textBox47.Text.Trim();
-            string lceSecurity = textBox48.Text.Trim();
-            string lceTrash = textBox49.Text.Trim();
-            string lceWaterSewer = textBox50.Text.Trim();
-            string lceTotExpense = textBox7.Text.Trim();
+            string lceAccount = txtAccount.Text.Trim();
+            string lceBank = txtBank.Text.Trim();
+            string lceCC = txtCC.Text.Trim();
+            string lceFuel = txtFuel.Text.Trim();
+            string lceLegal = txtLegal.Text.Trim();
+            string lceLicensePerm = txtLicense.Text.Trim();
+            string lcePayroll = txtPayroll.Text.Trim();
+            string lceInsur = txtInsur.Text.Trim();
+            string lceWorkComp = txtWorkComp.Text.Trim();
+            string lceAdvertise = txtAdvertising.Text.Trim();
+            string lceCharitable = txtCharitableComp.Text.Trim();
+            string lceAuto = txtAuto.Text.Trim();
+            string lceCash = txtCashShort.Text.Trim();
+            string lceElect = txtElectrical.Text.Trim();
+            string lceGeneral = txtGeneral.Text.Trim();
+            string lceHVAC = txtHVAC.Text.Trim();
+            string lceLawn = txtLawn.Text.Trim();
+            string lcePaint = txtPaint.Text.Trim();
+            string lcePlumb = txtPlumb.Text.Trim();
+            string lceRemodel = txtRemodel.Text.Trim();
+            string lceStruct = txtStructural.Text.Trim();
+            string lceDishMach = txtDishMach.Text.Trim();
+            string lceJanitorial = txtJanitorial.Text.Trim();
+            string lceOfficeComp = txtOffice.Text.Trim();
+            string lceRestaurant = txtRestaurant.Text.Trim();
+            string lceUniform = txtUniform.Text.Trim();
+            string lceData = txtDataTele.Text.Trim();
+            string lceElectric = txtElectricity.Text.Trim();
+            string lceMusic = txtMusic.Text.Trim();
+            string lceNatGas = txtNatGas.Text.Trim();
+            string lceSecurity = txtSecurity.Text.Trim();
+            string lceTrash = txtTrash.Text.Trim();
+            string lceWaterSewer = txtWater.Text.Trim();
+            string lceTotExpense = txtTotExpense.Text.Trim();
 
-            string lclHost = textBox90.Text.Trim();
-            string lclCook = textBox89.Text.Trim();
-            string lclServer = textBox88.Text.Trim();
-            string lclDMO = textBox87.Text.Trim();
-            string lclSuperv = textBox86.Text.Trim();
-            string lclOvertime = textBox85.Text.Trim();
-            string lclGenManager = textBox74.Text.Trim();
-            string lclManager = textBox72.Text.Trim();
-            string lclBonus = textBox71.Text.Trim();
-            string lclPayTax = textBox70.Text.Trim();
-            string lclTotLabor = textBox5.Text.Trim();
+            string lclHost = txtHost.Text.Trim();
+            string lclCook = txtCooks.Text.Trim();
+            string lclServer = txtServers.Text.Trim();
+            string lclDMO = txtDMO.Text.Trim();
+            string lclSuperv = txtSupervisor.Text.Trim();
+            string lclOvertime = txtOvertime.Text.Trim();
+            string lclGenManager = txtGenManager.Text.Trim();
+            string lclManager = txtManager.Text.Trim();
+            string lclBonus = txtBonus.Text.Trim();
+            string lclPayTax = txtPayrollTax.Text.Trim();
+            string lclTotLabor = txtTotLabor.Text.Trim();
 
             string lcServer = "playgroup.database.windows.net";
             string lcODBC = "ODBC Driver 17 for SQL Server";
@@ -941,10 +940,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox3.Text.Replace(",", "").Replace("$", "");
+            string value = txtNetSales.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox3.Text = val.ToString("C");
+                txtNetSales.Text = val.ToString("C");
         }
 
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
@@ -957,10 +956,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox84.Text.Replace(",", "").Replace("$", "");
+            string value = txtPrimSup.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox84.Text = val.ToString("C");
+                txtPrimSup.Text = val.ToString("C");
         }
 
         private void textBox84_KeyPress(object sender, KeyPressEventArgs e)
@@ -973,10 +972,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox77.Text.Replace(",", "").Replace("$", "");
+            string value = txtOtherSupp.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox77.Text = val.ToString("C");
+                txtOtherSupp.Text = val.ToString("C");
         }
 
         private void textBox77_KeyPress(object sender, KeyPressEventArgs e)
@@ -989,10 +988,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox76.Text.Replace(",", "").Replace("$", "");
+            string value = txtBread.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox76.Text = val.ToString("C");
+                txtBread.Text = val.ToString("C");
         }
 
         private void textBox76_KeyPress(object sender, KeyPressEventArgs e)
@@ -1005,10 +1004,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox75.Text.Replace(",", "").Replace("$", "");
+            string value = txtBev.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox75.Text = val.ToString("C");
+                txtBev.Text = val.ToString("C");
         }
 
         private void textBox75_KeyPress(object sender, KeyPressEventArgs e)
@@ -1021,10 +1020,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox69.Text.Replace(",", "").Replace("$", "");
+            string value = txtProd.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox69.Text = val.ToString("C");
+                txtProd.Text = val.ToString("C");
         }
 
         private void textBox69_KeyPress(object sender, KeyPressEventArgs e)
@@ -1037,10 +1036,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox68.Text.Replace(",", "").Replace("$", "");
+            string value = txtCarbDio.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox68.Text = val.ToString("C");
+                txtCarbDio.Text = val.ToString("C");
         }
 
         private void textBox68_KeyPress(object sender, KeyPressEventArgs e)
@@ -1053,10 +1052,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox4.Text.Replace(",", "").Replace("$", "");
+            string value = txtFoodTot.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox4.Text = val.ToString("C");
+                txtFoodTot.Text = val.ToString("C");
         }
 
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
@@ -1069,10 +1068,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox90.Text.Replace(",", "").Replace("$", "");
+            string value = txtHost.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox90.Text = val.ToString("C");
+                txtHost.Text = val.ToString("C");
         }
 
         private void textBox90_KeyPress(object sender, KeyPressEventArgs e)
@@ -1085,10 +1084,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox89.Text.Replace(",", "").Replace("$", "");
+            string value = txtCooks.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox89.Text = val.ToString("C");
+                txtCooks.Text = val.ToString("C");
         }
 
         private void textBox89_KeyPress(object sender, KeyPressEventArgs e)
@@ -1101,10 +1100,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox88.Text.Replace(",", "").Replace("$", "");
+            string value = txtServers.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox88.Text = val.ToString("C");
+                txtServers.Text = val.ToString("C");
         }
 
         private void textBox88_KeyPress(object sender, KeyPressEventArgs e)
@@ -1117,10 +1116,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox87.Text.Replace(",", "").Replace("$", "");
+            string value = txtDMO.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox87.Text = val.ToString("C");
+                txtDMO.Text = val.ToString("C");
         }
 
         private void textBox87_KeyPress(object sender, KeyPressEventArgs e)
@@ -1133,10 +1132,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox86.Text.Replace(",", "").Replace("$", "");
+            string value = txtSupervisor.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox86.Text = val.ToString("C");
+                txtSupervisor.Text = val.ToString("C");
         }
 
         private void textBox86_KeyPress(object sender, KeyPressEventArgs e)
@@ -1149,10 +1148,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox85.Text.Replace(",", "").Replace("$", "");
+            string value = txtOvertime.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox85.Text = val.ToString("C");
+                txtOvertime.Text = val.ToString("C");
         }
 
         private void textBox85_KeyPress(object sender, KeyPressEventArgs e)
@@ -1165,10 +1164,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox74.Text.Replace(",", "").Replace("$", "");
+            string value = txtGenManager.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox74.Text = val.ToString("C");
+                txtGenManager.Text = val.ToString("C");
         }
 
         private void textBox74_KeyPress(object sender, KeyPressEventArgs e)
@@ -1181,10 +1180,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox72.Text.Replace(",", "").Replace("$", "");
+            string value = txtManager.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox72.Text = val.ToString("C");
+                txtManager.Text = val.ToString("C");
         }
 
         private void textBox72_KeyPress(object sender, KeyPressEventArgs e)
@@ -1197,10 +1196,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox71.Text.Replace(",", "").Replace("$", "");
+            string value = txtBonus.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox71.Text = val.ToString("C");
+                txtBonus.Text = val.ToString("C");
         }
 
         private void textBox71_KeyPress(object sender, KeyPressEventArgs e)
@@ -1213,10 +1212,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox70.Text.Replace(",", "").Replace("$", "");
+            string value = txtPayrollTax.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox70.Text = val.ToString("C");
+                txtPayrollTax.Text = val.ToString("C");
         }
 
         private void textBox70_KeyPress(object sender, KeyPressEventArgs e)
@@ -1229,10 +1228,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox5.Text.Replace(",", "").Replace("$", "");
+            string value = txtTotLabor.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox5.Text = val.ToString("C");
+                txtTotLabor.Text = val.ToString("C");
         }
 
         private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
@@ -1245,10 +1244,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox83.Text.Replace(",", "").Replace("$", "");
+            string value = txtMortgage.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox83.Text = val.ToString("C");
+                txtMortgage.Text = val.ToString("C");
         }
 
         private void textBox83_KeyPress(object sender, KeyPressEventArgs e)
@@ -1261,10 +1260,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox82.Text.Replace(",", "").Replace("$", "");
+            string value = txtLoan.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox82.Text = val.ToString("C");
+                txtLoan.Text = val.ToString("C");
         }
 
         private void textBox82_KeyPress(object sender, KeyPressEventArgs e)
@@ -1277,10 +1276,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox81.Text.Replace(",", "").Replace("$", "");
+            string value = txtAssociation.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox81.Text = val.ToString("C");
+                txtAssociation.Text = val.ToString("C");
         }
 
         private void textBox81_KeyPress(object sender, KeyPressEventArgs e)
@@ -1293,10 +1292,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox80.Text.Replace(",", "").Replace("$", "");
+            string value = txtPropTax.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox80.Text = val.ToString("C");
+                txtPropTax.Text = val.ToString("C");
         }
 
         private void textBox80_KeyPress(object sender, KeyPressEventArgs e)
@@ -1309,10 +1308,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox79.Text.Replace(",", "").Replace("$", "");
+            string value = txtAdvCoop.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox79.Text = val.ToString("C");
+                txtAdvCoop.Text = val.ToString("C");
         }
 
         private void textBox79_KeyPress(object sender, KeyPressEventArgs e)
@@ -1325,10 +1324,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox78.Text.Replace(",", "").Replace("$", "");
+            string value = txtNationalAdv.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox78.Text = val.ToString("C");
+                txtNationalAdv.Text = val.ToString("C");
         }
 
         private void textBox78_KeyPress(object sender, KeyPressEventArgs e)
@@ -1341,10 +1340,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox73.Text.Replace(",", "").Replace("$", "");
+            string value = txtLicenseFee.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox73.Text = val.ToString("C");
+                txtLicenseFee.Text = val.ToString("C");
         }
 
         private void textBox73_KeyPress(object sender, KeyPressEventArgs e)
@@ -1357,10 +1356,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox6.Text.Replace(",", "").Replace("$", "");
+            string value = txtTotOverhead.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox6.Text = val.ToString("C");
+                txtTotOverhead.Text = val.ToString("C");
         }
 
         private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
@@ -1373,10 +1372,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox27.Text.Replace(",", "").Replace("$", "");
+            string value = txtAccount.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox27.Text = val.ToString("C");
+                txtAccount.Text = val.ToString("C");
         }
 
         private void textBox27_KeyPress(object sender, KeyPressEventArgs e)
@@ -1389,10 +1388,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox26.Text.Replace(",", "").Replace("$", "");
+            string value = txtBank.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox26.Text = val.ToString("C");
+                txtBank.Text = val.ToString("C");
         }
 
         private void textBox26_KeyPress(object sender, KeyPressEventArgs e)
@@ -1405,10 +1404,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox25.Text.Replace(",", "").Replace("$", "");
+            string value = txtCC.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox25.Text = val.ToString("C");
+                txtCC.Text = val.ToString("C");
         }
 
         private void textBox25_KeyPress(object sender, KeyPressEventArgs e)
@@ -1421,10 +1420,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox24.Text.Replace(",", "").Replace("$", "");
+            string value = txtFuel.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox24.Text = val.ToString("C");
+                txtFuel.Text = val.ToString("C");
         }
 
         private void textBox24_KeyPress(object sender, KeyPressEventArgs e)
@@ -1437,10 +1436,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox23.Text.Replace(",", "").Replace("$", "");
+            string value = txtLegal.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox23.Text = val.ToString("C");
+                txtLegal.Text = val.ToString("C");
         }
 
         private void textBox23_KeyPress(object sender, KeyPressEventArgs e)
@@ -1453,10 +1452,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox22.Text.Replace(",", "").Replace("$", "");
+            string value = txtLicense.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox22.Text = val.ToString("C");
+                txtLicense.Text = val.ToString("C");
         }
 
         private void textBox22_KeyPress(object sender, KeyPressEventArgs e)
@@ -1469,10 +1468,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox28.Text.Replace(",", "").Replace("$", "");
+            string value = txtPayroll.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox28.Text = val.ToString("C");
+                txtPayroll.Text = val.ToString("C");
         }
 
         private void textBox28_KeyPress(object sender, KeyPressEventArgs e)
@@ -1485,10 +1484,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox30.Text.Replace(",", "").Replace("$", "");
+            string value = txtInsur.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox30.Text = val.ToString("C");
+                txtInsur.Text = val.ToString("C");
         }
 
         private void textBox30_KeyPress(object sender, KeyPressEventArgs e)
@@ -1501,10 +1500,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox29.Text.Replace(",", "").Replace("$", "");
+            string value = txtWorkComp.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox29.Text = val.ToString("C");
+                txtWorkComp.Text = val.ToString("C");
         }
 
         private void textBox29_KeyPress(object sender, KeyPressEventArgs e)
@@ -1517,10 +1516,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox32.Text.Replace(",", "").Replace("$", "");
+            string value = txtAdvertising.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox32.Text = val.ToString("C");
+                txtAdvertising.Text = val.ToString("C");
         }
 
         private void textBox32_KeyPress(object sender, KeyPressEventArgs e)
@@ -1533,10 +1532,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox31.Text.Replace(",", "").Replace("$", "");
+            string value = txtCharitableComp.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox31.Text = val.ToString("C");
+                txtCharitableComp.Text = val.ToString("C");
         }
 
         private void textBox31_KeyPress(object sender, KeyPressEventArgs e)
@@ -1549,10 +1548,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox21.Text.Replace(",", "").Replace("$", "");
+            string value = txtAuto.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox21.Text = val.ToString("C");
+                txtAuto.Text = val.ToString("C");
         }
 
         private void textBox21_KeyPress(object sender, KeyPressEventArgs e)
@@ -1565,10 +1564,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox20.Text.Replace(",", "").Replace("$", "");
+            string value = txtCashShort.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox20.Text = val.ToString("C");
+                txtCashShort.Text = val.ToString("C");
         }
 
         private void textBox20_KeyPress(object sender, KeyPressEventArgs e)
@@ -1581,10 +1580,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox34.Text.Replace(",", "").Replace("$", "");
+            string value = txtElectrical.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox34.Text = val.ToString("C");
+                txtElectrical.Text = val.ToString("C");
         }
 
         private void textBox34_KeyPress(object sender, KeyPressEventArgs e)
@@ -1597,10 +1596,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox33.Text.Replace(",", "").Replace("$", "");
+            string value = txtGeneral.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox33.Text = val.ToString("C");
+                txtGeneral.Text = val.ToString("C");
         }
 
         private void textBox33_KeyPress(object sender, KeyPressEventArgs e)
@@ -1613,10 +1612,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox19.Text.Replace(",", "").Replace("$", "");
+            string value = txtHVAC.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox19.Text = val.ToString("C");
+                txtHVAC.Text = val.ToString("C");
         }
 
         private void textBox19_KeyPress(object sender, KeyPressEventArgs e)
@@ -1629,10 +1628,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox35.Text.Replace(",", "").Replace("$", "");
+            string value = txtLawn.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox35.Text = val.ToString("C");
+                txtLawn.Text = val.ToString("C");
         }
 
         private void textBox35_KeyPress(object sender, KeyPressEventArgs e)
@@ -1645,10 +1644,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox36.Text.Replace(",", "").Replace("$", "");
+            string value = txtPaint.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox36.Text = val.ToString("C");
+                txtPaint.Text = val.ToString("C");
         }
 
         private void textBox36_KeyPress(object sender, KeyPressEventArgs e)
@@ -1661,10 +1660,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox37.Text.Replace(",", "").Replace("$", "");
+            string value = txtPlumb.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox37.Text = val.ToString("C");
+                txtPlumb.Text = val.ToString("C");
         }
 
         private void textBox37_KeyPress(object sender, KeyPressEventArgs e)
@@ -1677,10 +1676,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox38.Text.Replace(",", "").Replace("$", "");
+            string value = txtRemodel.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox38.Text = val.ToString("C");
+                txtRemodel.Text = val.ToString("C");
         }
 
         private void textBox38_KeyPress(object sender, KeyPressEventArgs e)
@@ -1693,10 +1692,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox39.Text.Replace(",", "").Replace("$", "");
+            string value = txtStructural.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox39.Text = val.ToString("C");
+                txtStructural.Text = val.ToString("C");
         }
 
         private void textBox39_KeyPress(object sender, KeyPressEventArgs e)
@@ -1709,10 +1708,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox43.Text.Replace(",", "").Replace("$", "");
+            string value = txtDishMach.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox43.Text = val.ToString("C");
+                txtDishMach.Text = val.ToString("C");
         }
 
         private void textBox43_KeyPress(object sender, KeyPressEventArgs e)
@@ -1725,10 +1724,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox42.Text.Replace(",", "").Replace("$", "");
+            string value = txtJanitorial.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox42.Text = val.ToString("C");
+                txtJanitorial.Text = val.ToString("C");
         }
 
         private void textBox42_KeyPress(object sender, KeyPressEventArgs e)
@@ -1741,10 +1740,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox44.Text.Replace(",", "").Replace("$", "");
+            string value = txtOffice.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox44.Text = val.ToString("C");
+                txtOffice.Text = val.ToString("C");
         }
 
         private void textBox44_KeyPress(object sender, KeyPressEventArgs e)
@@ -1757,10 +1756,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox41.Text.Replace(",", "").Replace("$", "");
+            string value = txtRestaurant.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox41.Text = val.ToString("C");
+                txtRestaurant.Text = val.ToString("C");
         }
 
         private void textBox41_KeyPress(object sender, KeyPressEventArgs e)
@@ -1773,10 +1772,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox40.Text.Replace(",", "").Replace("$", "");
+            string value = txtUniform.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox40.Text = val.ToString("C");
+                txtUniform.Text = val.ToString("C");
         }
 
         private void textBox40_KeyPress(object sender, KeyPressEventArgs e)
@@ -1789,10 +1788,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox18.Text.Replace(",", "").Replace("$", "");
+            string value = txtDataTele.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox18.Text = val.ToString("C");
+                txtDataTele.Text = val.ToString("C");
         }
 
         private void textBox18_KeyPress(object sender, KeyPressEventArgs e)
@@ -1805,10 +1804,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox45.Text.Replace(",", "").Replace("$", "");
+            string value = txtElectricity.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox45.Text = val.ToString("C");
+                txtElectricity.Text = val.ToString("C");
         }
 
         private void textBox45_KeyPress(object sender, KeyPressEventArgs e)
@@ -1821,10 +1820,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox46.Text.Replace(",", "").Replace("$", "");
+            string value = txtMusic.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox46.Text = val.ToString("C");
+                txtMusic.Text = val.ToString("C");
         }
 
         private void textBox46_KeyPress(object sender, KeyPressEventArgs e)
@@ -1837,10 +1836,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox47.Text.Replace(",", "").Replace("$", "");
+            string value = txtNatGas.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox47.Text = val.ToString("C");
+                txtNatGas.Text = val.ToString("C");
         }
 
         private void textBox47_KeyPress(object sender, KeyPressEventArgs e)
@@ -1853,10 +1852,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox48.Text.Replace(",", "").Replace("$", "");
+            string value = txtSecurity.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox48.Text = val.ToString("C");
+                txtSecurity.Text = val.ToString("C");
         }
 
         private void textBox48_KeyPress(object sender, KeyPressEventArgs e)
@@ -1869,10 +1868,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox49.Text.Replace(",", "").Replace("$", "");
+            string value = txtTrash.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox49.Text = val.ToString("C");
+                txtTrash.Text = val.ToString("C");
         }
 
         private void textBox49_KeyPress(object sender, KeyPressEventArgs e)
@@ -1885,10 +1884,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox50.Text.Replace(",", "").Replace("$", "");
+            string value = txtWater.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox50.Text = val.ToString("C");
+                txtWater.Text = val.ToString("C");
         }
 
         private void textBox50_KeyPress(object sender, KeyPressEventArgs e)
@@ -1901,10 +1900,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox7.Text.Replace(",", "").Replace("$", "");
+            string value = txtTotExpense.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox7.Text = val.ToString("C");
+                txtTotExpense.Text = val.ToString("C");
         }
 
         private void textBox7_KeyPress(object sender, KeyPressEventArgs e)
@@ -1917,10 +1916,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox8.Text.Replace(",", "").Replace("$", "");
+            string value = txtRetire.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox8.Text = val.ToString("C");
+                txtRetire.Text = val.ToString("C");
         }
 
         private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
@@ -1933,10 +1932,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string value = textBox9.Text.Replace(",", "").Replace("$", "");
+            string value = txtHealth.Text.Replace(",", "").Replace("$", "");
             decimal val;
             if (decimal.TryParse(value, out val))
-                textBox9.Text = val.ToString("C");
+                txtHealth.Text = val.ToString("C");
         }
 
         private void textBox9_KeyPress(object sender, KeyPressEventArgs e)
@@ -2045,28 +2044,28 @@ namespace Accounting_PL
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox10.Text = "FOOD";
+            txtInvHold.Text = "FOOD";
 
             switch (this.tabControl1.SelectedIndex)
             {
                 case 0:
-                    textBox10.Text = "FOOD";
+                    txtInvHold.Text = "FOOD";
                     break;
 
                 case 1:
-                    textBox10.Text = "EXPENSES";
+                    txtInvHold.Text = "EXPENSES";
                     break;
 
                 case 2:
-                    textBox10.Text = "LABOR";
+                    txtInvHold.Text = "LABOR";
                     break;
 
                 case 3:
-                    textBox10.Text = "OVERHEAD";
+                    txtInvHold.Text = "OVERHEAD";
                     break;
 
                 default:
-                    textBox10.Text = "FOOD";
+                    txtInvHold.Text = "FOOD";
                     break;
 
             }
@@ -2091,7 +2090,7 @@ namespace Accounting_PL
                 }
             }
 
-            textBox11.Text = totalSalary.ToString("C");
+            txtTotInvoice.Text = totalSalary.ToString("C");
         }
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
@@ -2100,8 +2099,8 @@ namespace Accounting_PL
             var nextSunday = Dates.DTOC(ldate.AddDays(7 - (int)ldate.DayOfWeek));
             var lcyear = Dates.CTOD(nextSunday).Year.ToString();
 
-            textBox1.Text = nextSunday;
-            textBox2.Text = lcyear;
+            txtWeek.Text = nextSunday;
+            txtYear.Text = lcyear;
 
             string lcServer = "dynamicelements.database.windows.net";
             string lcODBC = "ODBC Driver 17 for SQL Server";
