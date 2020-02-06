@@ -504,27 +504,27 @@ namespace Accounting_PL
             }
             catch { }
 
-            //bool adf = false;  // checkBox1
-            //bool duplex = false;  // checkBox2
-            //if (checkBox1.Checked)
-            //    adf = true;
+            bool adf = false;  // checkBox1
+            bool duplex = false;  // checkBox2
+            if (checkBox1.Checked)
+                adf = true;
 
-            //if (checkBox2.Checked)
-            //    duplex = true;
+            if (checkBox2.Checked)
+                duplex = true;
 
-            //var path = lscfolder;
-            //int dpi = 600;  // 150  300  600  720  1200  1270  1440
-            //WiaWrapper obj = new WiaWrapper();
-            //obj.SelectScanner();
-            //obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
+            var path = lscfolder;
+            int dpi = 600;  // 150  300  600  720  1200  1270  1440
+            WiaWrapper obj = new WiaWrapper();
+            obj.SelectScanner();
+            obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
 
-            //FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
-            //string value = "Document Name";
-            //if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
-            //{
-            //    Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
-            //}
-            //File.Move(oldnewestFile.FullName, Name);
+            FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
+            string value = "Document Name";
+            if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
+            {
+                Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
+            }
+            File.Move(oldnewestFile.FullName, Name);
 
             //var Ocr = new IronOcr.AutoOcr();
             //var Result = Ocr.Read(@"C:\path\to\image.png");
@@ -545,8 +545,8 @@ namespace Accounting_PL
                 ColorDepth = 4
             };
 
-            var testDocument = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents\test_02.jpg";
-            // var testDocument = Name;
+            // var testDocument = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents\test_02.jpg";
+            var testDocument = Name;
             var Results = Ocr.Read(testDocument);
             // var Results = Ocr.Read(Name);
             // Console.WriteLine(Results.Text);
