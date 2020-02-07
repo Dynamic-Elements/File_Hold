@@ -18,6 +18,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using WIA;
 using System.Linq;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 namespace Accounting_PL
 {
@@ -523,12 +525,44 @@ namespace Accounting_PL
             if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
             {
                 Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
+                // Namepdf = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
             }
             File.Move(oldnewestFile.FullName, Name);
 
-            //var Ocr = new IronOcr.AutoOcr();
-            //var Result = Ocr.Read(@"C:\path\to\image.png");
-            //Console.WriteLine(Result.Text);
+
+            iTextSharp.text.Rectangle pageSize = null;
+            string imagepaths = oldnewestFile.DirectoryName + "\\";
+
+            using (var srcImage = new Bitmap(imagepaths[0].ToString()))
+            {
+                pageSize = new iTextSharp.text.Rectangle(0, 0, srcImage.Width, srcImage.Height);
+            }
+
+            using (var ms = new MemoryStream())
+            {
+                var document = new iTextSharp.text.Document(pageSize, 0, 0, 0, 0);
+                iTextSharp.text.pdf.PdfWriter.GetInstance(document, ms).SetFullCompression();
+                document.Open();
+                var image = iTextSharp.text.Image.GetInstance(imagepaths[0].ToString());
+                document.Add(image);
+                document.Close();
+
+                File.WriteAllBytes(oldnewestFile.DirectoryName + "\\" + "cheque.pdf", ms.ToArray());
+            }
+
+            //Document document = new Document();
+            //using (var stream = new FileStream(oldnewestFile.DirectoryName + "\\" + "test.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
+            //{
+            //    PdfWriter.GetInstance(document, stream);
+            //    document.Open();
+            //    using (var imageStream = new FileStream(Name, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            //    {
+            //        var image = iTextSharp.text.Image.GetInstance(imageStream);
+            //        document.Add(image);
+            //    }
+            //    document.Close();
+            //}
+                       
 
             var Ocr = new IronOcr.AdvancedOcr()
             {
@@ -546,18 +580,20 @@ namespace Accounting_PL
             };
 
             // var testDocument = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents\test_02.jpg";
-            var testDocument = Name;
-            var Results = Ocr.Read(testDocument);
+            // var testDocument = Name;
+            // var Results = Ocr.Read(testDocument);
             // var Results = Ocr.Read(Name);
+            var Results = Ocr.ReadPdf(oldnewestFile.DirectoryName + "\\" + value + ".pdf");
             // Console.WriteLine(Results.Text);
             MessageBox.Show(Results.Text);
 
-            //string line = null;
-            //TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
-            //line = readFile.ReadToEnd();
-            // MessageBox.Show(line);
-            //readFile.Close();
-            //readFile = null;
+            string line = null;
+            TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
+            // TextReader readFile = new StreamReader(Results + ".txt");
+            line = readFile.ReadToEnd();
+            MessageBox.Show(line);
+            readFile.Close();
+            readFile = null;
 
             ////Create a new PDF document
             //PdfDocument document = new PdfDocument();
