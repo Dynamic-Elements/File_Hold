@@ -20,6 +20,8 @@ using WIA;
 using System.Linq;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+// using Microsoft.Office.Interop.Excel;
+using System.Data;
 
 namespace Accounting_PL
 {
@@ -49,12 +51,12 @@ namespace Accounting_PL
             var lYear = DateTime.Now.Year.ToString();
             txtWeek.Text = lastSunday;
             txtYear.Text = lYear;   // Yr.Substring(0,4);
+            txtInvHold.Text = "FOOD";
 
 
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
             string lcODBC = "ODBC Driver 17 for SQL Server";
             string lcDB = "dynamicelements";
-            // string lcPort = "3306";  //  Port=" + lcPort + ";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
             string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
@@ -63,7 +65,13 @@ namespace Accounting_PL
             cnn.Open();
 
 
-            string lcSQL = "SELECT * from dynamicelements..tb_Config where Year='" + lYear + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "
+            //// This will create records for the new week so the system just needs to update data
+            string lcSQLz = " Exec dynamicelements..CheckRecord @IDs = 158 ";  // 138  158  168  180  192  197  209  218  222
+            OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
+            cmdz.ExecuteScalarAsync();
+
+
+            string lcSQL = "SELECT * from dynamicelements..tb_Config where Year='" + lYear + "'";
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             OdbcDataReader reader = cmd.ExecuteReader();
 
@@ -75,20 +83,11 @@ namespace Accounting_PL
             }
             else { }
 
-            txtInvHold.Text = "FOOD";
-
-
-            //if (Int32.Parse(lYear) % 400 == 0 || (Int32.Parse(lYear) % 4 == 0 && Int32.Parse(lYear) % 100 != 0))
-            //    checkBox3.Checked = true;
-            // MessageBox.Show("Leap year!");
-
 
             // dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
             string lcSQLa = "select * from vw_OrderLogs where week='" + lastSunday + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "  12/30/2018
             OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
             OdbcDataReader readera = cmda.ExecuteReader();
-            //// MessageBox.Show(Convert.ToString(reader.GetOrdinal("NetSales")));
-
             if (readera.HasRows)
             {
 
@@ -236,7 +235,6 @@ namespace Accounting_PL
             cnn.Close();
 
 
-
             // https://cloud.google.com/vision/docs/ocr#vision_text_detection-csharp
             // https://developers.google.com/vision/android/text-overview
             // https://cloud.google.com/vision/docs/pdf
@@ -254,7 +252,6 @@ namespace Accounting_PL
         {
 
             updateCalculations();
-
 
             Excel.Application xlApp;
             Excel.Workbook xlWorkBook;
@@ -275,6 +272,31 @@ namespace Accounting_PL
             catch { }
 
             string lexfile = lexfolder + "FinancialSheets.xlsx";
+            string lcYear = txtYear.ToString();
+
+            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "dynamicelements";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+
+            // string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where year='" + lcYear + "' order by week";
+            string lcSQL = "EXEC dynamicelements..MakePNL @year = '" + lcYear + "', @IDs='158'";
+            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            OdbcDataAdapter adapter = new OdbcDataAdapter(lcSQL, cnn);
+            OdbcDataReader reader = cmd.ExecuteReader();
+
+            DataSet ds = new DataSet();
+            adapter.Fill(ds);
+
+            System.Data.DataTable dtable = new System.Data.DataTable();
+            dtable = (ds.Tables[0]);
+
+            cnn.Close();
 
             xlApp = new Excel.Application();
             if (xlApp == null)
@@ -318,6 +340,8 @@ namespace Accounting_PL
                 coll[i].Cells[2, 2] = "Week 1";
                 coll[i].Cells[3, 2] = "$";
                 coll[i].Cells[3, 3] = "%";
+
+                // coll[i].Columns[B:B];
 
                 coll[i].Cells[1, 4] = "Dates";
                 coll[i].Range["d1:e1"].Merge();
@@ -562,7 +586,7 @@ namespace Accounting_PL
             //    }
             //    document.Close();
             //}
-                       
+
 
             var Ocr = new IronOcr.AdvancedOcr()
             {
@@ -840,68 +864,22 @@ namespace Accounting_PL
             string lclPayTax = txtPayrollTax.Text.Trim();
             string lclTotLabor = txtTotLabor.Text.Trim();
 
-            string lcServer = "playgroup.database.windows.net";
+            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
             string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "tb_HelpingHand";
-            // string lcPort = "3306";  //  Port=" + lcPort + ";
+            string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
-            string lcPass = "Smartman55";
+            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-
             cnn.Open();
-
             string lcSQL = "";
-            lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            int result = cmd.ExecuteNonQuery();
-            if (result > 0)
-            {
-                /// Update records
-                // MessageBox.Show(result.ToString());
-                lcSQL = " Update tb_datahold set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Beverage=@lcfBev," +
-                    " Produce=@lcfProd,CarbonDioxide=@lcfCarbon, FoodCost=@lcfTotFood, HostCashier=@lclHost, Cooks=@lclCook, Servers=@lclServer," +
-                    " DMO=@lclDMO, Supervisor=@lclSuperv, Overtime=@lclOvertime,GeneralManager=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus," +
-                    " PayrollTax=@lclPayTax, Healthcare=@lcHealth, Retirement=@lcRetire, LaborCost=@lclTotLabor, Accounting=@lceAccount,Bank=@lceBank, CreditCard=@lceCC," +
-                    " Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayrollProc=@lcePayroll, Insurance=@lceInsur,WorkersComp=@lceWorkComp," +
-                    " Advertising=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, CashShortage=@lceCash, Electrical=@lceElect,General=@lceGeneral," +
-                    " HVAC=@lceHVAC, Lawn=@lceLawn, Painting=@lcePaint, Plumbing=@lcePlumb, Remodeling=@lceRemodel, Structural=@lceStruct," +
-                    " DishMachine=@lceDishMach,Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform," +
-                    " Data=@lceData, Electricity=@lceElectric,Music=@lceMusic, NaturalGas=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash," +
-                    " WaterSewer=@lceWaterSewer, ExpenseCost=@lceTotExpense, Mortgage=@lcoMort,LoanPayment=@lcoLoan, Association=@lcoAssoc," +
-                    " PropertyTax=@lcoPropTax, AdvertisingCoop=@lcoAdvCoop, NationalAdvertise=@lcoNatAdver, LicensingFee=@lcoLicenseFee," +
-                    "OverheadCost=@lcoTotOverhead where Week='@lcEOW'";
-            }
-            else
-            {
-                /// Insert records
-                // MessageBox.Show("Hello There, no records");
-                /// ,IDs
-                lcSQL = " Insert into tb_datahold (Week,NetSales,PrimSupp,OthSupp,Bread,Beverage,Produce,CarbonDioxide,FoodCost,HostCashier,Cooks,Servers,DMO,Supervisor," +
-                    "Overtime,GeneralManager,Manager,Bonus,PayrollTax,Healthcare,Retirement,LaborCost,Accounting,Bank,CreditCard,Fuel,Legal,License,PayrollProc," +
-                    "Insurance,WorkersComp,Advertising,Charitable,Auto,CashShortage,Electrical,General,HVAC,Lawn,Painting,Plumbing,Remodeling,Structural,DishMachine," +
-                    "Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalGas,Security,Trash,WaterSewer,ExpenseCost,Mortgage,LoanPayment,Association," +
-                    "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost) " +
-                    " values " +
-                    " ('@lcEOW',@lcNetSales,@lcfPrimSupp,@lcfOthSupp,@lcfBread,@lcfBev,@lcfProd,@lcfCarbon,@lcfTotFood,@lclHost,@lclCook,@lclServer,@lclDMO," +
-                    "@lclSuperv,@lclOvertime,@lclGenManager,@lclManager,@lclBonus,@lclPayTax,@lcHealth,@lcRetire,@lclTotLabor,@lceAccount,@lceBank,@lceCC," +
-                    "@lceFuel,@lceLegal,@lceLicensePerm,@lcePayroll,@lceInsur,@lceWorkComp,@lceAdvertise,@lceCharitable,@lceAuto,@lceCash,@lceElect,@lceGeneral," +
-                    "@lceHVAC,@lceLawn,@lcePaint,@lcePlumb,@lceRemodel,@lceStruct,@lceDishMach,@lceJanitorial,@lceOfficeComp,@lceRestaurant,@lceUniform,@lceData," +
-                    "@lceElectric,@lceMusic,@lceNatGas,@lceSecurity,@lceTrash,@lceWaterSewer,@lceTotExpense,@lcoMort,@lcoLoan,@lcoAssoc,@lcoPropTax," +
-                    "@lcoAdvCoop,@lcoNatAdver,@lcoLicenseFee,@lcoTotOverhead)";
-            }
 
-            //// Pass values to Parameters
+            lcSQL = "UPDATE dynamicelements..tb_LaborCost SET LaborCost =@lclTotLabor ,HostCashier =@lclHost ,Cooks =@lclCook ,Servers =@lclServer ,DMO =@lclDMO ," +
+                "Supervisor =@lclSuperv ,Overtime = @lclOvertime,GeneralManager = @lclGenManager,Manager = @lclManager,Bonus = @lclBonus,PayrollTax =@lclPayTax " +
+                "WHERE Week='@lcEOW' and IDS =158 "; // 138  158  168  180  192  197  209  218  222
+            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
-            cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
-            cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
-            cmd.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
-            cmd.Parameters.AddWithValue("@lcfBread", lcfBread);
-            cmd.Parameters.AddWithValue("@lcfBev", lcfBev);
-            cmd.Parameters.AddWithValue("@lcfProd", lcfProd);
-            cmd.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
-            cmd.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
             cmd.Parameters.AddWithValue("@lclHost", lclHost);
             cmd.Parameters.AddWithValue("@lclCook", lclCook);
             cmd.Parameters.AddWithValue("@lclServer", lclServer);
@@ -912,59 +890,197 @@ namespace Accounting_PL
             cmd.Parameters.AddWithValue("@lclManager", lclManager);
             cmd.Parameters.AddWithValue("@lclBonus", lclBonus);
             cmd.Parameters.AddWithValue("@lclPayTax", lclPayTax);
-            cmd.Parameters.AddWithValue("@lcHealth", lcHealth);  //  HealthCare= 
-            cmd.Parameters.AddWithValue("@lcRetire", lcRetire);  //  Retire=
             cmd.Parameters.AddWithValue("@lclTotLabor", lclTotLabor);
-            cmd.Parameters.AddWithValue("@lceAccount", lceAccount);
-            cmd.Parameters.AddWithValue("@lceBank", lceBank);
-            cmd.Parameters.AddWithValue("@lceCC", lceCC);
-            cmd.Parameters.AddWithValue("@lceFuel", lceFuel);
-            cmd.Parameters.AddWithValue("@lceLegal", lceLegal);
-            cmd.Parameters.AddWithValue("@lceLicensePerm", lceLicensePerm);
-            cmd.Parameters.AddWithValue("@lcePayroll", lcePayroll);
-            cmd.Parameters.AddWithValue("@lceInsur", lceInsur);
-            cmd.Parameters.AddWithValue("@lceWorkComp", lceWorkComp);
-            cmd.Parameters.AddWithValue("@lceAdvertise", lceAdvertise);
-            cmd.Parameters.AddWithValue("@lceCharitable", lceCharitable);
-            cmd.Parameters.AddWithValue("@lceAuto", lceAuto);
-            cmd.Parameters.AddWithValue("@lceCash", lceCash);
-            cmd.Parameters.AddWithValue("@lceElect", lceElect);
-            cmd.Parameters.AddWithValue("@lceGeneral", lceGeneral);
-            cmd.Parameters.AddWithValue("@lceHVAC", lceHVAC);
-            cmd.Parameters.AddWithValue("@lceLawn", lceLawn);
-            cmd.Parameters.AddWithValue("@lcePaint", lcePaint);
-            cmd.Parameters.AddWithValue("@lcePlumb", lcePlumb);
-            cmd.Parameters.AddWithValue("@lceRemodel", lceRemodel);
-            cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
-            cmd.Parameters.AddWithValue("@lceDishMach", lceDishMach);
-            cmd.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
-            cmd.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
-            cmd.Parameters.AddWithValue("@lceRestaurant", lceRestaurant);
-            cmd.Parameters.AddWithValue("@lceUniform", lceUniform);
-            cmd.Parameters.AddWithValue("@lceData", lceData);
-            cmd.Parameters.AddWithValue("@lceElectric", lceElectric);
-            cmd.Parameters.AddWithValue("@lceMusic", lceMusic);
-            cmd.Parameters.AddWithValue("@lceNatGas", lceNatGas);
-            cmd.Parameters.AddWithValue("@lceSecurity", lceSecurity);
-            cmd.Parameters.AddWithValue("@lceTrash", lceTrash);
-            cmd.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
-            cmd.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
-            cmd.Parameters.AddWithValue("@lcoMort", lcoMort);
-            cmd.Parameters.AddWithValue("@lcoLoan", lcoLoan);
-            cmd.Parameters.AddWithValue("@lcoAssoc", lcoAssoc);
-            cmd.Parameters.AddWithValue("@lcoPropTax", lcoPropTax);
-            cmd.Parameters.AddWithValue("@lcoAdvCoop", lcoAdvCoop);
-            cmd.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
-            cmd.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
-            cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
-            //  cmd.Parameters.AddWithValue("@",);
 
-            int rowsAdded = cmd.ExecuteNonQuery();
-            if (rowsAdded > 0)
-                MessageBox.Show("Row inserted!!");
-            else
-                // Well this should never really happen
-                MessageBox.Show("No row inserted");
+            lcSQL = " UPDATE dynamicelements..tb_ExpenseCost SET ExpenseCost = @lceTotExpense,Accounting = @lceAccount,Bank = @lceBank,CreditCard = @lceCC,Fuel = @lceFuel," +
+                "Legal = @lceLegal,License = @lceLicensePerm,PayrollProc = @lcePayroll,Insurance = @lceInsur,WorkersComp = @lceWorkComp,Advertising = @lceAdvertise," +
+                "Charitable = @lceCharitable,Auto = @lceAuto,CashShortage = @lceCash,Electrical = @lceElect,General = @lceGeneral,HVAC = @lceHVAC,Lawn = @lceLawn,Painting = @lcePaint," +
+                "Plumbing = @lcePlumb,Remodeling = @lceRemodel,Structural = @lceStruct,DishMachine = @lceDishMach,Janitorial = @lceJanitorial,Office = @lceOfficeComp," +
+                "Restaurant = @lceRestaurant,Uniforms = @lceUniform,Data = @lceData,Electricity = @lceElectric,Music = @lceMusic,NaturalGas = @lceNatGas,Security = @lceSecurity," +
+                "Trash = @lceTrash,WaterSewer =@lceWaterSewer WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
+            OdbcCommand cmd1 = new OdbcCommand(lcSQL, cnn);
+            cmd1.Parameters.AddWithValue("@lcEOW", lcEOW);
+            cmd1.Parameters.AddWithValue("@lceAccount", lceAccount);
+            cmd1.Parameters.AddWithValue("@lceBank", lceBank);
+            cmd1.Parameters.AddWithValue("@lceCC", lceCC);
+            cmd1.Parameters.AddWithValue("@lceFuel", lceFuel);
+            cmd1.Parameters.AddWithValue("@lceLegal", lceLegal);
+            cmd1.Parameters.AddWithValue("@lceLicensePerm", lceLicensePerm);
+            cmd1.Parameters.AddWithValue("@lcePayroll", lcePayroll);
+            cmd1.Parameters.AddWithValue("@lceInsur", lceInsur);
+            cmd1.Parameters.AddWithValue("@lceWorkComp", lceWorkComp);
+            cmd1.Parameters.AddWithValue("@lceAdvertise", lceAdvertise);
+            cmd1.Parameters.AddWithValue("@lceCharitable", lceCharitable);
+            cmd1.Parameters.AddWithValue("@lceAuto", lceAuto);
+            cmd1.Parameters.AddWithValue("@lceCash", lceCash);
+            cmd1.Parameters.AddWithValue("@lceElect", lceElect);
+            cmd1.Parameters.AddWithValue("@lceGeneral", lceGeneral);
+            cmd1.Parameters.AddWithValue("@lceHVAC", lceHVAC);
+            cmd1.Parameters.AddWithValue("@lceLawn", lceLawn);
+            cmd1.Parameters.AddWithValue("@lcePaint", lcePaint);
+            cmd1.Parameters.AddWithValue("@lcePlumb", lcePlumb);
+            cmd1.Parameters.AddWithValue("@lceRemodel", lceRemodel);
+            cmd1.Parameters.AddWithValue("@lceStruct", lceStruct);
+            cmd1.Parameters.AddWithValue("@lceDishMach", lceDishMach);
+            cmd1.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
+            cmd1.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
+            cmd1.Parameters.AddWithValue("@lceRestaurant", lceRestaurant);
+            cmd1.Parameters.AddWithValue("@lceUniform", lceUniform);
+            cmd1.Parameters.AddWithValue("@lceData", lceData);
+            cmd1.Parameters.AddWithValue("@lceElectric", lceElectric);
+            cmd1.Parameters.AddWithValue("@lceMusic", lceMusic);
+            cmd1.Parameters.AddWithValue("@lceNatGas", lceNatGas);
+            cmd1.Parameters.AddWithValue("@lceSecurity", lceSecurity);
+            cmd1.Parameters.AddWithValue("@lceTrash", lceTrash);
+            cmd1.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
+            cmd1.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
+
+            lcSQL = " UPDATE dynamicelements..tb_FoodCost SET FoodCost = @lcfTotFood,PrimSupp = @lcfPrimSupp,OthSupp = @lcfOthSupp,Bread = @lcfBread,Beverage = @lcfBev," +
+                "Produce = @lcfProd,CarbonDioxide =@lcfCarbon WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
+            OdbcCommand cmd2 = new OdbcCommand(lcSQL, cnn);
+            cmd2.Parameters.AddWithValue("@lcEOW", lcEOW);
+            cmd2.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
+            cmd2.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
+            cmd2.Parameters.AddWithValue("@lcfBread", lcfBread);
+            cmd2.Parameters.AddWithValue("@lcfBev", lcfBev);
+            cmd2.Parameters.AddWithValue("@lcfProd", lcfProd);
+            cmd2.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
+            cmd2.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
+
+
+            lcSQL = " UPDATE dynamicelements..tb_NetSales SET NetSales = @lcNetSales,Healthcare = @lcHealth,Retirement = @lcRetire " +
+                "WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222  ,TotalCost = ,ReturnonRev =
+            OdbcCommand cmd3 = new OdbcCommand(lcSQL, cnn);
+            cmd3.Parameters.AddWithValue("@lcEOW", lcEOW);
+            cmd3.Parameters.AddWithValue("@lcNetSales", lcNetSales);
+            cmd3.Parameters.AddWithValue("@lcHealth", lcHealth);  //  HealthCare= 
+            cmd3.Parameters.AddWithValue("@lcRetire", lcRetire);  //  Retire=
+
+            lcSQL = " UPDATE dynamicelements..tb_OverheadCost OverheadCost = @lcoTotOverhead,Mortgage = @lcoMort,LoanPayment = @lcoLoan,Association = @lcoAssoc,PropertyTax = @lcoPropTax," +
+                "AdvertisingCoop = @lcoAdvCoop,NationalAdvertise = @lcoNatAdver,LicensingFee = @lcoLicenseFee WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
+            OdbcCommand cmd4 = new OdbcCommand(lcSQL, cnn);
+            cmd4.Parameters.AddWithValue("@lcoMort", lcoMort);
+            cmd4.Parameters.AddWithValue("@lcoLoan", lcoLoan);
+            cmd4.Parameters.AddWithValue("@lcoAssoc", lcoAssoc);
+            cmd4.Parameters.AddWithValue("@lcoPropTax", lcoPropTax);
+            cmd4.Parameters.AddWithValue("@lcoAdvCoop", lcoAdvCoop);
+            cmd4.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
+            cmd4.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
+            cmd4.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
+
+
+            //lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
+            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //int result = cmd.ExecuteNonQuery();
+            //if (result > 0)
+            //{
+            //    /// Update records
+            //    // MessageBox.Show(result.ToString());
+            //    lcSQL = " Update tb_datahold set NetSales=@lcNetSales, PrimSupp=@lcfPrimSupp, OthSupp=@lcfOthSupp, Bread=@lcfBread, Beverage=@lcfBev," +
+            //        " Produce=@lcfProd,CarbonDioxide=@lcfCarbon, FoodCost=@lcfTotFood, HostCashier=@lclHost, Cooks=@lclCook, Servers=@lclServer," +
+            //        " DMO=@lclDMO, Supervisor=@lclSuperv, Overtime=@lclOvertime,GeneralManager=@lclGenManager, Manager=@lclManager, Bonus=@lclBonus," +
+            //        " PayrollTax=@lclPayTax, Healthcare=@lcHealth, Retirement=@lcRetire, LaborCost=@lclTotLabor, Accounting=@lceAccount,Bank=@lceBank, CreditCard=@lceCC," +
+            //        " Fuel=@lceFuel, Legal=@lceLegal, License=@lceLicensePerm, PayrollProc=@lcePayroll, Insurance=@lceInsur,WorkersComp=@lceWorkComp," +
+            //        " Advertising=@lceAdvertise, Charitable=@lceCharitable, Auto=@lceAuto, CashShortage=@lceCash, Electrical=@lceElect,General=@lceGeneral," +
+            //        " HVAC=@lceHVAC, Lawn=@lceLawn, Painting=@lcePaint, Plumbing=@lcePlumb, Remodeling=@lceRemodel, Structural=@lceStruct," +
+            //        " DishMachine=@lceDishMach,Janitorial=@lceJanitorial, Office=@lceOfficeComp, Restaurant=@lceRestaurant, Uniforms=@lceUniform," +
+            //        " Data=@lceData, Electricity=@lceElectric,Music=@lceMusic, NaturalGas=@lceNatGas, Security=@lceSecurity, Trash=@lceTrash," +
+            //        " WaterSewer=@lceWaterSewer, ExpenseCost=@lceTotExpense, Mortgage=@lcoMort,LoanPayment=@lcoLoan, Association=@lcoAssoc," +
+            //        " PropertyTax=@lcoPropTax, AdvertisingCoop=@lcoAdvCoop, NationalAdvertise=@lcoNatAdver, LicensingFee=@lcoLicenseFee," +
+            //        "OverheadCost=@lcoTotOverhead where Week='@lcEOW'";
+            //}
+            //else
+            //{
+            //    /// Insert records
+            //    // MessageBox.Show("Hello There, no records");
+            //    /// ,IDs
+            //    lcSQL = " Insert into tb_datahold (Week,NetSales,PrimSupp,OthSupp,Bread,Beverage,Produce,CarbonDioxide,FoodCost,HostCashier,Cooks,Servers,DMO,Supervisor," +
+            //        "Overtime,GeneralManager,Manager,Bonus,PayrollTax,Healthcare,Retirement,LaborCost,Accounting,Bank,CreditCard,Fuel,Legal,License,PayrollProc," +
+            //        "Insurance,WorkersComp,Advertising,Charitable,Auto,CashShortage,Electrical,General,HVAC,Lawn,Painting,Plumbing,Remodeling,Structural,DishMachine," +
+            //        "Janitorial,Office,Restaurant,Uniforms,Data,Electricity,Music,NaturalGas,Security,Trash,WaterSewer,ExpenseCost,Mortgage,LoanPayment,Association," +
+            //        "PropertyTax,AdvertisingCoop,NationalAdvertise,LicensingFee,OverheadCost) " +
+            //        " values " +
+            //        " ('@lcEOW',@lcNetSales,@lcfPrimSupp,@lcfOthSupp,@lcfBread,@lcfBev,@lcfProd,@lcfCarbon,@lcfTotFood,@lclHost,@lclCook,@lclServer,@lclDMO," +
+            //        "@lclSuperv,@lclOvertime,@lclGenManager,@lclManager,@lclBonus,@lclPayTax,@lcHealth,@lcRetire,@lclTotLabor,@lceAccount,@lceBank,@lceCC," +
+            //        "@lceFuel,@lceLegal,@lceLicensePerm,@lcePayroll,@lceInsur,@lceWorkComp,@lceAdvertise,@lceCharitable,@lceAuto,@lceCash,@lceElect,@lceGeneral," +
+            //        "@lceHVAC,@lceLawn,@lcePaint,@lcePlumb,@lceRemodel,@lceStruct,@lceDishMach,@lceJanitorial,@lceOfficeComp,@lceRestaurant,@lceUniform,@lceData," +
+            //        "@lceElectric,@lceMusic,@lceNatGas,@lceSecurity,@lceTrash,@lceWaterSewer,@lceTotExpense,@lcoMort,@lcoLoan,@lcoAssoc,@lcoPropTax," +
+            //        "@lcoAdvCoop,@lcoNatAdver,@lcoLicenseFee,@lcoTotOverhead)";
+            //}
+
+            ////// Pass values to Parameters
+            //cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
+            //cmd.Parameters.AddWithValue("@lcNetSales", lcNetSales);
+            //cmd.Parameters.AddWithValue("@lcfPrimSupp", lcfPrimSupp);
+            //cmd.Parameters.AddWithValue("@lcfOthSupp", lcfOthSupp);
+            //cmd.Parameters.AddWithValue("@lcfBread", lcfBread);
+            //cmd.Parameters.AddWithValue("@lcfBev", lcfBev);
+            //cmd.Parameters.AddWithValue("@lcfProd", lcfProd);
+            //cmd.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
+            //cmd.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
+            //cmd.Parameters.AddWithValue("@lclHost", lclHost);
+            //cmd.Parameters.AddWithValue("@lclCook", lclCook);
+            //cmd.Parameters.AddWithValue("@lclServer", lclServer);
+            //cmd.Parameters.AddWithValue("@lclDMO", lclDMO);
+            //cmd.Parameters.AddWithValue("@lclSuperv", lclSuperv);
+            //cmd.Parameters.AddWithValue("@lclOvertime", lclOvertime);
+            //cmd.Parameters.AddWithValue("@lclGenManager", lclGenManager);
+            //cmd.Parameters.AddWithValue("@lclManager", lclManager);
+            //cmd.Parameters.AddWithValue("@lclBonus", lclBonus);
+            //cmd.Parameters.AddWithValue("@lclPayTax", lclPayTax);
+            //cmd.Parameters.AddWithValue("@lcHealth", lcHealth);  //  HealthCare= 
+            //cmd.Parameters.AddWithValue("@lcRetire", lcRetire);  //  Retire=
+            //cmd.Parameters.AddWithValue("@lclTotLabor", lclTotLabor);
+            //cmd.Parameters.AddWithValue("@lceAccount", lceAccount);
+            //cmd.Parameters.AddWithValue("@lceBank", lceBank);
+            //cmd.Parameters.AddWithValue("@lceCC", lceCC);
+            //cmd.Parameters.AddWithValue("@lceFuel", lceFuel);
+            //cmd.Parameters.AddWithValue("@lceLegal", lceLegal);
+            //cmd.Parameters.AddWithValue("@lceLicensePerm", lceLicensePerm);
+            //cmd.Parameters.AddWithValue("@lcePayroll", lcePayroll);
+            //cmd.Parameters.AddWithValue("@lceInsur", lceInsur);
+            //cmd.Parameters.AddWithValue("@lceWorkComp", lceWorkComp);
+            //cmd.Parameters.AddWithValue("@lceAdvertise", lceAdvertise);
+            //cmd.Parameters.AddWithValue("@lceCharitable", lceCharitable);
+            //cmd.Parameters.AddWithValue("@lceAuto", lceAuto);
+            //cmd.Parameters.AddWithValue("@lceCash", lceCash);
+            //cmd.Parameters.AddWithValue("@lceElect", lceElect);
+            //cmd.Parameters.AddWithValue("@lceGeneral", lceGeneral);
+            //cmd.Parameters.AddWithValue("@lceHVAC", lceHVAC);
+            //cmd.Parameters.AddWithValue("@lceLawn", lceLawn);
+            //cmd.Parameters.AddWithValue("@lcePaint", lcePaint);
+            //cmd.Parameters.AddWithValue("@lcePlumb", lcePlumb);
+            //cmd.Parameters.AddWithValue("@lceRemodel", lceRemodel);
+            //cmd.Parameters.AddWithValue("@lceStruct", lceStruct);
+            //cmd.Parameters.AddWithValue("@lceDishMach", lceDishMach);
+            //cmd.Parameters.AddWithValue("@lceJanitorial", lceJanitorial);
+            //cmd.Parameters.AddWithValue("@lceOfficeComp", lceOfficeComp);
+            //cmd.Parameters.AddWithValue("@lceRestaurant", lceRestaurant);
+            //cmd.Parameters.AddWithValue("@lceUniform", lceUniform);
+            //cmd.Parameters.AddWithValue("@lceData", lceData);
+            //cmd.Parameters.AddWithValue("@lceElectric", lceElectric);
+            //cmd.Parameters.AddWithValue("@lceMusic", lceMusic);
+            //cmd.Parameters.AddWithValue("@lceNatGas", lceNatGas);
+            //cmd.Parameters.AddWithValue("@lceSecurity", lceSecurity);
+            //cmd.Parameters.AddWithValue("@lceTrash", lceTrash);
+            //cmd.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
+            //cmd.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
+            //cmd.Parameters.AddWithValue("@lcoMort", lcoMort);
+            //cmd.Parameters.AddWithValue("@lcoLoan", lcoLoan);
+            //cmd.Parameters.AddWithValue("@lcoAssoc", lcoAssoc);
+            //cmd.Parameters.AddWithValue("@lcoPropTax", lcoPropTax);
+            //cmd.Parameters.AddWithValue("@lcoAdvCoop", lcoAdvCoop);
+            //cmd.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
+            //cmd.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
+            //cmd.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
+            ////  cmd.Parameters.AddWithValue("@",);
+
+            //int rowsAdded = cmd.ExecuteNonQuery();
+            //if (rowsAdded > 0)
+            //    MessageBox.Show("Row inserted!!");
+            //else
+            //    // Well this should never really happen
+            //    MessageBox.Show("No row inserted");
 
             cnn.Close();
             MessageBox.Show("Done!");
@@ -1979,50 +2095,6 @@ namespace Accounting_PL
             e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
         }
 
-        //public static string lConn(OdbcConnection conn)
-        //{
-
-        //    //string lcServer = "salt.db.elephantsql.com";
-        //    //string lcODBC = "PostgreSQL ANSI";
-        //    //string lcDB = "pffejyte";
-        //    //// string lcPort = "5432";  //  Port=" + lcPort + ";
-        //    //string lcUser = "pffejyte";
-        //    //string lcPass = "Or2m-sdyDidrOWGaXBD--8b1-itKL92b";
-        //    //string lcSQL = "";
-        //    //string lcConnectionString = "Driver={" + lcODBC + "};Provider=SQLOLEDB;Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-
-        //    //string lcServer = "67.222.39.62";
-        //    //string lcODBC = "PostgreSQL ANSI";
-        //    //string lcDB = "Tb_Test";
-        //    //string lcPort = "3306";  //  Port=" + lcPort + ";
-        //    //string lcUser = "dynamkr0_pgtest";
-        //    //string lcProv = "SQLOLEDB";
-        //    //string lcPass = "fzk4pktb";
-
-        //    /// (New) tb_Play
-        //    /// tb_HelpingHand
-        //    /// playgroup
-        //    /// tbmaster
-        //    /// Smartman55
-        //    /// (new) playgroup ((US) East US)
-        //    /// https://hadoop.apache.org/
-        //    /// https://www.digitalocean.com/
-
-        //    string lcServer = "playgroup.database.windows.net";
-        //    string lcODBC = "ODBC Driver 17 for SQL Server";
-        //    string lcDB = "tb_HelpingHand";
-        //    // string lcPort = "3306";  //  Port=" + lcPort + ";
-        //    string lcUser = "tbmaster";
-        //    string lcProv = "SQLOLEDB";
-        //    string lcPass = "Smartman55";
-        //    string lcSQL = "";
-        //    string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-        //    OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-
-        //    // return cnn;
-        //}
-
-
 
 
         public static FileInfo GetNewestFile(DirectoryInfo directory)
@@ -2138,10 +2210,9 @@ namespace Accounting_PL
             txtWeek.Text = nextSunday;
             txtYear.Text = lcyear;
 
-            string lcServer = "dynamicelements.database.windows.net";
+            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
             string lcODBC = "ODBC Driver 17 for SQL Server";
             string lcDB = "dynamicelements";
-            // string lcPort = "3306";  //  Port=" + lcPort + ";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
             string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
@@ -2156,59 +2227,130 @@ namespace Accounting_PL
             if (reader.HasRows)
             {
 
-            }
-            else
-            {
+                txtNetSales.Text = reader["NetSales"].ToString();
+                txtRetire.Text = reader["Healthcare"].ToString();
+                txtHealth.Text = reader["Retirement"].ToString();
+
+                txtPrimSup.Text = reader["PrimSupp"].ToString();
+                txtOtherSupp.Text = reader["OthSupp"].ToString();
+                txtBread.Text = reader["Bread"].ToString();
+                txtBev.Text = reader["Beverage"].ToString();
+                txtProd.Text = reader["Produce"].ToString();
+                txtCarbDio.Text = reader["CarbonDioxide"].ToString();
+                txtFoodTot.Text = reader["FoodCost"].ToString();
+
+                txtMortgage.Text = reader["Mortgage"].ToString();
+                txtLoan.Text = reader["LoanPayment"].ToString();
+                txtAssociation.Text = reader["Association"].ToString();
+                txtPropTax.Text = reader["PropertyTax"].ToString();
+                txtAdvCoop.Text = reader["AdvertisingCoop"].ToString();
+                txtNationalAdv.Text = reader["NationalAdvertise"].ToString();
+                txtLicenseFee.Text = reader["LicensingFee"].ToString();
+                txtTotOverhead.Text = reader["OverheadCost"].ToString();
+
+                txtAccount.Text = reader["Accounting"].ToString();
+                txtBank.Text = reader["Bank"].ToString();
+                txtCC.Text = reader["CreditCard"].ToString();
+                txtFuel.Text = reader["Fuel"].ToString();
+                txtLegal.Text = reader["Legal"].ToString();
+                txtLicense.Text = reader["License"].ToString();
+                txtPayroll.Text = reader["PayrollProc"].ToString();
+                txtInsur.Text = reader["Insurance"].ToString();
+                txtWorkComp.Text = reader["WorkersComp"].ToString();
+                txtAdvertising.Text = reader["Advertising"].ToString();
+                txtCharitableComp.Text = reader["Charitable"].ToString();
+                txtAuto.Text = reader["Auto"].ToString();
+                txtCashShort.Text = reader["CashShortage"].ToString();
+                txtElectrical.Text = reader["Electrical"].ToString();
+                txtGeneral.Text = reader["General"].ToString();
+                txtHVAC.Text = reader["HVAC"].ToString();
+                txtLawn.Text = reader["Lawn"].ToString();
+                txtPaint.Text = reader["Painting"].ToString();
+                txtPlumb.Text = reader["Plumbing"].ToString();
+                txtRemodel.Text = reader["Remodeling"].ToString();
+                txtStructural.Text = reader["Structural"].ToString();
+                txtDishMach.Text = reader["DishMachine"].ToString();
+                txtJanitorial.Text = reader["Janitorial"].ToString();
+                txtOffice.Text = reader["Office"].ToString();
+                txtRestaurant.Text = reader["Restaurant"].ToString();
+                txtUniform.Text = reader["Uniforms"].ToString();
+                txtDataTele.Text = reader["Data"].ToString();
+                txtElectricity.Text = reader["Electricity"].ToString();
+                txtMusic.Text = reader["Music"].ToString();
+                txtNatGas.Text = reader["NaturalGas"].ToString();
+                txtSecurity.Text = reader["Security"].ToString();
+                txtTrash.Text = reader["Trash"].ToString();
+                txtWater.Text = reader["WaterSewer"].ToString();
+                txtTotExpense.Text = reader["ExpenseCost"].ToString();
+
+                txtHost.Text = reader["HostCashier"].ToString();
+                txtCooks.Text = reader["Cooks"].ToString();
+                txtServers.Text = reader["Servers"].ToString();
+                txtDMO.Text = reader["DMO"].ToString();
+                txtSupervisor.Text = reader["Supervisor"].ToString();
+                txtOvertime.Text = reader["Overtime"].ToString();
+                txtGenManager.Text = reader["GeneralManager"].ToString();
+                txtManager.Text = reader["Manager"].ToString();
+                txtBonus.Text = reader["Bonus"].ToString();
+                txtPayrollTax.Text = reader["PayrollTax"].ToString();
+                txtTotLabor.Text = reader["LaborCost"].ToString();
 
             }
+            else { }
 
             cnn.Close();
 
         }
+
+
+        /// <summary>
+        /// Apply Button
+        /// Vendor Inv combine
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string lcSQL = "";
+            string lcEOW = txtWeek.Text.Trim();
+
+            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "dynamicelements";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            cnn.Open();
+
+
+            string lcVendor = "";
+            DateTime lcInvDate;
+            string lcVendorInv = "";
+            string lcCat = "";
+            decimal lcAmt = 0m;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+
+                lcVendor = row.Cells[0].Value.ToString();
+                lcInvDate = Convert.ToDateTime(row.Cells[1].Value.ToString());
+                lcVendorInv = row.Cells[2].Value.ToString();
+                lcCat = row.Cells[3].Value.ToString();
+                lcAmt = Convert.ToDecimal(row.Cells[4].Value.ToString());
+
+                lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Amount) VALUES (@lcEOW, 158, @lcInvDate, @lcVendor, @lcVendorInv, @lcCat, @lcAmt) "; // 138  158  168  180  192  197  209  218  222
+                OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+                cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
+                cmd.Parameters.AddWithValue("@lcInvDate", lcInvDate);
+                cmd.Parameters.AddWithValue("@lcVendor", lcVendor);
+                cmd.Parameters.AddWithValue("@lcVendorInv", lcVendorInv);
+                cmd.Parameters.AddWithValue("@lcCat", lcCat);
+                cmd.Parameters.AddWithValue("@lcAmt", lcAmt);
+
+            }
+
+        }
     }
-
-    //public class Conn_cl
-    //{
-
-    //    //string lcServer = "playgroup.database.windows.net";
-    //    //string lcODBC = "ODBC Driver 17 for SQL Server";
-    //    //string lcDB = "tb_HelpingHand";
-    //    //string lcUser = "tbmaster";
-    //    //string lcProv = "SQLOLEDB";
-    //    //string lcPass = "Smartman55";
-    //    //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-    //    public static string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
-    //    public static OdbcConnection con;
-
-    //    public static void OpenConection()
-    //    {
-    //        // string lcConnectionString = "Driver={ODBC Driver 17 for SQL Server};Provider=SQLOLEDB;Server=playgroup.database.windows.net;DATABASE=tb_HelpingHand;Uid=tbmaster; Pwd=Smartman55;";
-    //        // OdbcConnection con;
-    //        con = new OdbcConnection(lcConnectionString);
-    //        con.Open();
-    //    }
-    //    public static void CloseConnection()
-    //    {
-    //        con.Close();
-    //    }
-    //    public static void ExecuteQueries(string Query_)
-    //    {
-    //        OdbcCommand cmd = new OdbcCommand(Query_, con);
-    //        cmd.ExecuteNonQuery();
-    //    }
-    //    public static OdbcDataReader DataReader(string Query_)  // SqlDataReader
-    //    {
-    //        OdbcCommand cmd = new OdbcCommand(Query_, con);
-    //        OdbcDataReader dr = cmd.ExecuteReader();  // SqlDataReader
-    //        return dr;
-    //    }
-    //    public static object ShowDataInGridView(string Query_)
-    //    {
-    //        SqlDataAdapter dr = new SqlDataAdapter(Query_, lcConnectionString);  // SqlDataAdapter  SqlDataAdapter
-    //        DataSet ds = new DataSet();
-    //        dr.Fill(ds);
-    //        object dataum = ds.Tables[0];
-    //        return dataum;
-    //    }
-    //}
 }
