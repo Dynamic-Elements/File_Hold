@@ -22,6 +22,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text;
 // using Microsoft.Office.Interop.Excel;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Accounting_PL
 {
@@ -53,27 +54,48 @@ namespace Accounting_PL
             txtYear.Text = lYear;   // Yr.Substring(0,4);
             txtInvHold.Text = "FOOD";
 
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Fzk4pktb";
 
-            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "dynamicelements";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+            command.CommandText = "select category from tb_category";
+
+            DataTable dt = new DataTable();
+
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            adapter.Fill(dt);
+            cbCategory.DataSource = dt; // setting the datasource property of combobox
+            cbCategory.DisplayMember = "category"; // Display Member which will display on screen
+            cbCategory.ValueMember = "category"; //ID Member using which you will get the selected Item ID
+
+
+            //string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            //string lcODBC = "ODBC Driver 17 for SQL Server";
+            //string lcDB = "dynamicelements";
+            //string lcUser = "tbmaster";
+            //string lcProv = "SQLOLEDB";
+            //string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            //cnn.Open();
 
 
             //// This will create records for the new week so the system just needs to update data
             string lcSQLz = " Exec dynamicelements..CheckRecord @IDs = 158 ";  // 138  158  168  180  192  197  209  218  222
-            OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
-            cmdz.ExecuteScalarAsync();
+            // command.Connection = conn;
+            command = new SqlCommand(lcSQLz, conn);
+            command.ExecuteScalarAsync();
+            //OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
+            //cmdz.ExecuteScalarAsync();
 
+            conn.Open();
 
             string lcSQL = "SELECT * from dynamicelements..tb_Config where Year='" + lYear + "'";
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            OdbcDataReader reader = cmd.ExecuteReader();
+            command = new SqlCommand(lcSQL, conn);
+            SqlDataReader reader = command.ExecuteReader();
+            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //OdbcDataReader reader = cmd.ExecuteReader();
 
             bool fiscialLeapYear;
             if (reader.HasRows)
@@ -83,11 +105,16 @@ namespace Accounting_PL
             }
             else { }
 
+            reader.Close();
+
 
             // dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
             string lcSQLa = "select * from vw_OrderLogs where week='" + lastSunday + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "  12/30/2018
-            OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
-            OdbcDataReader readera = cmda.ExecuteReader();
+            command = new SqlCommand(lcSQL, conn);
+            SqlDataReader readera = command.ExecuteReader();
+
+            //OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
+            //OdbcDataReader readera = cmda.ExecuteReader();
             if (readera.HasRows)
             {
 
@@ -232,7 +259,11 @@ namespace Accounting_PL
                 txtTotLabor.Text = "0.00";
 
             }
-            cnn.Close();
+
+
+     /*       cnn.Close()*/;
+
+            conn.Close();
 
 
             // https://cloud.google.com/vision/docs/ocr#vision_text_detection-csharp
@@ -2331,14 +2362,17 @@ namespace Accounting_PL
             string lcCat = "";
             decimal lcAmt = 0m;
 
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            /// Have to update this now
+
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
 
-                lcVendor = row.Cells[0].Value.ToString();
-                lcInvDate = Convert.ToDateTime(row.Cells[1].Value.ToString());
-                lcVendorInv = row.Cells[2].Value.ToString();
-                lcCat = row.Cells[3].Value.ToString();
-                lcAmt = Convert.ToDecimal(row.Cells[4].Value.ToString());
+                lcVendor = row.Cells[1].Value.ToString();
+                lcInvDate = Convert.ToDateTime(row.Cells[2].Value.ToString());
+                lcVendorInv = row.Cells[3].Value.ToString();
+                lcCat = row.Cells[4].Value.ToString();
+                lcAmt = Convert.ToDecimal(row.Cells[5].Value.ToString());
 
                 lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Amount) VALUES (@lcEOW, 158, @lcInvDate, @lcVendor, @lcVendorInv, @lcCat, @lcAmt) "; // 138  158  168  180  192  197  209  218  222
                 OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
@@ -2351,6 +2385,54 @@ namespace Accounting_PL
 
             }
 
+
+
+        }
+
+        /// <summary>
+        /// This is the Vendor search textbox. Do a fuzzy search in the database to see if it finds the vendor. If not then have user enter info. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+
+            string lcval = this.txtVndSearch.Text;
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Fzk4pktb";
+
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+            command.CommandText = "select * from tb_Vendors where VendorID='%" + lcval + "% '";
+            conn.Open();
+
+            SqlDataReader reader = command.ExecuteReader(); // new SqlDataReader(command);
+
+            if (reader.HasRows)
+            {
+
+                MessageBox.Show("Found something!");
+                vendorIDTextBox.Text = reader["VendorID"].ToString();
+                vendorNameTextBox.Text = reader["VendorName"].ToString();
+                salesPersonTextBox.Text = reader["SalesPerson"].ToString();
+                phoneTextBox.Text = reader["Phone"].ToString();
+                addressLine1TextBox.Text = reader["AddressLine1"].ToString();
+                addressLine2TextBox.Text = reader["AddressLine2"].ToString();
+                cityTextBox.Text = reader["City"].ToString();
+                stateProvinceTextBox.Text = reader["StateProvince"].ToString();
+                countryRegionTextBox.Text = reader["CountryRegion"].ToString();
+                postalCodeTextBox.Text = reader["PostalCode"].ToString();
+
+            }
+            else
+            {
+
+                MessageBox.Show("Found nothing!");
+                vendorIDTextBox.Focus();
+
+            }
+            conn.Close();
         }
     }
 }

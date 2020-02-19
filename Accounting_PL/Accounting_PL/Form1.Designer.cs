@@ -28,6 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label vendorIDLabel;
+            System.Windows.Forms.Label vendorNameLabel;
+            System.Windows.Forms.Label salesPersonLabel;
+            System.Windows.Forms.Label phoneLabel;
+            System.Windows.Forms.Label addressLine1Label;
+            System.Windows.Forms.Label addressLine2Label;
+            System.Windows.Forms.Label cityLabel;
+            System.Windows.Forms.Label stateProvinceLabel;
+            System.Windows.Forms.Label countryRegionLabel;
+            System.Windows.Forms.Label postalCodeLabel;
+            System.Windows.Forms.Label label11;
+            System.Windows.Forms.Label label12;
+            System.Windows.Forms.Label label13;
+            System.Windows.Forms.Label label14;
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.txtWeek = new System.Windows.Forms.TextBox();
@@ -182,23 +197,178 @@
             this.tabLabor = new System.Windows.Forms.TabPage();
             this.tabOver = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.txtVendor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txtInvoiceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txtInvoice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txtCategory = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.txtAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtInvHold = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.txtTotInvoice = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.vendorIDTextBox = new System.Windows.Forms.TextBox();
+            this.vendorNameTextBox = new System.Windows.Forms.TextBox();
+            this.salesPersonTextBox = new System.Windows.Forms.TextBox();
+            this.phoneTextBox = new System.Windows.Forms.TextBox();
+            this.addressLine1TextBox = new System.Windows.Forms.TextBox();
+            this.addressLine2TextBox = new System.Windows.Forms.TextBox();
+            this.cityTextBox = new System.Windows.Forms.TextBox();
+            this.stateProvinceTextBox = new System.Windows.Forms.TextBox();
+            this.countryRegionTextBox = new System.Windows.Forms.TextBox();
+            this.postalCodeTextBox = new System.Windows.Forms.TextBox();
+            this.txtVndSearch = new System.Windows.Forms.TextBox();
+            this.txtInvDate = new System.Windows.Forms.MaskedTextBox();
+            this.txtInvNumb = new System.Windows.Forms.TextBox();
+            this.cbCategory = new System.Windows.Forms.ComboBox();
+            this.tbCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dynamicelementsDataSet = new Accounting_PL.dynamicelementsDataSet();
+            this.tb_CategoryTableAdapter = new Accounting_PL.dynamicelementsDataSetTableAdapters.tb_CategoryTableAdapter();
+            this.txtAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            vendorIDLabel = new System.Windows.Forms.Label();
+            vendorNameLabel = new System.Windows.Forms.Label();
+            salesPersonLabel = new System.Windows.Forms.Label();
+            phoneLabel = new System.Windows.Forms.Label();
+            addressLine1Label = new System.Windows.Forms.Label();
+            addressLine2Label = new System.Windows.Forms.Label();
+            cityLabel = new System.Windows.Forms.Label();
+            stateProvinceLabel = new System.Windows.Forms.Label();
+            countryRegionLabel = new System.Windows.Forms.Label();
+            postalCodeLabel = new System.Windows.Forms.Label();
+            label11 = new System.Windows.Forms.Label();
+            label12 = new System.Windows.Forms.Label();
+            label13 = new System.Windows.Forms.Label();
+            label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabFood.SuspendLayout();
             this.tabExpense.SuspendLayout();
             this.tabLabor.SuspendLayout();
             this.tabOver.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbCategoryBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dynamicelementsDataSet)).BeginInit();
             this.SuspendLayout();
+            // 
+            // vendorIDLabel
+            // 
+            vendorIDLabel.AutoSize = true;
+            vendorIDLabel.Location = new System.Drawing.Point(976, 149);
+            vendorIDLabel.Name = "vendorIDLabel";
+            vendorIDLabel.Size = new System.Drawing.Size(58, 13);
+            vendorIDLabel.TabIndex = 97;
+            vendorIDLabel.Text = "Vendor ID:";
+            // 
+            // vendorNameLabel
+            // 
+            vendorNameLabel.AutoSize = true;
+            vendorNameLabel.Location = new System.Drawing.Point(959, 168);
+            vendorNameLabel.Name = "vendorNameLabel";
+            vendorNameLabel.Size = new System.Drawing.Size(75, 13);
+            vendorNameLabel.TabIndex = 98;
+            vendorNameLabel.Text = "Vendor Name:";
+            // 
+            // salesPersonLabel
+            // 
+            salesPersonLabel.AutoSize = true;
+            salesPersonLabel.Location = new System.Drawing.Point(962, 187);
+            salesPersonLabel.Name = "salesPersonLabel";
+            salesPersonLabel.Size = new System.Drawing.Size(72, 13);
+            salesPersonLabel.TabIndex = 99;
+            salesPersonLabel.Text = "Sales Person:";
+            // 
+            // phoneLabel
+            // 
+            phoneLabel.AutoSize = true;
+            phoneLabel.Location = new System.Drawing.Point(993, 206);
+            phoneLabel.Name = "phoneLabel";
+            phoneLabel.Size = new System.Drawing.Size(41, 13);
+            phoneLabel.TabIndex = 100;
+            phoneLabel.Text = "Phone:";
+            // 
+            // addressLine1Label
+            // 
+            addressLine1Label.AutoSize = true;
+            addressLine1Label.Location = new System.Drawing.Point(957, 225);
+            addressLine1Label.Name = "addressLine1Label";
+            addressLine1Label.Size = new System.Drawing.Size(77, 13);
+            addressLine1Label.TabIndex = 101;
+            addressLine1Label.Text = "Address Line1:";
+            // 
+            // addressLine2Label
+            // 
+            addressLine2Label.AutoSize = true;
+            addressLine2Label.Location = new System.Drawing.Point(957, 244);
+            addressLine2Label.Name = "addressLine2Label";
+            addressLine2Label.Size = new System.Drawing.Size(77, 13);
+            addressLine2Label.TabIndex = 102;
+            addressLine2Label.Text = "Address Line2:";
+            // 
+            // cityLabel
+            // 
+            cityLabel.AutoSize = true;
+            cityLabel.Location = new System.Drawing.Point(1007, 263);
+            cityLabel.Name = "cityLabel";
+            cityLabel.Size = new System.Drawing.Size(27, 13);
+            cityLabel.TabIndex = 103;
+            cityLabel.Text = "City:";
+            // 
+            // stateProvinceLabel
+            // 
+            stateProvinceLabel.AutoSize = true;
+            stateProvinceLabel.Location = new System.Drawing.Point(954, 282);
+            stateProvinceLabel.Name = "stateProvinceLabel";
+            stateProvinceLabel.Size = new System.Drawing.Size(80, 13);
+            stateProvinceLabel.TabIndex = 104;
+            stateProvinceLabel.Text = "State Province:";
+            // 
+            // countryRegionLabel
+            // 
+            countryRegionLabel.AutoSize = true;
+            countryRegionLabel.Location = new System.Drawing.Point(951, 301);
+            countryRegionLabel.Name = "countryRegionLabel";
+            countryRegionLabel.Size = new System.Drawing.Size(83, 13);
+            countryRegionLabel.TabIndex = 105;
+            countryRegionLabel.Text = "Country Region:";
+            // 
+            // postalCodeLabel
+            // 
+            postalCodeLabel.AutoSize = true;
+            postalCodeLabel.Location = new System.Drawing.Point(967, 320);
+            postalCodeLabel.Name = "postalCodeLabel";
+            postalCodeLabel.Size = new System.Drawing.Size(67, 13);
+            postalCodeLabel.TabIndex = 106;
+            postalCodeLabel.Text = "Postal Code:";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new System.Drawing.Point(782, 121);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(81, 13);
+            label11.TabIndex = 108;
+            label11.Text = "Vendor Search:";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(812, 63);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(51, 13);
+            label12.TabIndex = 110;
+            label12.Text = "Inv Date:";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(808, 82);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(55, 13);
+            label13.TabIndex = 113;
+            label13.Text = "Invoice #:";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new System.Drawing.Point(811, 101);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(52, 13);
+            label14.TabIndex = 115;
+            label14.Text = "Category:";
             // 
             // button1
             // 
@@ -207,7 +377,7 @@
             this.button1.Location = new System.Drawing.Point(12, 407);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(129, 30);
-            this.button1.TabIndex = 0;
+            this.button1.TabIndex = 9;
             this.button1.Text = "Export To Excel";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
@@ -219,7 +389,7 @@
             this.button2.Location = new System.Drawing.Point(12, 349);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(79, 30);
-            this.button2.TabIndex = 9;
+            this.button2.TabIndex = 6;
             this.button2.Text = "Scanner";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
@@ -246,7 +416,7 @@
             // 
             this.monthCalendar1.Location = new System.Drawing.Point(18, 18);
             this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 4;
+            this.monthCalendar1.TabIndex = 5;
             this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
             // 
             // txtTotExpense
@@ -1526,7 +1696,7 @@
             this.button7.Location = new System.Drawing.Point(12, 440);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 30);
-            this.button7.TabIndex = 14;
+            this.button7.TabIndex = 10;
             this.button7.Text = "Save";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.Button7_Click);
@@ -1597,7 +1767,7 @@
             this.checkBox1.Location = new System.Drawing.Point(77, 380);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(47, 17);
-            this.checkBox1.TabIndex = 88;
+            this.checkBox1.TabIndex = 8;
             this.checkBox1.Text = "ADF";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -1607,7 +1777,7 @@
             this.checkBox2.Location = new System.Drawing.Point(12, 380);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(59, 17);
-            this.checkBox2.TabIndex = 89;
+            this.checkBox2.TabIndex = 7;
             this.checkBox2.Text = "Duplex";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
@@ -1800,45 +1970,16 @@
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.txtVendor,
-            this.txtInvoiceDate,
-            this.txtInvoice,
-            this.txtCategory,
             this.txtAmt});
-            this.dataGridView1.Location = new System.Drawing.Point(788, 60);
+            this.dataGridView1.Location = new System.Drawing.Point(795, 141);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(546, 132);
-            this.dataGridView1.TabIndex = 92;
+            this.dataGridView1.Size = new System.Drawing.Size(146, 132);
+            this.dataGridView1.TabIndex = 16;
             this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
-            // 
-            // txtVendor
-            // 
-            this.txtVendor.HeaderText = "Vender";
-            this.txtVendor.Name = "txtVendor";
-            // 
-            // txtInvoiceDate
-            // 
-            this.txtInvoiceDate.HeaderText = "Invoice Date";
-            this.txtInvoiceDate.Name = "txtInvoiceDate";
-            // 
-            // txtInvoice
-            // 
-            this.txtInvoice.HeaderText = "Invoice #";
-            this.txtInvoice.Name = "txtInvoice";
-            // 
-            // txtCategory
-            // 
-            this.txtCategory.HeaderText = "Category";
-            this.txtCategory.Name = "txtCategory";
-            // 
-            // txtAmt
-            // 
-            this.txtAmt.HeaderText = "Amount";
-            this.txtAmt.Name = "txtAmt";
             // 
             // txtInvHold
             // 
-            this.txtInvHold.Location = new System.Drawing.Point(995, 34);
+            this.txtInvHold.Location = new System.Drawing.Point(838, 34);
             this.txtInvHold.Name = "txtInvHold";
             this.txtInvHold.ReadOnly = true;
             this.txtInvHold.Size = new System.Drawing.Size(131, 20);
@@ -1846,30 +1987,30 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(1228, 224);
+            this.button3.Location = new System.Drawing.Point(845, 305);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 94;
+            this.button3.TabIndex = 27;
             this.button3.Text = "Apply";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // txtTotInvoice
             // 
-            this.txtTotInvoice.Location = new System.Drawing.Point(1203, 198);
+            this.txtTotInvoice.Location = new System.Drawing.Point(824, 279);
             this.txtTotInvoice.Name = "txtTotInvoice";
             this.txtTotInvoice.ReadOnly = true;
-            this.txtTotInvoice.Size = new System.Drawing.Size(131, 20);
+            this.txtTotInvoice.Size = new System.Drawing.Size(117, 20);
             this.txtTotInvoice.TabIndex = 95;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1166, 204);
+            this.label8.Location = new System.Drawing.Point(784, 283);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 96;
-            this.label8.Text = "Total";
+            this.label8.Text = "Total:";
             // 
             // checkBox3
             // 
@@ -1877,16 +2018,168 @@
             this.checkBox3.Location = new System.Drawing.Point(12, 476);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(80, 17);
-            this.checkBox3.TabIndex = 23;
+            this.checkBox3.TabIndex = 11;
             this.checkBox3.Text = "checkBox3";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.Visible = false;
+            // 
+            // vendorIDTextBox
+            // 
+            this.vendorIDTextBox.Location = new System.Drawing.Point(1040, 146);
+            this.vendorIDTextBox.Name = "vendorIDTextBox";
+            this.vendorIDTextBox.Size = new System.Drawing.Size(100, 20);
+            this.vendorIDTextBox.TabIndex = 17;
+            // 
+            // vendorNameTextBox
+            // 
+            this.vendorNameTextBox.Location = new System.Drawing.Point(1040, 165);
+            this.vendorNameTextBox.Name = "vendorNameTextBox";
+            this.vendorNameTextBox.Size = new System.Drawing.Size(100, 20);
+            this.vendorNameTextBox.TabIndex = 18;
+            // 
+            // salesPersonTextBox
+            // 
+            this.salesPersonTextBox.Location = new System.Drawing.Point(1040, 184);
+            this.salesPersonTextBox.Name = "salesPersonTextBox";
+            this.salesPersonTextBox.Size = new System.Drawing.Size(100, 20);
+            this.salesPersonTextBox.TabIndex = 19;
+            // 
+            // phoneTextBox
+            // 
+            this.phoneTextBox.Location = new System.Drawing.Point(1040, 203);
+            this.phoneTextBox.Name = "phoneTextBox";
+            this.phoneTextBox.Size = new System.Drawing.Size(100, 20);
+            this.phoneTextBox.TabIndex = 20;
+            // 
+            // addressLine1TextBox
+            // 
+            this.addressLine1TextBox.Location = new System.Drawing.Point(1040, 222);
+            this.addressLine1TextBox.Name = "addressLine1TextBox";
+            this.addressLine1TextBox.Size = new System.Drawing.Size(100, 20);
+            this.addressLine1TextBox.TabIndex = 21;
+            // 
+            // addressLine2TextBox
+            // 
+            this.addressLine2TextBox.Location = new System.Drawing.Point(1040, 241);
+            this.addressLine2TextBox.Name = "addressLine2TextBox";
+            this.addressLine2TextBox.Size = new System.Drawing.Size(100, 20);
+            this.addressLine2TextBox.TabIndex = 22;
+            // 
+            // cityTextBox
+            // 
+            this.cityTextBox.Location = new System.Drawing.Point(1040, 260);
+            this.cityTextBox.Name = "cityTextBox";
+            this.cityTextBox.Size = new System.Drawing.Size(100, 20);
+            this.cityTextBox.TabIndex = 23;
+            // 
+            // stateProvinceTextBox
+            // 
+            this.stateProvinceTextBox.Location = new System.Drawing.Point(1040, 279);
+            this.stateProvinceTextBox.Name = "stateProvinceTextBox";
+            this.stateProvinceTextBox.Size = new System.Drawing.Size(100, 20);
+            this.stateProvinceTextBox.TabIndex = 24;
+            // 
+            // countryRegionTextBox
+            // 
+            this.countryRegionTextBox.Location = new System.Drawing.Point(1040, 298);
+            this.countryRegionTextBox.Name = "countryRegionTextBox";
+            this.countryRegionTextBox.Size = new System.Drawing.Size(100, 20);
+            this.countryRegionTextBox.TabIndex = 25;
+            // 
+            // postalCodeTextBox
+            // 
+            this.postalCodeTextBox.Location = new System.Drawing.Point(1040, 317);
+            this.postalCodeTextBox.Name = "postalCodeTextBox";
+            this.postalCodeTextBox.Size = new System.Drawing.Size(100, 20);
+            this.postalCodeTextBox.TabIndex = 26;
+            // 
+            // txtVndSearch
+            // 
+            this.txtVndSearch.Location = new System.Drawing.Point(869, 118);
+            this.txtVndSearch.Name = "txtVndSearch";
+            this.txtVndSearch.Size = new System.Drawing.Size(100, 20);
+            this.txtVndSearch.TabIndex = 15;
+            this.txtVndSearch.Leave += new System.EventHandler(this.textBox1_Leave);
+            // 
+            // txtInvDate
+            // 
+            this.txtInvDate.Location = new System.Drawing.Point(869, 60);
+            this.txtInvDate.Mask = "00/00/0000";
+            this.txtInvDate.Name = "txtInvDate";
+            this.txtInvDate.Size = new System.Drawing.Size(100, 20);
+            this.txtInvDate.TabIndex = 12;
+            this.txtInvDate.ValidatingType = typeof(System.DateTime);
+            // 
+            // txtInvNumb
+            // 
+            this.txtInvNumb.Location = new System.Drawing.Point(869, 79);
+            this.txtInvNumb.Name = "txtInvNumb";
+            this.txtInvNumb.Size = new System.Drawing.Size(100, 20);
+            this.txtInvNumb.TabIndex = 13;
+            // 
+            // cbCategory
+            // 
+            this.cbCategory.DataSource = this.tbCategoryBindingSource;
+            this.cbCategory.DisplayMember = "Category";
+            this.cbCategory.FormattingEnabled = true;
+            this.cbCategory.Location = new System.Drawing.Point(869, 98);
+            this.cbCategory.Name = "cbCategory";
+            this.cbCategory.Size = new System.Drawing.Size(121, 21);
+            this.cbCategory.TabIndex = 14;
+            this.cbCategory.ValueMember = "Category";
+            // 
+            // tbCategoryBindingSource
+            // 
+            this.tbCategoryBindingSource.DataMember = "tb_Category";
+            this.tbCategoryBindingSource.DataSource = this.dynamicelementsDataSet;
+            // 
+            // dynamicelementsDataSet
+            // 
+            this.dynamicelementsDataSet.DataSetName = "dynamicelementsDataSet";
+            this.dynamicelementsDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // tb_CategoryTableAdapter
+            // 
+            this.tb_CategoryTableAdapter.ClearBeforeFill = true;
+            // 
+            // txtAmt
+            // 
+            this.txtAmt.HeaderText = "Amount";
+            this.txtAmt.Name = "txtAmt";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1340, 621);
+            this.ClientSize = new System.Drawing.Size(1149, 638);
+            this.Controls.Add(this.cbCategory);
+            this.Controls.Add(label14);
+            this.Controls.Add(label13);
+            this.Controls.Add(this.txtInvNumb);
+            this.Controls.Add(this.txtInvDate);
+            this.Controls.Add(label12);
+            this.Controls.Add(label11);
+            this.Controls.Add(this.txtVndSearch);
+            this.Controls.Add(postalCodeLabel);
+            this.Controls.Add(this.postalCodeTextBox);
+            this.Controls.Add(countryRegionLabel);
+            this.Controls.Add(this.countryRegionTextBox);
+            this.Controls.Add(stateProvinceLabel);
+            this.Controls.Add(this.stateProvinceTextBox);
+            this.Controls.Add(cityLabel);
+            this.Controls.Add(this.cityTextBox);
+            this.Controls.Add(addressLine2Label);
+            this.Controls.Add(this.addressLine2TextBox);
+            this.Controls.Add(addressLine1Label);
+            this.Controls.Add(this.addressLine1TextBox);
+            this.Controls.Add(phoneLabel);
+            this.Controls.Add(this.phoneTextBox);
+            this.Controls.Add(salesPersonLabel);
+            this.Controls.Add(this.salesPersonTextBox);
+            this.Controls.Add(vendorNameLabel);
+            this.Controls.Add(this.vendorNameTextBox);
+            this.Controls.Add(vendorIDLabel);
+            this.Controls.Add(this.vendorIDTextBox);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtTotInvoice);
@@ -1923,6 +2216,8 @@
             this.tabOver.ResumeLayout(false);
             this.tabOver.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbCategoryBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dynamicelementsDataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2084,16 +2379,29 @@
         private System.Windows.Forms.TabPage tabLabor;
         private System.Windows.Forms.TabPage tabOver;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn txtVendor;
-        private System.Windows.Forms.DataGridViewTextBoxColumn txtInvoiceDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn txtInvoice;
-        private System.Windows.Forms.DataGridViewComboBoxColumn txtCategory;
-        private System.Windows.Forms.DataGridViewTextBoxColumn txtAmt;
         private System.Windows.Forms.TextBox txtInvHold;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox txtTotInvoice;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.TextBox vendorIDTextBox;
+        private System.Windows.Forms.TextBox vendorNameTextBox;
+        private System.Windows.Forms.TextBox salesPersonTextBox;
+        private System.Windows.Forms.TextBox phoneTextBox;
+        private System.Windows.Forms.TextBox addressLine1TextBox;
+        private System.Windows.Forms.TextBox addressLine2TextBox;
+        private System.Windows.Forms.TextBox cityTextBox;
+        private System.Windows.Forms.TextBox stateProvinceTextBox;
+        private System.Windows.Forms.TextBox countryRegionTextBox;
+        private System.Windows.Forms.TextBox postalCodeTextBox;
+        private System.Windows.Forms.TextBox txtVndSearch;
+        private System.Windows.Forms.MaskedTextBox txtInvDate;
+        private System.Windows.Forms.TextBox txtInvNumb;
+        private System.Windows.Forms.ComboBox cbCategory;
+        private dynamicelementsDataSet dynamicelementsDataSet;
+        private System.Windows.Forms.BindingSource tbCategoryBindingSource;
+        private dynamicelementsDataSetTableAdapters.tb_CategoryTableAdapter tb_CategoryTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtAmt;
     }
 }
 
