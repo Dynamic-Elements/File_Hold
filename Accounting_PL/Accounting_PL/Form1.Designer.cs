@@ -197,6 +197,7 @@
             this.tabLabor = new System.Windows.Forms.TabPage();
             this.tabOver = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.txtAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtInvHold = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.txtTotInvoice = new System.Windows.Forms.TextBox();
@@ -219,7 +220,6 @@
             this.tbCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dynamicelementsDataSet = new Accounting_PL.dynamicelementsDataSet();
             this.tb_CategoryTableAdapter = new Accounting_PL.dynamicelementsDataSetTableAdapters.tb_CategoryTableAdapter();
-            this.txtAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             vendorIDLabel = new System.Windows.Forms.Label();
             vendorNameLabel = new System.Windows.Forms.Label();
             salesPersonLabel = new System.Windows.Forms.Label();
@@ -1977,6 +1977,11 @@
             this.dataGridView1.TabIndex = 16;
             this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
             // 
+            // txtAmt
+            // 
+            this.txtAmt.HeaderText = "Amount";
+            this.txtAmt.Name = "txtAmt";
+            // 
             // txtInvHold
             // 
             this.txtInvHold.Location = new System.Drawing.Point(838, 34);
@@ -2142,16 +2147,11 @@
             // 
             this.tb_CategoryTableAdapter.ClearBeforeFill = true;
             // 
-            // txtAmt
-            // 
-            this.txtAmt.HeaderText = "Amount";
-            this.txtAmt.Name = "txtAmt";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1149, 638);
+            this.ClientSize = new System.Drawing.Size(1149, 625);
             this.Controls.Add(this.cbCategory);
             this.Controls.Add(label14);
             this.Controls.Add(label13);

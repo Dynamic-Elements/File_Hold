@@ -23,6 +23,7 @@ using iTextSharp.text;
 // using Microsoft.Office.Interop.Excel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace Accounting_PL
 {
@@ -31,9 +32,9 @@ namespace Accounting_PL
 
         string appPath = AppDomain.CurrentDomain.BaseDirectory;
         string curDir = Files.AddBS(Files.CurDir());
-        // MessageBox.Show("here " + curDir);
         string baseCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")));
-        //  MessageBox.Show("here " + baseCurDir);
+        string fileCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\")));
+
         public Form1()
         {
             InitializeComponent();
@@ -107,89 +108,329 @@ namespace Accounting_PL
 
             reader.Close();
 
+            refreshFormFields();
 
-            // dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
-            string lcSQLa = "select * from vw_OrderLogs where week='" + lastSunday + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "  12/30/2018
-            command = new SqlCommand(lcSQL, conn);
-            SqlDataReader readera = command.ExecuteReader();
 
-            //OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
-            //OdbcDataReader readera = cmda.ExecuteReader();
-            if (readera.HasRows)
+            //// dynamicelements..vw_OrderLogs    //  Will need to create stored procedures
+            //string lcSQLa = "select * from vw_OrderLogs where week='" + lastSunday + "'";   // Week='" + textBox1.Text.Trim() + "'";   '12/30/2018'  v" + textBox1.Text.Trim() + "  12/30/2018
+            //command = new SqlCommand(lcSQL, conn);
+            //SqlDataReader readera = command.ExecuteReader();
+
+            ////OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
+            ////OdbcDataReader readera = cmda.ExecuteReader();
+            //if (readera.HasRows)
+            //{
+
+            //    txtNetSales.Text = readera["NetSales"].ToString();
+            //    txtRetire.Text = readera["Healthcare"].ToString();
+            //    txtHealth.Text = readera["Retirement"].ToString();
+
+            //    txtPrimSup.Text = readera["PrimSupp"].ToString();
+            //    txtOtherSupp.Text = readera["OthSupp"].ToString();
+            //    txtBread.Text = readera["Bread"].ToString();
+            //    txtBev.Text = readera["Beverage"].ToString();
+            //    txtProd.Text = readera["Produce"].ToString();
+            //    txtCarbDio.Text = readera["CarbonDioxide"].ToString();
+            //    txtFoodTot.Text = readera["FoodCost"].ToString();
+
+            //    txtMortgage.Text = readera["Mortgage"].ToString();
+            //    txtLoan.Text = readera["LoanPayment"].ToString();
+            //    txtAssociation.Text = readera["Association"].ToString();
+            //    txtPropTax.Text = readera["PropertyTax"].ToString();
+            //    txtAdvCoop.Text = readera["AdvertisingCoop"].ToString();
+            //    txtNationalAdv.Text = readera["NationalAdvertise"].ToString();
+            //    txtLicenseFee.Text = readera["LicensingFee"].ToString();
+            //    txtTotOverhead.Text = readera["OverheadCost"].ToString();
+
+            //    txtAccount.Text = readera["Accounting"].ToString();
+            //    txtBank.Text = readera["Bank"].ToString();
+            //    txtCC.Text = readera["CreditCard"].ToString();
+            //    txtFuel.Text = readera["Fuel"].ToString();
+            //    txtLegal.Text = readera["Legal"].ToString();
+            //    txtLicense.Text = readera["License"].ToString();
+            //    txtPayroll.Text = readera["PayrollProc"].ToString();
+            //    txtInsur.Text = readera["Insurance"].ToString();
+            //    txtWorkComp.Text = readera["WorkersComp"].ToString();
+            //    txtAdvertising.Text = readera["Advertising"].ToString();
+            //    txtCharitableComp.Text = readera["Charitable"].ToString();
+            //    txtAuto.Text = readera["Auto"].ToString();
+            //    txtCashShort.Text = readera["CashShortage"].ToString();
+            //    txtElectrical.Text = readera["Electrical"].ToString();
+            //    txtGeneral.Text = readera["General"].ToString();
+            //    txtHVAC.Text = readera["HVAC"].ToString();
+            //    txtLawn.Text = readera["Lawn"].ToString();
+            //    txtPaint.Text = readera["Painting"].ToString();
+            //    txtPlumb.Text = readera["Plumbing"].ToString();
+            //    txtRemodel.Text = readera["Remodeling"].ToString();
+            //    txtStructural.Text = readera["Structural"].ToString();
+            //    txtDishMach.Text = readera["DishMachine"].ToString();
+            //    txtJanitorial.Text = readera["Janitorial"].ToString();
+            //    txtOffice.Text = readera["Office"].ToString();
+            //    txtRestaurant.Text = readera["Restaurant"].ToString();
+            //    txtUniform.Text = readera["Uniforms"].ToString();
+            //    txtDataTele.Text = readera["Data"].ToString();
+            //    txtElectricity.Text = readera["Electricity"].ToString();
+            //    txtMusic.Text = readera["Music"].ToString();
+            //    txtNatGas.Text = readera["NaturalGas"].ToString();
+            //    txtSecurity.Text = readera["Security"].ToString();
+            //    txtTrash.Text = readera["Trash"].ToString();
+            //    txtWater.Text = readera["WaterSewer"].ToString();
+            //    txtTotExpense.Text = readera["ExpenseCost"].ToString();
+
+            //    txtHost.Text = readera["HostCashier"].ToString();
+            //    txtCooks.Text = readera["Cooks"].ToString();
+            //    txtServers.Text = readera["Servers"].ToString();
+            //    txtDMO.Text = readera["DMO"].ToString();
+            //    txtSupervisor.Text = readera["Supervisor"].ToString();
+            //    txtOvertime.Text = readera["Overtime"].ToString();
+            //    txtGenManager.Text = readera["GeneralManager"].ToString();
+            //    txtManager.Text = readera["Manager"].ToString();
+            //    txtBonus.Text = readera["Bonus"].ToString();
+            //    txtPayrollTax.Text = readera["PayrollTax"].ToString();
+            //    txtTotLabor.Text = readera["LaborCost"].ToString();
+
+            //}
+            //else
+            //{
+
+            //    txtNetSales.Text = "0.00";
+            //    txtRetire.Text = "0.00";
+            //    txtHealth.Text = "0.00";
+
+            //    txtPrimSup.Text = "0.00";
+            //    txtOtherSupp.Text = "0.00";
+            //    txtBread.Text = "0.00";
+            //    txtBev.Text = "0.00";
+            //    txtProd.Text = "0.00";
+            //    txtCarbDio.Text = "0.00";
+            //    txtFoodTot.Text = "0.00";
+
+            //    txtMortgage.Text = "0.00";
+            //    txtLoan.Text = "0.00";
+            //    txtAssociation.Text = "0.00";
+            //    txtPropTax.Text = "0.00";
+            //    txtAdvCoop.Text = "0.00";
+            //    txtNationalAdv.Text = "0.00";
+            //    txtLicenseFee.Text = "0.00";
+            //    txtTotOverhead.Text = "0.00";
+
+            //    txtAccount.Text = "0.00";
+            //    txtBank.Text = "0.00";
+            //    txtCC.Text = "0.00";
+            //    txtFuel.Text = "0.00";
+            //    txtLegal.Text = "0.00";
+            //    txtLicense.Text = "0.00";
+            //    txtPayroll.Text = "0.00";
+            //    txtInsur.Text = "0.00";
+            //    txtWorkComp.Text = "0.00";
+            //    txtAdvertising.Text = "0.00";
+            //    txtCharitableComp.Text = "0.00";
+            //    txtAuto.Text = "0.00";
+            //    txtCashShort.Text = "0.00";
+            //    txtElectrical.Text = "0.00";
+            //    txtGeneral.Text = "0.00";
+            //    txtHVAC.Text = "0.00";
+            //    txtLawn.Text = "0.00";
+            //    txtPaint.Text = "0.00";
+            //    txtPlumb.Text = "0.00";
+            //    txtRemodel.Text = "0.00";
+            //    txtStructural.Text = "0.00";
+            //    txtDishMach.Text = "0.00";
+            //    txtJanitorial.Text = "0.00";
+            //    txtOffice.Text = "0.00";
+            //    txtRestaurant.Text = "0.00";
+            //    txtUniform.Text = "0.00";
+            //    txtDataTele.Text = "0.00";
+            //    txtElectricity.Text = "0.00";
+            //    txtMusic.Text = "0.00";
+            //    txtNatGas.Text = "0.00";
+            //    txtSecurity.Text = "0.00";
+            //    txtTrash.Text = "0.00";
+            //    txtWater.Text = "0.00";
+            //    txtTotExpense.Text = "0.00";
+
+            //    txtHost.Text = "0.00";
+            //    txtCooks.Text = "0.00";
+            //    txtServers.Text = "0.00";
+            //    txtDMO.Text = "0.00";
+            //    txtSupervisor.Text = "0.00";
+            //    txtOvertime.Text = "0.00";
+            //    txtGenManager.Text = "0.00";
+            //    txtManager.Text = "0.00";
+            //    txtBonus.Text = "0.00";
+            //    txtPayrollTax.Text = "0.00";
+            //    txtTotLabor.Text = "0.00";
+
+            //}
+
+
+            /*       cnn.Close()*/
+            ;
+
+            conn.Close();
+
+        }
+
+
+        /// <summary>
+        /// Best to use this after updating the database with data
+        /// </summary>
+        private void refreshFormFields()
+        {
+
+            string lcEOW = txtWeek.Text.Trim();
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Fzk4pktb";
+
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+            command.CommandText = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "'";
+            conn.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.HasRows)
             {
 
-                txtNetSales.Text = readera["NetSales"].ToString();
-                txtRetire.Text = readera["Healthcare"].ToString();
-                txtHealth.Text = readera["Retirement"].ToString();
+                txtNetSales.Text = reader.IsDBNull(4).ToString();
+                txtHealth.Text = reader.IsDBNull(5).ToString();
+                txtRetire.Text = reader.IsDBNull(6).ToString();
 
-                txtPrimSup.Text = readera["PrimSupp"].ToString();
-                txtOtherSupp.Text = readera["OthSupp"].ToString();
-                txtBread.Text = readera["Bread"].ToString();
-                txtBev.Text = readera["Beverage"].ToString();
-                txtProd.Text = readera["Produce"].ToString();
-                txtCarbDio.Text = readera["CarbonDioxide"].ToString();
-                txtFoodTot.Text = readera["FoodCost"].ToString();
+                txtPrimSup.Text = reader.IsDBNull(7).ToString();
+                txtOtherSupp.Text = reader.IsDBNull(8).ToString();
+                txtBread.Text = reader.IsDBNull(9).ToString();
+                txtBev.Text = reader.IsDBNull(10).ToString(); 
+                txtProd.Text = reader.IsDBNull(11).ToString();
+                txtCarbDio.Text = reader.IsDBNull(12).ToString();
+                txtFoodTot.Text = reader.IsDBNull(13).ToString();
 
-                txtMortgage.Text = readera["Mortgage"].ToString();
-                txtLoan.Text = readera["LoanPayment"].ToString();
-                txtAssociation.Text = readera["Association"].ToString();
-                txtPropTax.Text = readera["PropertyTax"].ToString();
-                txtAdvCoop.Text = readera["AdvertisingCoop"].ToString();
-                txtNationalAdv.Text = readera["NationalAdvertise"].ToString();
-                txtLicenseFee.Text = readera["LicensingFee"].ToString();
-                txtTotOverhead.Text = readera["OverheadCost"].ToString();
+                txtMortgage.Text = reader["Mortgage"].ToString();
+                txtLoan.Text = reader["LoanPayment"].ToString();
+                txtAssociation.Text = reader["Association"].ToString();
+                txtPropTax.Text = reader["PropertyTax"].ToString();
+                txtAdvCoop.Text = reader["AdvertisingCoop"].ToString();
+                txtNationalAdv.Text = reader["NationalAdvertise"].ToString();
+                txtLicenseFee.Text = reader["LicensingFee"].ToString();
+                txtTotOverhead.Text = reader["OverheadCost"].ToString();
 
-                txtAccount.Text = readera["Accounting"].ToString();
-                txtBank.Text = readera["Bank"].ToString();
-                txtCC.Text = readera["CreditCard"].ToString();
-                txtFuel.Text = readera["Fuel"].ToString();
-                txtLegal.Text = readera["Legal"].ToString();
-                txtLicense.Text = readera["License"].ToString();
-                txtPayroll.Text = readera["PayrollProc"].ToString();
-                txtInsur.Text = readera["Insurance"].ToString();
-                txtWorkComp.Text = readera["WorkersComp"].ToString();
-                txtAdvertising.Text = readera["Advertising"].ToString();
-                txtCharitableComp.Text = readera["Charitable"].ToString();
-                txtAuto.Text = readera["Auto"].ToString();
-                txtCashShort.Text = readera["CashShortage"].ToString();
-                txtElectrical.Text = readera["Electrical"].ToString();
-                txtGeneral.Text = readera["General"].ToString();
-                txtHVAC.Text = readera["HVAC"].ToString();
-                txtLawn.Text = readera["Lawn"].ToString();
-                txtPaint.Text = readera["Painting"].ToString();
-                txtPlumb.Text = readera["Plumbing"].ToString();
-                txtRemodel.Text = readera["Remodeling"].ToString();
-                txtStructural.Text = readera["Structural"].ToString();
-                txtDishMach.Text = readera["DishMachine"].ToString();
-                txtJanitorial.Text = readera["Janitorial"].ToString();
-                txtOffice.Text = readera["Office"].ToString();
-                txtRestaurant.Text = readera["Restaurant"].ToString();
-                txtUniform.Text = readera["Uniforms"].ToString();
-                txtDataTele.Text = readera["Data"].ToString();
-                txtElectricity.Text = readera["Electricity"].ToString();
-                txtMusic.Text = readera["Music"].ToString();
-                txtNatGas.Text = readera["NaturalGas"].ToString();
-                txtSecurity.Text = readera["Security"].ToString();
-                txtTrash.Text = readera["Trash"].ToString();
-                txtWater.Text = readera["WaterSewer"].ToString();
-                txtTotExpense.Text = readera["ExpenseCost"].ToString();
+                txtAccount.Text = reader["Accounting"].ToString();
+                txtBank.Text = reader["Bank"].ToString();
+                txtCC.Text = reader["CreditCard"].ToString();
+                txtFuel.Text = reader["Fuel"].ToString();
+                txtLegal.Text = reader["Legal"].ToString();
+                txtLicense.Text = reader["License"].ToString();
+                txtPayroll.Text = reader["PayrollProc"].ToString();
+                txtInsur.Text = reader["Insurance"].ToString();
+                txtWorkComp.Text = reader["WorkersComp"].ToString();
+                txtAdvertising.Text = reader["Advertising"].ToString();
+                txtCharitableComp.Text = reader["Charitable"].ToString();
+                txtAuto.Text = reader["Auto"].ToString();
+                txtCashShort.Text = reader["CashShortage"].ToString();
+                txtElectrical.Text = reader["Electrical"].ToString();
+                txtGeneral.Text = reader["General"].ToString();
+                txtHVAC.Text = reader["HVAC"].ToString();
+                txtLawn.Text = reader["Lawn"].ToString();
+                txtPaint.Text = reader["Painting"].ToString();
+                txtPlumb.Text = reader["Plumbing"].ToString();
+                txtRemodel.Text = reader["Remodeling"].ToString();
+                txtStructural.Text = reader["Structural"].ToString();
+                txtDishMach.Text = reader["DishMachine"].ToString();
+                txtJanitorial.Text = reader["Janitorial"].ToString();
+                txtOffice.Text = reader["Office"].ToString();
+                txtRestaurant.Text = reader["Restaurant"].ToString();
+                txtUniform.Text = reader["Uniforms"].ToString();
+                txtDataTele.Text = reader["Data"].ToString();
+                txtElectricity.Text = reader["Electricity"].ToString();
+                txtMusic.Text = reader["Music"].ToString();
+                txtNatGas.Text = reader["NaturalGas"].ToString();
+                txtSecurity.Text = reader["Security"].ToString();
+                txtTrash.Text = reader["Trash"].ToString();
+                txtWater.Text = reader["WaterSewer"].ToString();
+                txtTotExpense.Text = reader["ExpenseCost"].ToString();
 
-                txtHost.Text = readera["HostCashier"].ToString();
-                txtCooks.Text = readera["Cooks"].ToString();
-                txtServers.Text = readera["Servers"].ToString();
-                txtDMO.Text = readera["DMO"].ToString();
-                txtSupervisor.Text = readera["Supervisor"].ToString();
-                txtOvertime.Text = readera["Overtime"].ToString();
-                txtGenManager.Text = readera["GeneralManager"].ToString();
-                txtManager.Text = readera["Manager"].ToString();
-                txtBonus.Text = readera["Bonus"].ToString();
-                txtPayrollTax.Text = readera["PayrollTax"].ToString();
-                txtTotLabor.Text = readera["LaborCost"].ToString();
+                txtHost.Text = reader["HostCashier"].ToString();
+                txtCooks.Text = reader["Cooks"].ToString();
+                txtServers.Text = reader["Servers"].ToString();
+                txtDMO.Text = reader["DMO"].ToString();
+                txtSupervisor.Text = reader["Supervisor"].ToString();
+                txtOvertime.Text = reader["Overtime"].ToString();
+                txtGenManager.Text = reader["GeneralManager"].ToString();
+                txtManager.Text = reader["Manager"].ToString();
+                txtBonus.Text = reader["Bonus"].ToString();
+                txtPayrollTax.Text = reader["PayrollTax"].ToString();
+                txtTotLabor.Text = reader["LaborCost"].ToString();
+
+                //txtNetSales.Text = reader["NetSales"].ToString();
+                //txtRetire.Text = reader["Healthcare"].ToString();
+                //txtHealth.Text = reader["Retirement"].ToString();
+
+                //txtPrimSup.Text = reader["PrimSupp"].ToString();
+                //txtOtherSupp.Text = reader["OthSupp"].ToString();
+                //txtBread.Text = reader["Bread"].ToString();
+                //txtBev.Text = reader["Beverage"].ToString();
+                //txtProd.Text = reader["Produce"].ToString();
+                //txtCarbDio.Text = reader["CarbonDioxide"].ToString();
+                //txtFoodTot.Text = reader["FoodCost"].ToString();
+
+                //txtMortgage.Text = reader["Mortgage"].ToString();
+                //txtLoan.Text = reader["LoanPayment"].ToString();
+                //txtAssociation.Text = reader["Association"].ToString();
+                //txtPropTax.Text = reader["PropertyTax"].ToString();
+                //txtAdvCoop.Text = reader["AdvertisingCoop"].ToString();
+                //txtNationalAdv.Text = reader["NationalAdvertise"].ToString();
+                //txtLicenseFee.Text = reader["LicensingFee"].ToString();
+                //txtTotOverhead.Text = reader["OverheadCost"].ToString();
+
+                //txtAccount.Text = reader["Accounting"].ToString();
+                //txtBank.Text = reader["Bank"].ToString();
+                //txtCC.Text = reader["CreditCard"].ToString();
+                //txtFuel.Text = reader["Fuel"].ToString();
+                //txtLegal.Text = reader["Legal"].ToString();
+                //txtLicense.Text = reader["License"].ToString();
+                //txtPayroll.Text = reader["PayrollProc"].ToString();
+                //txtInsur.Text = reader["Insurance"].ToString();
+                //txtWorkComp.Text = reader["WorkersComp"].ToString();
+                //txtAdvertising.Text = reader["Advertising"].ToString();
+                //txtCharitableComp.Text = reader["Charitable"].ToString();
+                //txtAuto.Text = reader["Auto"].ToString();
+                //txtCashShort.Text = reader["CashShortage"].ToString();
+                //txtElectrical.Text = reader["Electrical"].ToString();
+                //txtGeneral.Text = reader["General"].ToString();
+                //txtHVAC.Text = reader["HVAC"].ToString();
+                //txtLawn.Text = reader["Lawn"].ToString();
+                //txtPaint.Text = reader["Painting"].ToString();
+                //txtPlumb.Text = reader["Plumbing"].ToString();
+                //txtRemodel.Text = reader["Remodeling"].ToString();
+                //txtStructural.Text = reader["Structural"].ToString();
+                //txtDishMach.Text = reader["DishMachine"].ToString();
+                //txtJanitorial.Text = reader["Janitorial"].ToString();
+                //txtOffice.Text = reader["Office"].ToString();
+                //txtRestaurant.Text = reader["Restaurant"].ToString();
+                //txtUniform.Text = reader["Uniforms"].ToString();
+                //txtDataTele.Text = reader["Data"].ToString();
+                //txtElectricity.Text = reader["Electricity"].ToString();
+                //txtMusic.Text = reader["Music"].ToString();
+                //txtNatGas.Text = reader["NaturalGas"].ToString();
+                //txtSecurity.Text = reader["Security"].ToString();
+                //txtTrash.Text = reader["Trash"].ToString();
+                //txtWater.Text = reader["WaterSewer"].ToString();
+                //txtTotExpense.Text = reader["ExpenseCost"].ToString();
+
+                //txtHost.Text = reader["HostCashier"].ToString();
+                //txtCooks.Text = reader["Cooks"].ToString();
+                //txtServers.Text = reader["Servers"].ToString();
+                //txtDMO.Text = reader["DMO"].ToString();
+                //txtSupervisor.Text = reader["Supervisor"].ToString();
+                //txtOvertime.Text = reader["Overtime"].ToString();
+                //txtGenManager.Text = reader["GeneralManager"].ToString();
+                //txtManager.Text = reader["Manager"].ToString();
+                //txtBonus.Text = reader["Bonus"].ToString();
+                //txtPayrollTax.Text = reader["PayrollTax"].ToString();
+                //txtTotLabor.Text = reader["LaborCost"].ToString();
 
             }
             else
             {
-
                 txtNetSales.Text = "0.00";
                 txtRetire.Text = "0.00";
                 txtHealth.Text = "0.00";
@@ -257,19 +498,9 @@ namespace Accounting_PL
                 txtBonus.Text = "0.00";
                 txtPayrollTax.Text = "0.00";
                 txtTotLabor.Text = "0.00";
-
             }
 
-
-     /*       cnn.Close()*/;
-
             conn.Close();
-
-
-            // https://cloud.google.com/vision/docs/ocr#vision_text_detection-csharp
-            // https://developers.google.com/vision/android/text-overview
-            // https://cloud.google.com/vision/docs/pdf
-
 
         }
 
@@ -284,10 +515,10 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = Missing.Value;
+            //Excel.Application xlApp;
+            //Excel.Workbook xlWorkBook;
+            //Excel.Worksheet xlWorkSheet;
+            //object misValue = Missing.Value;
 
             string lexfolder = Files.AddBS(baseCurDir + "FinancialFolder");
             try
@@ -304,216 +535,224 @@ namespace Accounting_PL
 
             string lexfile = lexfolder + "FinancialSheets.xlsx";
             string lcYear = txtYear.ToString();
+            string lcIDS = "158";
+            string lexeApp = fileCurDir + "createexcel.EXE";
+            string lvar = lcYear + "_" + lcIDS + "_" + lexfolder;
 
-            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "dynamicelements";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
+            System.IO.File.WriteAllText(curDir + "VarforVfp.txt", lvar);
 
-            // string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where year='" + lcYear + "' order by week";
-            string lcSQL = "EXEC dynamicelements..MakePNL @year = '" + lcYear + "', @IDs='158'";
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            OdbcDataAdapter adapter = new OdbcDataAdapter(lcSQL, cnn);
-            OdbcDataReader reader = cmd.ExecuteReader();
-
-            DataSet ds = new DataSet();
-            adapter.Fill(ds);
-
-            System.Data.DataTable dtable = new System.Data.DataTable();
-            dtable = (ds.Tables[0]);
-
-            cnn.Close();
-
-            xlApp = new Excel.Application();
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                return;
-            }
-
-            xlApp.DisplayAlerts = false;
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            // xlWorkSheet.Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1);
-            //  xlWorkBook.Worksheets.Add();
-
-            //iWeeksPerMonth = 4  sMonth = "January"
-            //iWeeksPerMonth = 4  sMonth = "February"
-            //iWeeksPerMonth = 5  sMonth = "March"
-            //iWeeksPerMonth = 4  sMonth = "April"
-            //iWeeksPerMonth = 4  sMonth = "May"
-            //iWeeksPerMonth = 5  sMonth = "June"
-            //iWeeksPerMonth = 4  sMonth = "July"
-            //iWeeksPerMonth = 4  sMonth = "August"
-            //iWeeksPerMonth = 5  sMonth = "September"
-            //iWeeksPerMonth = 4  sMonth = "October"
-            //iWeeksPerMonth = 4  sMonth = "November"
-            //iWeeksPerMonth = 5 or iWeeksPerMonth = 6  sMonth = "December"
+            Process.Start(lexeApp);
 
 
-            var coll = new Excel.Worksheet[14];
+            //string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            //string lcODBC = "ODBC Driver 17 for SQL Server";
+            //string lcDB = "dynamicelements";
+            //string lcUser = "tbmaster";
+            //string lcProv = "SQLOLEDB";
+            //string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            //cnn.Open();
 
-            for (int i = 1; i < 14; i++)
-            {
-                coll[i] = xlWorkBook.Worksheets.Add();
-                coll[i].Name = (i == 13) ? "YTD" : CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
+            //// string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where year='" + lcYear + "' order by week";
+            //string lcSQL = "EXEC dynamicelements..MakePNL @year = '" + lcYear + "', @AddressID='158'";
+            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //OdbcDataAdapter adapter = new OdbcDataAdapter(lcSQL, cnn);
+            //OdbcDataReader reader = cmd.ExecuteReader();
 
-                coll[i].Cells[1, 1] = "Miami Springs - ###";
-                coll[i].Cells[1, 1].Font.Bold = true;
+            //DataSet ds = new DataSet();
+            //adapter.Fill(ds);
 
-                coll[i].Cells[1, 2] = "Dates";
-                coll[i].Range["B1:C1"].Merge();
-                coll[i].Cells[2, 2] = "Week 1";
-                coll[i].Cells[3, 2] = "$";
-                coll[i].Cells[3, 3] = "%";
+            //System.Data.DataTable dtable = new System.Data.DataTable();
+            //dtable = (ds.Tables[0]);
 
-                // coll[i].Columns[B:B];
+            //cnn.Close();
 
-                coll[i].Cells[1, 4] = "Dates";
-                coll[i].Range["d1:e1"].Merge();
-                coll[i].Cells[2, 4] = "Week 2";
-                coll[i].Cells[3, 4] = "$";
-                coll[i].Cells[3, 5] = "%";
+            //xlApp = new Excel.Application();
+            //if (xlApp == null)
+            //{
+            //    MessageBox.Show("Excel is not properly installed!!");
+            //    return;
+            //}
 
-                coll[i].Cells[1, 6] = "Dates";
-                coll[i].Range["f1:g1"].Merge();
-                coll[i].Cells[2, 6] = "Week 3";
-                coll[i].Cells[3, 6] = "$";
-                coll[i].Cells[3, 7] = "%";
+            //xlApp.DisplayAlerts = false;
+            //xlWorkBook = xlApp.Workbooks.Add(misValue);
+            //xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            //// xlWorkSheet.Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1);
+            ////  xlWorkBook.Worksheets.Add();
 
-                coll[i].Cells[1, 8] = "Dates";
-                coll[i].Range["h1:i1"].Merge();
-                coll[i].Cells[2, 8] = "Week 4";
-                coll[i].Cells[3, 8] = "$";
-                coll[i].Cells[3, 9] = "%";
+            ////iWeeksPerMonth = 4  sMonth = "January"
+            ////iWeeksPerMonth = 4  sMonth = "February"
+            ////iWeeksPerMonth = 5  sMonth = "March"
+            ////iWeeksPerMonth = 4  sMonth = "April"
+            ////iWeeksPerMonth = 4  sMonth = "May"
+            ////iWeeksPerMonth = 5  sMonth = "June"
+            ////iWeeksPerMonth = 4  sMonth = "July"
+            ////iWeeksPerMonth = 4  sMonth = "August"
+            ////iWeeksPerMonth = 5  sMonth = "September"
+            ////iWeeksPerMonth = 4  sMonth = "October"
+            ////iWeeksPerMonth = 4  sMonth = "November"
+            ////iWeeksPerMonth = 5 or iWeeksPerMonth = 6  sMonth = "December"
 
-                if (i == 3 || i == 6 || i == 9 || i == 12)  // Extra week
-                {
 
-                    coll[i].Cells[1, 10] = "Dates";
-                    coll[i].Range["j1:k1"].Merge();
-                    coll[i].Cells[2, 10] = "Week 5";
-                    coll[i].Cells[3, 10] = "$";
-                    coll[i].Cells[3, 11] = "%";
+            //var coll = new Excel.Worksheet[14];
 
-                }
-                else { }
+            //for (int i = 1; i < 14; i++)
+            //{
+            //    coll[i] = xlWorkBook.Worksheets.Add();
+            //    coll[i].Name = (i == 13) ? "YTD" : CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
 
-                if (checkBox3.Checked == true && i == 12)  // Extra week
-                {
+            //    coll[i].Cells[1, 1] = "Miami Springs - ###";
+            //    coll[i].Cells[1, 1].Font.Bold = true;
 
-                    coll[i].Cells[1, 12] = "Dates";
-                    coll[i].Range["j1:k1"].Merge();
-                    coll[i].Cells[2, 12] = "Week 6";
-                    coll[i].Cells[3, 12] = "$";
-                    coll[i].Cells[3, 13] = "%";
+            //    coll[i].Cells[1, 2] = "Dates";
+            //    coll[i].Range["B1:C1"].Merge();
+            //    coll[i].Cells[2, 2] = "Week 1";
+            //    coll[i].Cells[3, 2] = "$";
+            //    coll[i].Cells[3, 3] = "%";
 
-                }
-                else { }
+            //    // coll[i].Columns[B:B];
 
-                coll[i].Cells[4, 1] = "Net Sales";
-                coll[i].Cells[4, 1].Font.Bold = true;
-                coll[i].Cells[5, 1] = "Primary Supplier";
-                coll[i].Cells[6, 1] = "Other Suppliers";
-                coll[i].Cells[7, 1] = "Bread";
-                coll[i].Cells[8, 1] = "Produce";
-                coll[i].Cells[9, 1] = "Carbon Dioxide";
-                coll[i].Cells[10, 1] = "Food Cost";
-                coll[i].Cells[10, 1].Font.Bold = true;
-                coll[i].Cells[11, 1] = "Craft labor";
-                coll[i].Cells[12, 1] = "Host/Cashier";
-                coll[i].Cells[13, 1] = "Cooks";
-                coll[i].Cells[14, 1] = "Servers";
-                coll[i].Cells[15, 1] = "DMO";
-                coll[i].Cells[16, 1] = "Supervisors";
-                coll[i].Cells[17, 1] = "Overtime";
-                coll[i].Cells[18, 1] = "Management";
-                coll[i].Cells[19, 1] = "General Manager";
-                coll[i].Cells[20, 1] = "Manager";
-                coll[i].Cells[21, 1] = "Bonuses";
-                coll[i].Cells[22, 1] = "Labor Expenses";
-                coll[i].Cells[23, 1] = "Payroll Taxes";
-                coll[i].Cells[24, 1] = "Labor Cost";
-                coll[i].Cells[24, 1].Font.Bold = true;
-                coll[i].Cells[25, 1] = "Fees";
-                coll[i].Cells[26, 1] = "Accounting";
-                coll[i].Cells[27, 1] = "Bank";
-                coll[i].Cells[28, 1] = "Credit Card";
-                coll[i].Cells[29, 1] = "Fuel/Delivery";
-                coll[i].Cells[30, 1] = "Legal";
-                coll[i].Cells[31, 1] = "Licenses/Permits";
-                coll[i].Cells[32, 1] = "Payroll Processing";
-                coll[i].Cells[33, 1] = "Insurance";
-                coll[i].Cells[34, 1] = "Insurance";
-                coll[i].Cells[35, 1] = "Workers Compensation";
-                coll[i].Cells[36, 1] = "Local Marketing";
-                coll[i].Cells[37, 1] = "Advertising";
-                coll[i].Cells[38, 1] = "Charitable Contributions";
-                coll[i].Cells[39, 1] = "Other";
-                coll[i].Cells[40, 1] = "Auto/Travel";
-                coll[i].Cells[41, 1] = "Cash Shortages";
-                coll[i].Cells[42, 1] = "Repair/Matinenace";
-                coll[i].Cells[43, 1] = "Eletrical";
-                coll[i].Cells[44, 1] = "General";
-                coll[i].Cells[45, 1] = "HVAC";
-                coll[i].Cells[46, 1] = "Lawn/Parking";
-                coll[i].Cells[47, 1] = "Painting";
-                coll[i].Cells[48, 1] = "Plumbing";
-                coll[i].Cells[49, 1] = "Remodeling";
-                coll[i].Cells[50, 1] = "Structural";
-                coll[i].Cells[51, 1] = "Supplies";
-                coll[i].Cells[52, 1] = "Dish Machine";
-                coll[i].Cells[53, 1] = "Janitorial";
-                coll[i].Cells[54, 1] = "Office/Computer";
-                coll[i].Cells[55, 1] = "Restuarant";
-                coll[i].Cells[56, 1] = "Uniforms";
-                coll[i].Cells[57, 1] = "Utilities";
-                coll[i].Cells[58, 1] = "Data/Telephone";
-                coll[i].Cells[59, 1] = "Electricity";
-                coll[i].Cells[60, 1] = "Music";
-                coll[i].Cells[61, 1] = "Natural Gas";
-                coll[i].Cells[62, 1] = "Security";
-                coll[i].Cells[63, 1] = "Trash";
-                coll[i].Cells[64, 1] = "Water & Sewer";
-                coll[i].Cells[65, 1] = "Expenses Cost";
-                coll[i].Cells[65, 1].Font.Bold = true;
-                coll[i].Cells[66, 1] = "Overhead";
-                coll[i].Cells[67, 1] = "Mortgage/Rent";
-                coll[i].Cells[68, 1] = "Loan Payments";
-                coll[i].Cells[69, 1] = "Association/CAM Fees";
-                coll[i].Cells[70, 1] = "Property Taxes";
-                coll[i].Cells[71, 1] = "Advertising Coop";
-                coll[i].Cells[72, 1] = "National Advertising";
-                coll[i].Cells[73, 1] = "Licensing Fee";
-                coll[i].Cells[74, 1] = "Overhead Cost";
-                coll[i].Cells[74, 1].Font.Bold = true;
-                coll[i].Cells[76, 1] = "Total Cost";
-                coll[i].Cells[76, 1].Font.Bold = true;
-                coll[i].Cells[78, 1] = "Return on Revenue";
-                coll[i].Cells[78, 1].Font.Bold = true;
+            //    coll[i].Cells[1, 4] = "Dates";
+            //    coll[i].Range["d1:e1"].Merge();
+            //    coll[i].Cells[2, 4] = "Week 2";
+            //    coll[i].Cells[3, 4] = "$";
+            //    coll[i].Cells[3, 5] = "%";
 
-                coll[i].Columns.AutoFit();
-                coll[i].Rows.AutoFit();
-            }
+            //    coll[i].Cells[1, 6] = "Dates";
+            //    coll[i].Range["f1:g1"].Merge();
+            //    coll[i].Cells[2, 6] = "Week 3";
+            //    coll[i].Cells[3, 6] = "$";
+            //    coll[i].Cells[3, 7] = "%";
 
-            xlWorkBook.Sheets["Sheet1"].Delete();
-            xlApp.Visible = true;
+            //    coll[i].Cells[1, 8] = "Dates";
+            //    coll[i].Range["h1:i1"].Merge();
+            //    coll[i].Cells[2, 8] = "Week 4";
+            //    coll[i].Cells[3, 8] = "$";
+            //    coll[i].Cells[3, 9] = "%";
 
-            xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            // xlWorkBook.Close(true, misValue, misValue);
-            // xlApp.Quit();
-            // xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            // xlWorkBook.Close(true, misValue, misValue);
-            // xlApp.Quit();
+            //    if (i == 3 || i == 6 || i == 9 || i == 12)  // Extra week
+            //    {
 
-            ReleaseObject(xlWorkSheet);
-            ReleaseObject(xlWorkBook);
-            ReleaseObject(xlApp);
+            //        coll[i].Cells[1, 10] = "Dates";
+            //        coll[i].Range["j1:k1"].Merge();
+            //        coll[i].Cells[2, 10] = "Week 5";
+            //        coll[i].Cells[3, 10] = "$";
+            //        coll[i].Cells[3, 11] = "%";
+
+            //    }
+            //    else { }
+
+            //    if (checkBox3.Checked == true && i == 12)  // Extra week
+            //    {
+
+            //        coll[i].Cells[1, 12] = "Dates";
+            //        coll[i].Range["j1:k1"].Merge();
+            //        coll[i].Cells[2, 12] = "Week 6";
+            //        coll[i].Cells[3, 12] = "$";
+            //        coll[i].Cells[3, 13] = "%";
+
+            //    }
+            //    else { }
+
+            //    coll[i].Cells[4, 1] = "Net Sales";
+            //    coll[i].Cells[4, 1].Font.Bold = true;
+            //    coll[i].Cells[5, 1] = "Primary Supplier";
+            //    coll[i].Cells[6, 1] = "Other Suppliers";
+            //    coll[i].Cells[7, 1] = "Bread";
+            //    coll[i].Cells[8, 1] = "Produce";
+            //    coll[i].Cells[9, 1] = "Carbon Dioxide";
+            //    coll[i].Cells[10, 1] = "Food Cost";
+            //    coll[i].Cells[10, 1].Font.Bold = true;
+            //    coll[i].Cells[11, 1] = "Craft labor";
+            //    coll[i].Cells[12, 1] = "Host/Cashier";
+            //    coll[i].Cells[13, 1] = "Cooks";
+            //    coll[i].Cells[14, 1] = "Servers";
+            //    coll[i].Cells[15, 1] = "DMO";
+            //    coll[i].Cells[16, 1] = "Supervisors";
+            //    coll[i].Cells[17, 1] = "Overtime";
+            //    coll[i].Cells[18, 1] = "Management";
+            //    coll[i].Cells[19, 1] = "General Manager";
+            //    coll[i].Cells[20, 1] = "Manager";
+            //    coll[i].Cells[21, 1] = "Bonuses";
+            //    coll[i].Cells[22, 1] = "Labor Expenses";
+            //    coll[i].Cells[23, 1] = "Payroll Taxes";
+            //    coll[i].Cells[24, 1] = "Labor Cost";
+            //    coll[i].Cells[24, 1].Font.Bold = true;
+            //    coll[i].Cells[25, 1] = "Fees";
+            //    coll[i].Cells[26, 1] = "Accounting";
+            //    coll[i].Cells[27, 1] = "Bank";
+            //    coll[i].Cells[28, 1] = "Credit Card";
+            //    coll[i].Cells[29, 1] = "Fuel/Delivery";
+            //    coll[i].Cells[30, 1] = "Legal";
+            //    coll[i].Cells[31, 1] = "Licenses/Permits";
+            //    coll[i].Cells[32, 1] = "Payroll Processing";
+            //    coll[i].Cells[33, 1] = "Insurance";
+            //    coll[i].Cells[34, 1] = "Insurance";
+            //    coll[i].Cells[35, 1] = "Workers Compensation";
+            //    coll[i].Cells[36, 1] = "Local Marketing";
+            //    coll[i].Cells[37, 1] = "Advertising";
+            //    coll[i].Cells[38, 1] = "Charitable Contributions";
+            //    coll[i].Cells[39, 1] = "Other";
+            //    coll[i].Cells[40, 1] = "Auto/Travel";
+            //    coll[i].Cells[41, 1] = "Cash Shortages";
+            //    coll[i].Cells[42, 1] = "Repair/Matinenace";
+            //    coll[i].Cells[43, 1] = "Eletrical";
+            //    coll[i].Cells[44, 1] = "General";
+            //    coll[i].Cells[45, 1] = "HVAC";
+            //    coll[i].Cells[46, 1] = "Lawn/Parking";
+            //    coll[i].Cells[47, 1] = "Painting";
+            //    coll[i].Cells[48, 1] = "Plumbing";
+            //    coll[i].Cells[49, 1] = "Remodeling";
+            //    coll[i].Cells[50, 1] = "Structural";
+            //    coll[i].Cells[51, 1] = "Supplies";
+            //    coll[i].Cells[52, 1] = "Dish Machine";
+            //    coll[i].Cells[53, 1] = "Janitorial";
+            //    coll[i].Cells[54, 1] = "Office/Computer";
+            //    coll[i].Cells[55, 1] = "Restuarant";
+            //    coll[i].Cells[56, 1] = "Uniforms";
+            //    coll[i].Cells[57, 1] = "Utilities";
+            //    coll[i].Cells[58, 1] = "Data/Telephone";
+            //    coll[i].Cells[59, 1] = "Electricity";
+            //    coll[i].Cells[60, 1] = "Music";
+            //    coll[i].Cells[61, 1] = "Natural Gas";
+            //    coll[i].Cells[62, 1] = "Security";
+            //    coll[i].Cells[63, 1] = "Trash";
+            //    coll[i].Cells[64, 1] = "Water & Sewer";
+            //    coll[i].Cells[65, 1] = "Expenses Cost";
+            //    coll[i].Cells[65, 1].Font.Bold = true;
+            //    coll[i].Cells[66, 1] = "Overhead";
+            //    coll[i].Cells[67, 1] = "Mortgage/Rent";
+            //    coll[i].Cells[68, 1] = "Loan Payments";
+            //    coll[i].Cells[69, 1] = "Association/CAM Fees";
+            //    coll[i].Cells[70, 1] = "Property Taxes";
+            //    coll[i].Cells[71, 1] = "Advertising Coop";
+            //    coll[i].Cells[72, 1] = "National Advertising";
+            //    coll[i].Cells[73, 1] = "Licensing Fee";
+            //    coll[i].Cells[74, 1] = "Overhead Cost";
+            //    coll[i].Cells[74, 1].Font.Bold = true;
+            //    coll[i].Cells[76, 1] = "Total Cost";
+            //    coll[i].Cells[76, 1].Font.Bold = true;
+            //    coll[i].Cells[78, 1] = "Return on Revenue";
+            //    coll[i].Cells[78, 1].Font.Bold = true;
+
+            //    coll[i].Columns.AutoFit();
+            //    coll[i].Rows.AutoFit();
+            //}
+
+            //xlWorkBook.Sheets["Sheet1"].Delete();
+            //xlApp.Visible = true;
+
+            //xlWorkBook.SaveAs(lexfile, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            //// xlWorkBook.Close(true, misValue, misValue);
+            //// xlApp.Quit();
+            //// xlWorkBook.SaveAs("d:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            //// xlWorkBook.Close(true, misValue, misValue);
+            //// xlApp.Quit();
+
+            //ReleaseObject(xlWorkSheet);
+            //ReleaseObject(xlWorkBook);
+            //ReleaseObject(xlApp);
 
         }
 
@@ -570,7 +809,7 @@ namespace Accounting_PL
                 duplex = true;
 
             var path = lscfolder;
-            int dpi = 600;  // 150  300  600  720  1200  1270  1440
+            int dpi = 720;  // 150  300  600  720  1200  1270  1440
             WiaWrapper obj = new WiaWrapper();
             obj.SelectScanner();
             obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
@@ -580,7 +819,7 @@ namespace Accounting_PL
             if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
             {
                 Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
-                // Namepdf = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
+                string Namepdf = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
             }
             File.Move(oldnewestFile.FullName, Name);
 
@@ -602,7 +841,7 @@ namespace Accounting_PL
                 document.Add(image);
                 document.Close();
 
-                File.WriteAllBytes(oldnewestFile.DirectoryName + "\\" + "cheque.pdf", ms.ToArray());
+                File.WriteAllBytes(oldnewestFile.DirectoryName + "\\" + value + ".pdf", ms.ToArray());
             }
 
             //Document document = new Document();
@@ -633,22 +872,34 @@ namespace Accounting_PL
                 ReadBarCodes = false,
                 ColorDepth = 4
             };
+            var Results = Ocr.ReadPdf(oldnewestFile.DirectoryName + "\\" + value + ".pdf");
+            MessageBox.Show(Results.Text);
+
+
+
+            /// Save file to the Azure cloud
+
+
+
 
             // var testDocument = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents\test_02.jpg";
             // var testDocument = Name;
             // var Results = Ocr.Read(testDocument);
             // var Results = Ocr.Read(Name);
-            var Results = Ocr.ReadPdf(oldnewestFile.DirectoryName + "\\" + value + ".pdf");
-            // Console.WriteLine(Results.Text);
-            MessageBox.Show(Results.Text);
 
-            string line = null;
-            TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
-            // TextReader readFile = new StreamReader(Results + ".txt");
-            line = readFile.ReadToEnd();
-            MessageBox.Show(line);
-            readFile.Close();
-            readFile = null;
+            // var Results = Ocr.ReadPdf(oldnewestFile.DirectoryName + "\\" + value + ".pdf");
+
+            // Console.WriteLine(Results.Text);
+
+            //MessageBox.Show(Results.Text);
+
+            //string line = null;
+            //TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
+            //// TextReader readFile = new StreamReader(Results + ".txt");
+            //line = readFile.ReadToEnd();
+            //MessageBox.Show(line);
+            //readFile.Close();
+            //readFile = null;
 
             ////Create a new PDF document
             //PdfDocument document = new PdfDocument();
@@ -825,75 +1076,76 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string lcYear = txtYear.Text.Trim();
-            string lcEOW = txtWeek.Text.Trim();
-            string lcNetSales = txtNetSales.Text.Trim();
-            string lcHealth = txtRetire.Text.Trim();
-            string lcRetire = txtHealth.Text.Trim();
+            string lcYear = txtYear.Text.Trim() ;
+            string lcEOW = txtWeek.Text.Trim() ;
+            string lcNetSales = txtNetSales.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcHealth = txtRetire.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcRetire = txtHealth.Text.Trim().Replace(",", "").Replace("$", ""); 
 
-            string lcfPrimSupp = txtPrimSup.Text.Trim();
-            string lcfOthSupp = txtOtherSupp.Text.Trim();
-            string lcfBread = txtBread.Text.Trim();
-            string lcfBev = txtBev.Text.Trim();
-            string lcfProd = txtProd.Text.Trim();
-            string lcfCarbon = txtCarbDio.Text.Trim();
-            string lcfTotFood = txtFoodTot.Text.Trim();
+            string lcfPrimSupp = txtPrimSup.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcfOthSupp = txtOtherSupp.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcfBread = txtBread.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcfBev = txtBev.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcfProd = txtProd.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcfCarbon = txtCarbDio.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcfTotFood = txtFoodTot.Text.Trim().Replace(",", "").Replace("$", ""); 
 
-            string lcoMort = txtMortgage.Text.Trim();
-            string lcoLoan = txtLoan.Text.Trim();
-            string lcoAssoc = txtAssociation.Text.Trim();
-            string lcoPropTax = txtPropTax.Text.Trim();
-            string lcoAdvCoop = txtAdvCoop.Text.Trim();
-            string lcoNatAdver = txtNationalAdv.Text.Trim();
-            string lcoLicenseFee = txtLicenseFee.Text.Trim();
-            string lcoTotOverhead = txtTotOverhead.Text.Trim();
+            string lcoMort = txtMortgage.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoLoan = txtLoan.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoAssoc = txtAssociation.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoPropTax = txtPropTax.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoAdvCoop = txtAdvCoop.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoNatAdver = txtNationalAdv.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoLicenseFee = txtLicenseFee.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcoTotOverhead = txtTotOverhead.Text.Trim().Replace(",", "").Replace("$", ""); 
 
-            string lceAccount = txtAccount.Text.Trim();
-            string lceBank = txtBank.Text.Trim();
-            string lceCC = txtCC.Text.Trim();
-            string lceFuel = txtFuel.Text.Trim();
-            string lceLegal = txtLegal.Text.Trim();
-            string lceLicensePerm = txtLicense.Text.Trim();
-            string lcePayroll = txtPayroll.Text.Trim();
-            string lceInsur = txtInsur.Text.Trim();
-            string lceWorkComp = txtWorkComp.Text.Trim();
-            string lceAdvertise = txtAdvertising.Text.Trim();
-            string lceCharitable = txtCharitableComp.Text.Trim();
-            string lceAuto = txtAuto.Text.Trim();
-            string lceCash = txtCashShort.Text.Trim();
-            string lceElect = txtElectrical.Text.Trim();
-            string lceGeneral = txtGeneral.Text.Trim();
-            string lceHVAC = txtHVAC.Text.Trim();
-            string lceLawn = txtLawn.Text.Trim();
-            string lcePaint = txtPaint.Text.Trim();
-            string lcePlumb = txtPlumb.Text.Trim();
-            string lceRemodel = txtRemodel.Text.Trim();
-            string lceStruct = txtStructural.Text.Trim();
-            string lceDishMach = txtDishMach.Text.Trim();
-            string lceJanitorial = txtJanitorial.Text.Trim();
-            string lceOfficeComp = txtOffice.Text.Trim();
-            string lceRestaurant = txtRestaurant.Text.Trim();
-            string lceUniform = txtUniform.Text.Trim();
-            string lceData = txtDataTele.Text.Trim();
-            string lceElectric = txtElectricity.Text.Trim();
-            string lceMusic = txtMusic.Text.Trim();
-            string lceNatGas = txtNatGas.Text.Trim();
-            string lceSecurity = txtSecurity.Text.Trim();
-            string lceTrash = txtTrash.Text.Trim();
-            string lceWaterSewer = txtWater.Text.Trim();
-            string lceTotExpense = txtTotExpense.Text.Trim();
+            string lceAccount = txtAccount.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceBank = txtBank.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceCC = txtCC.Text.Trim().Replace(",", "").Replace("$", "");
+            string lceFuel = txtFuel.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceLegal = txtLegal.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceLicensePerm = txtLicense.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcePayroll = txtPayroll.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceInsur = txtInsur.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceWorkComp = txtWorkComp.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceAdvertise = txtAdvertising.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceCharitable = txtCharitableComp.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceAuto = txtAuto.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceCash = txtCashShort.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceElect = txtElectrical.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceGeneral = txtGeneral.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceHVAC = txtHVAC.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceLawn = txtLawn.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcePaint = txtPaint.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lcePlumb = txtPlumb.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceRemodel = txtRemodel.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceStruct = txtStructural.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceDishMach = txtDishMach.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceJanitorial = txtJanitorial.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceOfficeComp = txtOffice.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceRestaurant = txtRestaurant.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceUniform = txtUniform.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceData = txtDataTele.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceElectric = txtElectricity.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceMusic = txtMusic.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceNatGas = txtNatGas.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceSecurity = txtSecurity.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceTrash = txtTrash.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceWaterSewer = txtWater.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lceTotExpense = txtTotExpense.Text.Trim().Replace(",", "").Replace("$", ""); 
 
-            string lclHost = txtHost.Text.Trim();
-            string lclCook = txtCooks.Text.Trim();
-            string lclServer = txtServers.Text.Trim();
-            string lclDMO = txtDMO.Text.Trim();
-            string lclSuperv = txtSupervisor.Text.Trim();
-            string lclOvertime = txtOvertime.Text.Trim();
-            string lclGenManager = txtGenManager.Text.Trim();
-            string lclManager = txtManager.Text.Trim();
-            string lclBonus = txtBonus.Text.Trim();
-            string lclPayTax = txtPayrollTax.Text.Trim();
-            string lclTotLabor = txtTotLabor.Text.Trim();
+            string lclHost = txtHost.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclCook = txtCooks.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclServer = txtServers.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclDMO = txtDMO.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclSuperv = txtSupervisor.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclOvertime = txtOvertime.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclGenManager = txtGenManager.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclManager = txtManager.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclBonus = txtBonus.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclPayTax = txtPayrollTax.Text.Trim().Replace(",", "").Replace("$", ""); 
+            string lclTotLabor = txtTotLabor.Text.Trim().Replace(",", "").Replace("$", "");
+            // MessageBox.Show(lclTotLabor);
 
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
             string lcODBC = "ODBC Driver 17 for SQL Server";
@@ -907,8 +1159,8 @@ namespace Accounting_PL
             string lcSQL = "";
 
             lcSQL = "UPDATE dynamicelements..tb_LaborCost SET LaborCost =@lclTotLabor ,HostCashier =@lclHost ,Cooks =@lclCook ,Servers =@lclServer ,DMO =@lclDMO ," +
-                "Supervisor =@lclSuperv ,Overtime = @lclOvertime,GeneralManager = @lclGenManager,Manager = @lclManager,Bonus = @lclBonus,PayrollTax =@lclPayTax " +
-                "WHERE Week='@lcEOW' and IDS =158 "; // 138  158  168  180  192  197  209  218  222
+                "Supervisor =@lclSuperv ,Overtime =@lclOvertime, GeneralManager =@lclGenManager, Manager =@lclManager, Bonus =@lclBonus, PayrollTax =@lclPayTax " +
+                "WHERE Week='@lcEOW' and IDS=158 "; // 138  158  168  180  192  197  209  218  222
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             cmd.Parameters.AddWithValue("@lcEOW", lcEOW);
             cmd.Parameters.AddWithValue("@lclHost", lclHost);
@@ -922,6 +1174,7 @@ namespace Accounting_PL
             cmd.Parameters.AddWithValue("@lclBonus", lclBonus);
             cmd.Parameters.AddWithValue("@lclPayTax", lclPayTax);
             cmd.Parameters.AddWithValue("@lclTotLabor", lclTotLabor);
+            cmd.ExecuteNonQuery();
 
             lcSQL = " UPDATE dynamicelements..tb_ExpenseCost SET ExpenseCost = @lceTotExpense,Accounting = @lceAccount,Bank = @lceBank,CreditCard = @lceCC,Fuel = @lceFuel," +
                 "Legal = @lceLegal,License = @lceLicensePerm,PayrollProc = @lcePayroll,Insurance = @lceInsur,WorkersComp = @lceWorkComp,Advertising = @lceAdvertise," +
@@ -965,6 +1218,7 @@ namespace Accounting_PL
             cmd1.Parameters.AddWithValue("@lceTrash", lceTrash);
             cmd1.Parameters.AddWithValue("@lceWaterSewer", lceWaterSewer);
             cmd1.Parameters.AddWithValue("@lceTotExpense", lceTotExpense);
+            cmd1.ExecuteNonQuery();
 
             lcSQL = " UPDATE dynamicelements..tb_FoodCost SET FoodCost = @lcfTotFood,PrimSupp = @lcfPrimSupp,OthSupp = @lcfOthSupp,Bread = @lcfBread,Beverage = @lcfBev," +
                 "Produce = @lcfProd,CarbonDioxide =@lcfCarbon WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
@@ -977,7 +1231,7 @@ namespace Accounting_PL
             cmd2.Parameters.AddWithValue("@lcfProd", lcfProd);
             cmd2.Parameters.AddWithValue("@lcfCarbon", lcfCarbon);
             cmd2.Parameters.AddWithValue("@lcfTotFood", lcfTotFood);
-
+            cmd2.ExecuteNonQuery();
 
             lcSQL = " UPDATE dynamicelements..tb_NetSales SET NetSales = @lcNetSales,Healthcare = @lcHealth,Retirement = @lcRetire " +
                 "WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222  ,TotalCost = ,ReturnonRev =
@@ -986,6 +1240,7 @@ namespace Accounting_PL
             cmd3.Parameters.AddWithValue("@lcNetSales", lcNetSales);
             cmd3.Parameters.AddWithValue("@lcHealth", lcHealth);  //  HealthCare= 
             cmd3.Parameters.AddWithValue("@lcRetire", lcRetire);  //  Retire=
+            cmd3.ExecuteNonQuery();
 
             lcSQL = " UPDATE dynamicelements..tb_OverheadCost OverheadCost = @lcoTotOverhead,Mortgage = @lcoMort,LoanPayment = @lcoLoan,Association = @lcoAssoc,PropertyTax = @lcoPropTax," +
                 "AdvertisingCoop = @lcoAdvCoop,NationalAdvertise = @lcoNatAdver,LicensingFee = @lcoLicenseFee WHERE Week = '@lcEOW' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
@@ -998,6 +1253,7 @@ namespace Accounting_PL
             cmd4.Parameters.AddWithValue("@lcoNatAdver", lcoNatAdver);
             cmd4.Parameters.AddWithValue("@lcoLicenseFee", lcoLicenseFee);
             cmd4.Parameters.AddWithValue("@lcoTotOverhead", lcoTotOverhead);
+            cmd4.ExecuteNonQuery();
 
 
             //lcSQL = "SELECT * from tb_datahold where Week='" + lcEOW + "'";      // lcSQL = "SELECT * from ~public~.~tb_Residents~ LIMIT 100".Replace('~', '"');
@@ -2221,12 +2477,18 @@ namespace Accounting_PL
 
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
-                var value = dataGridView1.Rows[i].Cells[4].Value;
+                var value = dataGridView1.Rows[i].Cells[0].Value;
                 if (value != DBNull.Value)
                 {
                     amt = Convert.ToDecimal(value);
                     totalSalary += amt;
                 }
+
+                //string valzz = dataGridView1.Rows[i].Cells[0].Value.ToString();  //  txtGeneral.Text.Replace(",", "").Replace("$", "");
+                //decimal val;
+                //if (decimal.TryParse(valzz, out val))
+                //    dataGridView1.Rows[i].Cells[0].Value = val.ToString("C");
+
             }
 
             txtTotInvoice.Text = totalSalary.ToString("C");
@@ -2241,95 +2503,97 @@ namespace Accounting_PL
             txtWeek.Text = nextSunday;
             txtYear.Text = lcyear;
 
-            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "dynamicelements";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
+            refreshFormFields();
 
-            string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where Week='" + nextSunday + "'";
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            OdbcDataReader reader = cmd.ExecuteReader();
+            //string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            //string lcODBC = "ODBC Driver 17 for SQL Server";
+            //string lcDB = "dynamicelements";
+            //string lcUser = "tbmaster";
+            //string lcProv = "SQLOLEDB";
+            //string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            //cnn.Open();
 
-            if (reader.HasRows)
-            {
+            //string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where Week='" + nextSunday + "'";
+            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //OdbcDataReader reader = cmd.ExecuteReader();
 
-                txtNetSales.Text = reader["NetSales"].ToString();
-                txtRetire.Text = reader["Healthcare"].ToString();
-                txtHealth.Text = reader["Retirement"].ToString();
+            //if (reader.HasRows)
+            //{
 
-                txtPrimSup.Text = reader["PrimSupp"].ToString();
-                txtOtherSupp.Text = reader["OthSupp"].ToString();
-                txtBread.Text = reader["Bread"].ToString();
-                txtBev.Text = reader["Beverage"].ToString();
-                txtProd.Text = reader["Produce"].ToString();
-                txtCarbDio.Text = reader["CarbonDioxide"].ToString();
-                txtFoodTot.Text = reader["FoodCost"].ToString();
+            //    txtNetSales.Text = reader["NetSales"].ToString();
+            //    txtRetire.Text = reader["Healthcare"].ToString();
+            //    txtHealth.Text = reader["Retirement"].ToString();
 
-                txtMortgage.Text = reader["Mortgage"].ToString();
-                txtLoan.Text = reader["LoanPayment"].ToString();
-                txtAssociation.Text = reader["Association"].ToString();
-                txtPropTax.Text = reader["PropertyTax"].ToString();
-                txtAdvCoop.Text = reader["AdvertisingCoop"].ToString();
-                txtNationalAdv.Text = reader["NationalAdvertise"].ToString();
-                txtLicenseFee.Text = reader["LicensingFee"].ToString();
-                txtTotOverhead.Text = reader["OverheadCost"].ToString();
+            //    txtPrimSup.Text = reader["PrimSupp"].ToString();
+            //    txtOtherSupp.Text = reader["OthSupp"].ToString();
+            //    txtBread.Text = reader["Bread"].ToString();
+            //    txtBev.Text = reader["Beverage"].ToString();
+            //    txtProd.Text = reader["Produce"].ToString();
+            //    txtCarbDio.Text = reader["CarbonDioxide"].ToString();
+            //    txtFoodTot.Text = reader["FoodCost"].ToString();
 
-                txtAccount.Text = reader["Accounting"].ToString();
-                txtBank.Text = reader["Bank"].ToString();
-                txtCC.Text = reader["CreditCard"].ToString();
-                txtFuel.Text = reader["Fuel"].ToString();
-                txtLegal.Text = reader["Legal"].ToString();
-                txtLicense.Text = reader["License"].ToString();
-                txtPayroll.Text = reader["PayrollProc"].ToString();
-                txtInsur.Text = reader["Insurance"].ToString();
-                txtWorkComp.Text = reader["WorkersComp"].ToString();
-                txtAdvertising.Text = reader["Advertising"].ToString();
-                txtCharitableComp.Text = reader["Charitable"].ToString();
-                txtAuto.Text = reader["Auto"].ToString();
-                txtCashShort.Text = reader["CashShortage"].ToString();
-                txtElectrical.Text = reader["Electrical"].ToString();
-                txtGeneral.Text = reader["General"].ToString();
-                txtHVAC.Text = reader["HVAC"].ToString();
-                txtLawn.Text = reader["Lawn"].ToString();
-                txtPaint.Text = reader["Painting"].ToString();
-                txtPlumb.Text = reader["Plumbing"].ToString();
-                txtRemodel.Text = reader["Remodeling"].ToString();
-                txtStructural.Text = reader["Structural"].ToString();
-                txtDishMach.Text = reader["DishMachine"].ToString();
-                txtJanitorial.Text = reader["Janitorial"].ToString();
-                txtOffice.Text = reader["Office"].ToString();
-                txtRestaurant.Text = reader["Restaurant"].ToString();
-                txtUniform.Text = reader["Uniforms"].ToString();
-                txtDataTele.Text = reader["Data"].ToString();
-                txtElectricity.Text = reader["Electricity"].ToString();
-                txtMusic.Text = reader["Music"].ToString();
-                txtNatGas.Text = reader["NaturalGas"].ToString();
-                txtSecurity.Text = reader["Security"].ToString();
-                txtTrash.Text = reader["Trash"].ToString();
-                txtWater.Text = reader["WaterSewer"].ToString();
-                txtTotExpense.Text = reader["ExpenseCost"].ToString();
+            //    txtMortgage.Text = reader["Mortgage"].ToString();
+            //    txtLoan.Text = reader["LoanPayment"].ToString();
+            //    txtAssociation.Text = reader["Association"].ToString();
+            //    txtPropTax.Text = reader["PropertyTax"].ToString();
+            //    txtAdvCoop.Text = reader["AdvertisingCoop"].ToString();
+            //    txtNationalAdv.Text = reader["NationalAdvertise"].ToString();
+            //    txtLicenseFee.Text = reader["LicensingFee"].ToString();
+            //    txtTotOverhead.Text = reader["OverheadCost"].ToString();
 
-                txtHost.Text = reader["HostCashier"].ToString();
-                txtCooks.Text = reader["Cooks"].ToString();
-                txtServers.Text = reader["Servers"].ToString();
-                txtDMO.Text = reader["DMO"].ToString();
-                txtSupervisor.Text = reader["Supervisor"].ToString();
-                txtOvertime.Text = reader["Overtime"].ToString();
-                txtGenManager.Text = reader["GeneralManager"].ToString();
-                txtManager.Text = reader["Manager"].ToString();
-                txtBonus.Text = reader["Bonus"].ToString();
-                txtPayrollTax.Text = reader["PayrollTax"].ToString();
-                txtTotLabor.Text = reader["LaborCost"].ToString();
+            //    txtAccount.Text = reader["Accounting"].ToString();
+            //    txtBank.Text = reader["Bank"].ToString();
+            //    txtCC.Text = reader["CreditCard"].ToString();
+            //    txtFuel.Text = reader["Fuel"].ToString();
+            //    txtLegal.Text = reader["Legal"].ToString();
+            //    txtLicense.Text = reader["License"].ToString();
+            //    txtPayroll.Text = reader["PayrollProc"].ToString();
+            //    txtInsur.Text = reader["Insurance"].ToString();
+            //    txtWorkComp.Text = reader["WorkersComp"].ToString();
+            //    txtAdvertising.Text = reader["Advertising"].ToString();
+            //    txtCharitableComp.Text = reader["Charitable"].ToString();
+            //    txtAuto.Text = reader["Auto"].ToString();
+            //    txtCashShort.Text = reader["CashShortage"].ToString();
+            //    txtElectrical.Text = reader["Electrical"].ToString();
+            //    txtGeneral.Text = reader["General"].ToString();
+            //    txtHVAC.Text = reader["HVAC"].ToString();
+            //    txtLawn.Text = reader["Lawn"].ToString();
+            //    txtPaint.Text = reader["Painting"].ToString();
+            //    txtPlumb.Text = reader["Plumbing"].ToString();
+            //    txtRemodel.Text = reader["Remodeling"].ToString();
+            //    txtStructural.Text = reader["Structural"].ToString();
+            //    txtDishMach.Text = reader["DishMachine"].ToString();
+            //    txtJanitorial.Text = reader["Janitorial"].ToString();
+            //    txtOffice.Text = reader["Office"].ToString();
+            //    txtRestaurant.Text = reader["Restaurant"].ToString();
+            //    txtUniform.Text = reader["Uniforms"].ToString();
+            //    txtDataTele.Text = reader["Data"].ToString();
+            //    txtElectricity.Text = reader["Electricity"].ToString();
+            //    txtMusic.Text = reader["Music"].ToString();
+            //    txtNatGas.Text = reader["NaturalGas"].ToString();
+            //    txtSecurity.Text = reader["Security"].ToString();
+            //    txtTrash.Text = reader["Trash"].ToString();
+            //    txtWater.Text = reader["WaterSewer"].ToString();
+            //    txtTotExpense.Text = reader["ExpenseCost"].ToString();
 
-            }
-            else { }
+            //    txtHost.Text = reader["HostCashier"].ToString();
+            //    txtCooks.Text = reader["Cooks"].ToString();
+            //    txtServers.Text = reader["Servers"].ToString();
+            //    txtDMO.Text = reader["DMO"].ToString();
+            //    txtSupervisor.Text = reader["Supervisor"].ToString();
+            //    txtOvertime.Text = reader["Overtime"].ToString();
+            //    txtGenManager.Text = reader["GeneralManager"].ToString();
+            //    txtManager.Text = reader["Manager"].ToString();
+            //    txtBonus.Text = reader["Bonus"].ToString();
+            //    txtPayrollTax.Text = reader["PayrollTax"].ToString();
+            //    txtTotLabor.Text = reader["LaborCost"].ToString();
 
-            cnn.Close();
+            //}
+            //else { }
+
+            //cnn.Close();
 
         }
 
@@ -2343,6 +2607,7 @@ namespace Accounting_PL
         private void button3_Click(object sender, EventArgs e)
         {
             string lcSQL = "";
+            string lcSQLa = "";
             string lcEOW = txtWeek.Text.Trim();
 
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
@@ -2355,12 +2620,25 @@ namespace Accounting_PL
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
 
+            // Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));
 
-            string lcVendor = "";
-            DateTime lcInvDate;
-            string lcVendorInv = "";
-            string lcCat = "";
+            string lcVendor = vendorIDTextBox.Text.Trim();
+            DateTime lcInvDate = Dates.CTOD(txtInvDate.Text);
+            string lcVendorInv = txtInvNumb.Text.Trim();
+            string lcCat = cbCategory.Text.Trim();
             decimal lcAmt = 0m;
+
+            string lcVendName = vendorNameTextBox.Text.Trim();
+            string lcSalesP = salesPersonTextBox.Text.Trim();
+            string lcPhone = phoneTextBox.Text.Trim();
+            string lcAddress1 = addressLine1TextBox.Text.Trim();
+            string lcAddress2 = addressLine2TextBox.Text.Trim();
+            string lcCity = cityTextBox.Text.Trim();
+            string lcState = stateProvinceTextBox.Text.Trim();
+            string lcCountry = countryRegionTextBox.Text.Trim();
+            string lcPostal = postalCodeTextBox.Text.Trim();
+
+            decimal lcTotVal = Convert.ToDecimal(txtTotInvoice.Text.Trim());
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             /// Have to update this now
@@ -2368,11 +2646,7 @@ namespace Accounting_PL
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
 
-                lcVendor = row.Cells[1].Value.ToString();
-                lcInvDate = Convert.ToDateTime(row.Cells[2].Value.ToString());
-                lcVendorInv = row.Cells[3].Value.ToString();
-                lcCat = row.Cells[4].Value.ToString();
-                lcAmt = Convert.ToDecimal(row.Cells[5].Value.ToString());
+                lcAmt = Convert.ToDecimal(row.Cells[0].Value.ToString());
 
                 lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Amount) VALUES (@lcEOW, 158, @lcInvDate, @lcVendor, @lcVendorInv, @lcCat, @lcAmt) "; // 138  158  168  180  192  197  209  218  222
                 OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
@@ -2382,10 +2656,59 @@ namespace Accounting_PL
                 cmd.Parameters.AddWithValue("@lcVendorInv", lcVendorInv);
                 cmd.Parameters.AddWithValue("@lcCat", lcCat);
                 cmd.Parameters.AddWithValue("@lcAmt", lcAmt);
+                cmd.ExecuteNonQuery();
 
             }
 
+            lcSQLa = " select * from tb_Vendors where VendorID='%" + lcVendor + "% '";
+            OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
+            OdbcDataReader reader = cmda.ExecuteReader();
 
+            if (reader.HasRows)
+            {
+                /// Does not need to do anything
+            }
+            else
+            {
+                lcSQLa = " INSERT INTO dynamicelements..tb_Vendors  (VendorID,VendorName,SalesPerson,Phone,AddressLine1,AddressLine2,City,StateProvince,CountryRegion,PostalCode) " +
+                    "VALUES " +
+                    "(@lcVendor,@lcVendName,@lcSalesP,@lcPhone,@lcAddress1,@lcAddress2,@lcCity,@lcState,@lcCountry,@lcPostal) ";
+                OdbcCommand cmdb = new OdbcCommand(lcSQLa, cnn);
+                cmdb.Parameters.AddWithValue("@lcVendor", lcVendor);
+                cmdb.Parameters.AddWithValue("@lcVendName", lcVendName);
+                cmdb.Parameters.AddWithValue("@lcSalesP", lcSalesP);
+                cmdb.Parameters.AddWithValue("@lcPhone", lcPhone);
+                cmdb.Parameters.AddWithValue("@lcAddress1", lcAddress1);
+                cmdb.Parameters.AddWithValue("@lcAddress2", lcAddress2);
+                cmdb.Parameters.AddWithValue("@lcCity", lcCity);
+                cmdb.Parameters.AddWithValue("@lcState", lcState);
+                cmdb.Parameters.AddWithValue("@lcCountry", lcCountry);
+                cmdb.Parameters.AddWithValue("@lcPostal", lcPostal);
+                cmdb.ExecuteNonQuery();
+            }
+
+            switch (txtInvHold.Text.Trim())
+            {
+                case "FOOD":
+                    lcSQLa = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    break;
+
+                case "EXPENSES":
+                    lcSQLa = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    break;
+
+                case "LABOR":
+                    lcSQLa = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    break;
+
+                case "OVERHEAD":
+                    lcSQLa = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    break;
+            }
+            OdbcCommand cmdc = new OdbcCommand(lcSQLa, cnn);
+            cmdc.ExecuteNonQuery();
+
+            refreshFormFields();
 
         }
 
@@ -2434,5 +2757,6 @@ namespace Accounting_PL
             }
             conn.Close();
         }
+
     }
 }
