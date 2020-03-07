@@ -48,8 +48,7 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-
-
+            
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();
@@ -58,6 +57,8 @@ namespace Accounting_PL
             txtInvHold.Text = "FOOD";
             string lcSQL = "";
             string lcSQLz = "";
+
+            txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
 
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Fzk4pktb";
@@ -2073,7 +2074,7 @@ namespace Accounting_PL
 
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
-                var value = dataGridView1.Rows[i].Cells[0].Value;
+                var value = dataGridView1.Rows[i].Cells[1].Value;
                 if (value != DBNull.Value)
                 {
                     amt = Convert.ToDecimal(value);
@@ -2114,6 +2115,7 @@ namespace Accounting_PL
         {
             string lcSQL = "";
             string lcSQLa = "";
+            string lcSQLb = "";
             string lcEOW = txtWeek.Text.Trim();
 
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
@@ -2125,8 +2127,10 @@ namespace Accounting_PL
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
 
+            var lcInvDate = DateTime.Parse(txtInvDate.Text);
+            ////  var lcInvDate = Dates.CTOD(txtInvDate.Text);  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             string lcVendor = vendorIDTextBox.Text.Trim();
-            DateTime lcInvDate = Dates.CTOD(txtInvDate.Text);
             string lcVendorInv = txtInvNumb.Text.Trim();
             string lcCat = cbCategory.Text.Trim();
             decimal lcAmt = 0m;
@@ -2143,15 +2147,14 @@ namespace Accounting_PL
 
             decimal lcTotVal = Convert.ToDecimal(txtTotInvoice.Text.Replace(",", "").Replace("$", ""));
 
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            for (int i = 0; i < (dataGridView1.Rows.Count - 1); i++)
             {
+                string lcItem = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                lcAmt = Convert.ToDecimal(dataGridView1.Rows[i].Cells[1].Value.ToString());
 
-                lcAmt = Convert.ToDecimal(row.Cells[0].Value.ToString());
-
-                lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Amount) VALUES " +
-                    "('" + lcEOW + "', 158, " + lcInvDate + " , '" + lcVendor + "', '" + lcVendorInv + "', '" + lcCat + "', " + lcAmt + ") "; // 138  158  168  180  192  197  209  218  222
+                lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Item,Amount) VALUES " +
+                    "('" + lcEOW + "', 158, '" + lcInvDate + "' , '" + lcVendor + "', '" + lcVendorInv + "', '" + lcCat + "', '" + lcItem + "', " + lcAmt + ") "; // 138  158  168  180  192  197  209  218  222
                 CreateCommand(lcSQL);
-
             }
 
             cnn.Open();
@@ -2165,10 +2168,9 @@ namespace Accounting_PL
             }
             else
             {
-                lcSQLa = " INSERT INTO dynamicelements..tb_Vendors  (VendorID,VendorName,SalesPerson,Phone,AddressLine1,AddressLine2,City,StateProvince,CountryRegion,PostalCode) " +
-                    "VALUES " +
-                    "('" + lcVendor + "','" + lcVendName + "','" + lcSalesP + "','" + lcPhone + "','" + lcAddress1 + "','" + lcAddress2 + "','" + lcCity + "','" + lcState + "','" + lcCountry + "','" + lcPostal + "') ";
-                CreateCommand(lcSQL);
+                lcSQLa = " INSERT INTO dynamicelements..tb_Vendors (VendorID,VendorName,SalesPerson,Phone,AddressLine1,AddressLine2,City,StateProvince,CountryRegion,PostalCode) VALUES " +
+                    " ('" + lcVendor + "','" + lcVendName + "','" + lcSalesP + "','" + lcPhone + "','" + lcAddress1 + "','" + lcAddress2 + "','" + lcCity + "','" + lcState + "','" + lcCountry + "','" + lcPostal + "') ";
+                CreateCommand(lcSQLa);
 
             }
             cnn.Close();
@@ -2176,26 +2178,46 @@ namespace Accounting_PL
             switch (txtInvHold.Text.Trim())
             {
                 case "FOOD":
-                    lcSQLa = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
 
                 case "EXPENSES":
-                    lcSQLa = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
 
                 case "LABOR":
-                    lcSQLa = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
 
                 case "OVERHEAD":
-                    lcSQLa = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
             }
-            CreateCommand(lcSQLa);
+            CreateCommand(lcSQLb);
+
+            txtInvDate.Text = "";
+            vendorIDTextBox.Text = "";
+            txtInvNumb.Text = "";
+            cbCategory.Text = "";
+            vendorNameTextBox.Text = "";
+            salesPersonTextBox.Text = "";
+            phoneTextBox.Text = "";
+            addressLine1TextBox.Text = "";
+            addressLine2TextBox.Text = "";
+            cityTextBox.Text = "";
+            stateProvinceTextBox.Text = "";
+            countryRegionTextBox.Text = "";
+            postalCodeTextBox.Text = "";
+            txtTotInvoice.Text = "0.00";
+            dataGridView1.Rows.Clear();
+            dataGridView1.Refresh();
 
             refreshFormFields();
 
+            MessageBox.Show("Done!");
+
         }
+
 
         /// <summary>
         /// This is the Vendor search textbox. Do a fuzzy search in the database to see if it finds the vendor. If not then have user enter info. 
@@ -2243,5 +2265,40 @@ namespace Accounting_PL
             conn.Close();
         }
 
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+            if (dataGridView1.CurrentCell.ColumnIndex == 1) //Desired Column
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                }
+            }
+        }
+
+        private void Column1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // allowed only numeric value  ex.10
+            //if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            //{
+            //    e.Handled = true;
+            //}
+
+            // allowed numeric and one dot  ex. 10.23
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)
+                 && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if (e.KeyChar == '.'
+                && (sender as TextBox).Text.IndexOf('.') > -1)
+            {
+                e.Handled = true;
+            }
+        }
     }
 }
