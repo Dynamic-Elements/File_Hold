@@ -20,6 +20,12 @@ using System.Diagnostics;
 using System.Data.OleDb;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using Microsoft.Azure; // Namespace for Azure Configuration Manager
+using Microsoft.Azure.Storage; // Namespace for Storage Client Library
+using Microsoft.Azure.Storage.File; // Namespace for Azure Files
+using Microsoft.Azure.Storage.Blob;
+using System.Threading.Tasks;
+
 
 namespace Accounting_PL
 {
@@ -95,7 +101,6 @@ namespace Accounting_PL
                 fiscialLeapYear = true;
                 checkBox3.Checked = true;
             }
-            else { }
             cnn.Close();
 
             refreshFormFields();
@@ -109,7 +114,6 @@ namespace Accounting_PL
         /// <param name="queryString"></param>
         private static void CreateCommand(string queryString)  //  , string connectionString)
         {
-
             string lcServer = "dynamicelements.database.windows.net";
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
@@ -330,7 +334,7 @@ namespace Accounting_PL
             string lexeApp = fileCurDir + "createexcel.EXE";
             string lvar = lcYear + "_" + lcIDS + "_" + lexfolder;
 
-            System.IO.File.WriteAllText(curDir + "VarforVfp.txt", lvar);
+            File.WriteAllText(curDir + "VarforVfp.txt", lvar);
 
             Process.Start(lexeApp);
 
@@ -432,7 +436,6 @@ namespace Accounting_PL
             //        coll[i].Cells[3, 11] = "%";
 
             //    }
-            //    else { }
 
             //    if (checkBox3.Checked == true && i == 12)  // Extra week
             //    {
@@ -444,7 +447,6 @@ namespace Accounting_PL
             //        coll[i].Cells[3, 13] = "%";
 
             //    }
-            //    else { }
 
             //    coll[i].Cells[4, 1] = "Net Sales";
             //    coll[i].Cells[4, 1].Font.Bold = true;
@@ -638,19 +640,31 @@ namespace Accounting_PL
             };
             var ResultsPDF = Ocr.ReadPdf(destinaton);
             var TextPDF = ResultsPDF.Text;
-            System.IO.File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
+            File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
 
             var ResultsJPG = Ocr.Read(Name);
             var TextJPG = ResultsJPG.Text;
-            System.IO.File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
+            File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
 
 
+            ///////////// Save file to the Azure cloud
+            // https://filehold.file.core.windows.net/invoices/Ihop158
+            // https://filehold.blob.core.windows.net/testingground
+            // DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net
+            // DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=0tv9+8SsMjhJdnJdDOk4Mb+DHrmSeGEVj+CcEiMYPdl4z1w6qKifTMLqK6mEUJQpT1iVa7VrZRjxYyTs790AsA==;EndpointSuffix=core.windows.net
+            // testingground
+            // invoices / Ihop158
 
+            var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.jpeg");
+            var fileStream = new FileStream(fileName, FileMode.Create);
+            string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
+            byte[] fileData = new byte[fileName.Length];
 
-            /// Save file to the Azure cloud
+            BlobStorageService objBlobService = new BlobStorageService();
 
+            objBlobService.UploadFileToBlob(fileName, fileData, mimeType);
 
-
+            MessageBox.Show("DONE!");
         }
 
 
@@ -2064,35 +2078,41 @@ namespace Accounting_PL
             OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
             OdbcDataReader reader = cmda.ExecuteReader();
 
-            if (reader.HasRows)
-            {
-                /// Does not need to do anything
-            }
-            else
+            if (!reader.HasRows)
             {
                 lcSQLa = " INSERT INTO dynamicelements..tb_Vendors (VendorID,VendorName,SalesPerson,Phone,AddressLine1,AddressLine2,City,StateProvince,CountryRegion,PostalCode) VALUES " +
                     " ('" + lcVendor + "','" + lcVendName + "','" + lcSalesP + "','" + lcPhone + "','" + lcAddress1 + "','" + lcAddress2 + "','" + lcCity + "','" + lcState + "','" + lcCountry + "','" + lcPostal + "') ";
                 CreateCommand(lcSQLa);
 
             }
+
+            string lcSQLz = "select " + lcCat + " from vw_OrderLogs where week = '" + lcEOW + "' and AddressID = 158";
+            OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
+            OdbcDataReader readerz = cmdz.ExecuteReader();
+
+            decimal lcnumb = 0m;
+            if (readerz.HasRows)
+                lcnumb = Convert.ToDecimal(readerz[lcCat].ToString());
+
             cnn.Close();
+            decimal lcNewTot = lcTotVal + lcnumb;
 
             switch (txtInvHold.Text.Trim())
             {
                 case "FOOD":
-                    lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
 
                 case "EXPENSES":
-                    lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
 
                 case "LABOR":
-                    lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
 
                 case "OVERHEAD":
-                    lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcTotVal + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
                     break;
             }
             CreateCommand(lcSQLb);
@@ -2189,15 +2209,13 @@ namespace Accounting_PL
             //}
 
             // allowed numeric and one dot  ex. 10.23
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)
-                 && e.KeyChar != '.')
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
             {
                 e.Handled = true;
             }
 
             // only allow one decimal point
-            if (e.KeyChar == '.'
-                && (sender as TextBox).Text.IndexOf('.') > -1)
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
             {
                 e.Handled = true;
             }
