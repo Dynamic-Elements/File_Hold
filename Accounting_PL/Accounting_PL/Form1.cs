@@ -1,8 +1,4 @@
-﻿using Syncfusion.OCRProcessor;
-using Syncfusion.Pdf;
-using Syncfusion.Pdf.Graphics;
-using Syncfusion.Pdf.Parsing;
-using ScanIt;
+﻿using ScanIt;
 using IronOcr;
 using System;
 using System.Collections.Generic;
@@ -18,13 +14,12 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using WIA;
 using System.Linq;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
-// using Microsoft.Office.Interop.Excel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Data.OleDb;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 
 namespace Accounting_PL
 {
@@ -48,7 +43,7 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();
@@ -61,7 +56,7 @@ namespace Accounting_PL
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
 
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Fzk4pktb";
+            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=GoodLife44";
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
             command.CommandText = "select category from tb_category";
@@ -80,7 +75,7 @@ namespace Accounting_PL
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
-            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcPass = "GoodLife44";
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
 
             //// This will create records for the new week so the system just needs to update data
@@ -118,7 +113,7 @@ namespace Accounting_PL
             string lcServer = "dynamicelements.database.windows.net";
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
-            string lcPass = "Fzk4pktb";
+            string lcPass = "GoodLife44";
             string connectionString = "Data Source=" + lcServer + ";Initial Catalog=" + lcDB + ";Persist Security Info=True;User ID=" + lcUser + ";Password=" + lcPass;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -146,7 +141,7 @@ namespace Accounting_PL
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
-            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcPass = "GoodLife44";
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
@@ -345,7 +340,7 @@ namespace Accounting_PL
             //string lcDB = "dynamicelements";
             //string lcUser = "tbmaster";
             //string lcProv = "SQLOLEDB";
-            //string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            //string lcPass = "GoodLife44";     // Smartman55  GoodLife44
             //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             //cnn.Open();
@@ -611,47 +606,21 @@ namespace Accounting_PL
 
             FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
             string value = "Document Name";
+            string destinaton = "";
             if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
             {
                 Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
-                string Namepdf = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
+                destinaton = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
             }
             File.Move(oldnewestFile.FullName, Name);
 
-
-            iTextSharp.text.Rectangle pageSize = null;
-            string imagepaths = oldnewestFile.DirectoryName + "\\";
-
-            using (var srcImage = new Bitmap(imagepaths[0].ToString()))
-            {
-                pageSize = new iTextSharp.text.Rectangle(0, 0, srcImage.Width, srcImage.Height);
-            }
-
-            using (var ms = new MemoryStream())
-            {
-                var document = new iTextSharp.text.Document(pageSize, 0, 0, 0, 0);
-                iTextSharp.text.pdf.PdfWriter.GetInstance(document, ms).SetFullCompression();
-                document.Open();
-                var image = iTextSharp.text.Image.GetInstance(imagepaths[0].ToString());
-                document.Add(image);
-                document.Close();
-
-                File.WriteAllBytes(oldnewestFile.DirectoryName + "\\" + value + ".pdf", ms.ToArray());
-            }
-
-            //Document document = new Document();
-            //using (var stream = new FileStream(oldnewestFile.DirectoryName + "\\" + "test.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
-            //{
-            //    PdfWriter.GetInstance(document, stream);
-            //    document.Open();
-            //    using (var imageStream = new FileStream(Name, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            //    {
-            //        var image = iTextSharp.text.Image.GetInstance(imageStream);
-            //        document.Add(image);
-            //    }
-            //    document.Close();
-            //}
-
+            PdfDocument doc = new PdfDocument();
+            doc.Pages.Add(new PdfPage());
+            XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
+            XImage img = XImage.FromFile(Name);
+            xgr.DrawImage(img, 0, 0);
+            doc.Save(destinaton);
+            doc.Close();
 
             var Ocr = new IronOcr.AdvancedOcr()
             {
@@ -667,87 +636,20 @@ namespace Accounting_PL
                 ReadBarCodes = false,
                 ColorDepth = 4
             };
-            var Results = Ocr.ReadPdf(oldnewestFile.DirectoryName + "\\" + value + ".pdf");
-            MessageBox.Show(Results.Text);
+            var ResultsPDF = Ocr.ReadPdf(destinaton);
+            var TextPDF = ResultsPDF.Text;
+            System.IO.File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
+
+            var ResultsJPG = Ocr.Read(Name);
+            var TextJPG = ResultsJPG.Text;
+            System.IO.File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
+
 
 
 
             /// Save file to the Azure cloud
 
 
-
-
-            // var testDocument = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents\test_02.jpg";
-            // var testDocument = Name;
-            // var Results = Ocr.Read(testDocument);
-            // var Results = Ocr.Read(Name);
-
-            // var Results = Ocr.ReadPdf(oldnewestFile.DirectoryName + "\\" + value + ".pdf");
-
-            // Console.WriteLine(Results.Text);
-
-            //MessageBox.Show(Results.Text);
-
-            //string line = null;
-            //TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
-            //// TextReader readFile = new StreamReader(Results + ".txt");
-            //line = readFile.ReadToEnd();
-            //MessageBox.Show(line);
-            //readFile.Close();
-            //readFile = null;
-
-            ////Create a new PDF document
-            //PdfDocument document = new PdfDocument();
-            ////Add a page to the document
-            //PdfPage page = document.Pages.Add();
-            ////Create PDF graphics for a page
-            //PdfGraphics graphics = page.Graphics;
-            ////Load the image from the disk
-            //PdfBitmap imageFile = new PdfBitmap(Name);   //  "Input.jpg"  path
-            ////Draw the image
-            //graphics.DrawImage(imageFile, 0, 0, page.GetClientSize().Width, page.GetClientSize().Height);
-            ////Save the document into stream
-            //MemoryStream stream = new MemoryStream();
-            //document.Save(stream);
-            ////Initialize the OCR processor by providing the path of tesseract binaries(SyncfusionTesseract.dll and liblept168.dll)
-            //using (OCRProcessor processor = new OCRProcessor(@"../../Tesseract Binaries/"))
-            //{
-            //    //Load a PDF document
-            //    PdfLoadedDocument lDoc = new PdfLoadedDocument(stream);
-
-            //    //Set OCR language to process
-            //    processor.Settings.Language = Languages.English;
-
-            //    //Enable the AutoDetectRotation
-            //    processor.Settings.AutoDetectRotation = true;
-
-            //    //Enable native call  
-            //    processor.Settings.EnableNativeCall = true;
-
-            //    //Process OCR by providing the PDF document and Tesseract data
-            //    String text = processor.PerformOCR(lDoc, @"..\..\Tessdata\");
-
-            //    // Save the PDF file
-            //    string lcNewFile = oldnewestFile.DirectoryName + "\\" + value + ".pdf";  //  lscfolder + "Scan_OCR_File" + rand.Next(10, 100) + ".pdf";  lscfolder + "Scan_OCR_File.pdf";
-
-            //    //Save the OCR processed PDF document in the disk
-            //    lDoc.Save(lcNewFile);
-
-            //    //Writes the text to the file
-            //    File.WriteAllText(oldnewestFile.DirectoryName + "\\" + value + ".txt", text);  //  lscfolder + "ExtractedText.txt"
-
-            //    //Close the document
-            //    lDoc.Close(true);
-            //}
-            ////This will open the PDF file so, the result will be seen in default PDF viewer
-            ////  Process.Start("OCR.pdf");
-
-            //string line = null;
-            //TextReader readFile = new StreamReader(oldnewestFile.DirectoryName + "\\" + value + ".txt");
-            //line = readFile.ReadToEnd();
-            //// MessageBox.Show(line);
-            //readFile.Close();
-            //readFile = null;
 
         }
 
@@ -2123,7 +2025,7 @@ namespace Accounting_PL
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
-            string lcPass = "Fzk4pktb";     // Smartman55  Fzk4pktb
+            string lcPass = "GoodLife44";
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
 
@@ -2230,7 +2132,7 @@ namespace Accounting_PL
             string lcval = this.txtVndSearch.Text;
 
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Fzk4pktb";
+            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=GoodLife44";
 
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
