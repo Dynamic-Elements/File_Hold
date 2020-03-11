@@ -58,6 +58,7 @@ namespace Accounting_PL
             txtInvHold.Text = "FOOD";
             string lcSQL = "";
             string lcSQLz = "";
+            textBox1.Text = System.Environment.MachineName;
 
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
 
@@ -297,6 +298,8 @@ namespace Accounting_PL
             }
 
             cnn.Close();
+
+            updateFormat();
 
         }
 
@@ -578,73 +581,73 @@ namespace Accounting_PL
         private void Button2_Click(object sender, EventArgs e)
         {
 
-            //updateCalculations();
+            updateCalculations();
 
-            //string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
-            //try
-            //{
-            //    // Determine whether the directory exists.
-            //    if (!Directory.Exists(lscfolder))
-            //    {
-            //        /// If it does not exist then create it. 
-            //        Directory.CreateDirectory(lscfolder);
-            //    }
-            //}
-            //catch { }
+            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+            try
+            {
+                // Determine whether the directory exists.
+                if (!Directory.Exists(lscfolder))
+                {
+                    /// If it does not exist then create it. 
+                    Directory.CreateDirectory(lscfolder);
+                }
+            }
+            catch { }
 
-            //bool adf = false;  // checkBox1
-            //bool duplex = false;  // checkBox2
-            //if (checkBox1.Checked)
-            //    adf = true;
+            bool adf = false;  // checkBox1
+            bool duplex = false;  // checkBox2
+            if (checkBox1.Checked)
+                adf = true;
 
-            //if (checkBox2.Checked)
-            //    duplex = true;
+            if (checkBox2.Checked)
+                duplex = true;
 
-            //var path = lscfolder;
-            //int dpi = 720;  // 150  300  600  720  1200  1270  1440
-            //WiaWrapper obj = new WiaWrapper();
-            //obj.SelectScanner();
-            //obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
+            var path = lscfolder;
+            int dpi = 720;  // 150  300  600  720  1200  1270  1440
+            WiaWrapper obj = new WiaWrapper();
+            obj.SelectScanner();
+            obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
 
-            //FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
-            //string value = "Document Name";
-            //string destinaton = "";
-            //if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
-            //{
-            //    Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
-            //    destinaton = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
-            //}
-            //File.Move(oldnewestFile.FullName, Name);
+            FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
+            string value = "Document Name";
+            string destinaton = "";
+            if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
+            {
+                Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
+                destinaton = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
+            }
+            File.Move(oldnewestFile.FullName, Name);
 
-            //PdfDocument doc = new PdfDocument();
-            //doc.Pages.Add(new PdfPage());
-            //XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
-            //XImage img = XImage.FromFile(Name);
-            //xgr.DrawImage(img, 0, 0);
-            //doc.Save(destinaton);
-            //doc.Close();
+            PdfDocument doc = new PdfDocument();
+            doc.Pages.Add(new PdfPage());
+            XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
+            XImage img = XImage.FromFile(Name);
+            xgr.DrawImage(img, 0, 0);
+            doc.Save(destinaton);
+            doc.Close();
 
-            //var Ocr = new IronOcr.AdvancedOcr()
-            //{
-            //    CleanBackgroundNoise = true,
-            //    EnhanceContrast = true,
-            //    EnhanceResolution = true,
-            //    Language = IronOcr.Languages.English.OcrLanguagePack,
-            //    Strategy = IronOcr.AdvancedOcr.OcrStrategy.Advanced,
-            //    ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
-            //    DetectWhiteTextOnDarkBackgrounds = true,
-            //    InputImageType = AdvancedOcr.InputTypes.Document,
-            //    RotateAndStraighten = true,
-            //    ReadBarCodes = false,
-            //    ColorDepth = 4
-            //};
-            //var ResultsPDF = Ocr.ReadPdf(destinaton);
-            //var TextPDF = ResultsPDF.Text;
-            //File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
+            var Ocr = new IronOcr.AdvancedOcr()
+            {
+                CleanBackgroundNoise = true,
+                EnhanceContrast = true,
+                EnhanceResolution = true,
+                Language = IronOcr.Languages.English.OcrLanguagePack,
+                Strategy = IronOcr.AdvancedOcr.OcrStrategy.Advanced,
+                ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
+                DetectWhiteTextOnDarkBackgrounds = true,
+                InputImageType = AdvancedOcr.InputTypes.Document,
+                RotateAndStraighten = true,
+                ReadBarCodes = false,
+                ColorDepth = 4
+            };
+            var ResultsPDF = Ocr.ReadPdf(destinaton);
+            var TextPDF = ResultsPDF.Text;
+            File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
 
-            //var ResultsJPG = Ocr.Read(Name);
-            //var TextJPG = ResultsJPG.Text;
-            //File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
+            var ResultsJPG = Ocr.Read(Name);
+            var TextJPG = ResultsJPG.Text;
+            File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
 
 
             ///////////// Save file to the Azure cloud
@@ -686,6 +689,117 @@ namespace Accounting_PL
         }
 
 
+
+        /// <summary>
+        /// This will change any textbox into a proper formatting for currency. 
+        /// </summary>
+        /// <param name="txtfile"></param>
+        /// <returns></returns>
+        private static string currencyFormat(string txtfile)
+        {
+
+            decimal val;
+            string txtinfo = "";
+            if (decimal.TryParse(txtfile, out val))
+                txtinfo = val.ToString("C");
+
+            return txtinfo.ToString();
+
+        }
+
+
+
+        /// <summary>
+        /// This will make all the fields have correct formatting
+        /// </summary>
+        private void updateFormat()
+        {
+            
+            // Left side of the form
+            txtNetSales.Text = currencyFormat(txtNetSales.Text.Replace(",", "").Replace("$", ""));
+            txtRetire.Text = currencyFormat(txtRetire.Text.Replace(",", "").Replace("$", ""));
+            txtHealth.Text = currencyFormat(txtHealth.Text.Replace(",", "").Replace("$", ""));
+
+            
+            // Food
+            txtPrimSup.Text = currencyFormat(txtPrimSup.Text.Replace(",", "").Replace("$", ""));
+            txtOtherSupp.Text = currencyFormat(txtOtherSupp.Text.Replace(",", "").Replace("$", ""));
+            txtBread.Text = currencyFormat(txtBread.Text.Replace(",", "").Replace("$", ""));
+            txtBev.Text = currencyFormat(txtBev.Text.Replace(",", "").Replace("$", ""));
+            txtProd.Text = currencyFormat(txtProd.Text.Replace(",", "").Replace("$", ""));
+            txtCarbDio.Text = currencyFormat(txtCarbDio.Text.Replace(",", "").Replace("$", ""));
+            txtFoodTot.Text = currencyFormat(txtFoodTot.Text.Replace(",", "").Replace("$", ""));
+
+
+            //// Expenses
+            txtAccount.Text = currencyFormat(txtAccount.Text.Replace(",", "").Replace("$", ""));
+            txtBank.Text = currencyFormat(txtBank.Text.Replace(",", "").Replace("$", ""));
+            txtCC.Text = currencyFormat(txtCC.Text.Replace(",", "").Replace("$", ""));
+            txtFuel.Text = currencyFormat(txtFuel.Text.Replace(",", "").Replace("$", ""));
+            txtLegal.Text = currencyFormat(txtLegal.Text.Replace(",", "").Replace("$", ""));
+            txtLicense.Text = currencyFormat(txtLicense.Text.Replace(",", "").Replace("$", ""));
+            txtPayroll.Text = currencyFormat(txtPayroll.Text.Replace(",", "").Replace("$", ""));
+            txtInsur.Text = currencyFormat(txtInsur.Text.Replace(",", "").Replace("$", ""));
+            txtWorkComp.Text = currencyFormat(txtWorkComp.Text.Replace(",", "").Replace("$", ""));
+            txtAdvertising.Text = currencyFormat(txtAdvertising.Text.Replace(",", "").Replace("$", ""));
+            txtCharitableComp.Text = currencyFormat(txtCharitableComp.Text.Replace(",", "").Replace("$", ""));
+            txtAuto.Text = currencyFormat(txtAuto.Text.Replace(",", "").Replace("$", ""));
+            txtCashShort.Text = currencyFormat(txtCashShort.Text.Replace(",", "").Replace("$", ""));
+            txtElectrical.Text = currencyFormat(txtElectrical.Text.Replace(",", "").Replace("$", ""));
+            txtGeneral.Text = currencyFormat(txtGeneral.Text.Replace(",", "").Replace("$", ""));
+            txtHVAC.Text = currencyFormat(txtHVAC.Text.Replace(",", "").Replace("$", ""));
+            txtLawn.Text = currencyFormat(txtLawn.Text.Replace(",", "").Replace("$", ""));
+            txtPaint.Text = currencyFormat(txtPaint.Text.Replace(",", "").Replace("$", ""));
+            txtPlumb.Text = currencyFormat(txtPlumb.Text.Replace(",", "").Replace("$", ""));
+            txtRemodel.Text = currencyFormat(txtRemodel.Text.Replace(",", "").Replace("$", ""));
+            txtStructural.Text = currencyFormat(txtStructural.Text.Replace(",", "").Replace("$", ""));
+            txtDishMach.Text = currencyFormat(txtDishMach.Text.Replace(",", "").Replace("$", ""));
+            txtJanitorial.Text = currencyFormat(txtJanitorial.Text.Replace(",", "").Replace("$", ""));
+            txtOffice.Text = currencyFormat(txtOffice.Text.Replace(",", "").Replace("$", ""));
+            txtRestaurant.Text = currencyFormat(txtRestaurant.Text.Replace(",", "").Replace("$", ""));
+            txtUniform.Text = currencyFormat(txtUniform.Text.Replace(",", "").Replace("$", ""));
+            txtDataTele.Text = currencyFormat(txtDataTele.Text.Replace(",", "").Replace("$", ""));
+            txtElectricity.Text = currencyFormat(txtElectricity.Text.Replace(",", "").Replace("$", ""));
+            txtMusic.Text = currencyFormat(txtMusic.Text.Replace(",", "").Replace("$", ""));
+            txtNatGas.Text = currencyFormat(txtNatGas.Text.Replace(",", "").Replace("$", ""));
+            txtSecurity.Text = currencyFormat(txtSecurity.Text.Replace(",", "").Replace("$", ""));
+            txtTrash.Text = currencyFormat(txtTrash.Text.Replace(",", "").Replace("$", ""));
+            txtWater.Text = currencyFormat(txtWater.Text.Replace(",", "").Replace("$", ""));
+            txtTotExpense.Text = currencyFormat(txtTotExpense.Text.Replace(",", "").Replace("$", ""));
+
+
+            //// Labor
+            txtHost.Text = currencyFormat(txtHost.Text.Replace(",", "").Replace("$", ""));
+            txtCooks.Text = currencyFormat(txtCooks.Text.Replace(",", "").Replace("$", ""));
+            txtServers.Text = currencyFormat(txtServers.Text.Replace(",", "").Replace("$", ""));
+            txtDMO.Text = currencyFormat(txtDMO.Text.Replace(",", "").Replace("$", ""));
+            txtSupervisor.Text = currencyFormat(txtSupervisor.Text.Replace(",", "").Replace("$", ""));
+            txtOvertime.Text = currencyFormat(txtOvertime.Text.Replace(",", "").Replace("$", ""));
+            txtGenManager.Text = currencyFormat(txtGenManager.Text.Replace(",", "").Replace("$", ""));
+            txtManager.Text = currencyFormat(txtManager.Text.Replace(",", "").Replace("$", ""));
+            txtBonus.Text = currencyFormat(txtBonus.Text.Replace(",", "").Replace("$", ""));
+            txtPayrollTax.Text = currencyFormat(txtPayrollTax.Text.Replace(",", "").Replace("$", ""));
+            txtTotLabor.Text = currencyFormat(txtTotLabor.Text.Replace(",", "").Replace("$", ""));
+
+
+            //// Overhead
+            txtMortgage.Text = currencyFormat(txtMortgage.Text.Replace(",", "").Replace("$", ""));
+            txtLoan.Text = currencyFormat(txtLoan.Text.Replace(",", "").Replace("$", ""));
+            txtAssociation.Text = currencyFormat(txtAssociation.Text.Replace(",", "").Replace("$", ""));
+            txtPropTax.Text = currencyFormat(txtPropTax.Text.Replace(",", "").Replace("$", ""));
+            txtAdvCoop.Text = currencyFormat(txtAdvCoop.Text.Replace(",", "").Replace("$", ""));
+            txtNationalAdv.Text = currencyFormat(txtNationalAdv.Text.Replace(",", "").Replace("$", ""));
+            txtLicenseFee.Text = currencyFormat(txtLicenseFee.Text.Replace(",", "").Replace("$", ""));
+            txtTotOverhead.Text = currencyFormat(txtTotOverhead.Text.Replace(",", "").Replace("$", ""));
+
+
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void updateCalculations()
         {
             // This will calculate all the totals of each grouping
@@ -2220,12 +2334,6 @@ namespace Accounting_PL
 
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // allowed only numeric value  ex.10
-            //if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            //{
-            //    e.Handled = true;
-            //}
-
             // allowed numeric and one dot  ex. 10.23
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
             {
