@@ -578,84 +578,102 @@ namespace Accounting_PL
         private void Button2_Click(object sender, EventArgs e)
         {
 
-            updateCalculations();
+            //updateCalculations();
 
-            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
-            try
-            {
-                // Determine whether the directory exists.
-                if (!Directory.Exists(lscfolder))
-                {
-                    /// If it does not exist then create it. 
-                    Directory.CreateDirectory(lscfolder);
-                }
-            }
-            catch { }
+            //string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+            //try
+            //{
+            //    // Determine whether the directory exists.
+            //    if (!Directory.Exists(lscfolder))
+            //    {
+            //        /// If it does not exist then create it. 
+            //        Directory.CreateDirectory(lscfolder);
+            //    }
+            //}
+            //catch { }
 
-            bool adf = false;  // checkBox1
-            bool duplex = false;  // checkBox2
-            if (checkBox1.Checked)
-                adf = true;
+            //bool adf = false;  // checkBox1
+            //bool duplex = false;  // checkBox2
+            //if (checkBox1.Checked)
+            //    adf = true;
 
-            if (checkBox2.Checked)
-                duplex = true;
+            //if (checkBox2.Checked)
+            //    duplex = true;
 
-            var path = lscfolder;
-            int dpi = 720;  // 150  300  600  720  1200  1270  1440
-            WiaWrapper obj = new WiaWrapper();
-            obj.SelectScanner();
-            obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
+            //var path = lscfolder;
+            //int dpi = 720;  // 150  300  600  720  1200  1270  1440
+            //WiaWrapper obj = new WiaWrapper();
+            //obj.SelectScanner();
+            //obj.Scan(true, dpi, path, adf, duplex);  //  Scan(bool rotatePage, int DPI, string filepath, bool useAdf, bool duplex)
 
-            FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
-            string value = "Document Name";
-            string destinaton = "";
-            if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
-            {
-                Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
-                destinaton = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
-            }
-            File.Move(oldnewestFile.FullName, Name);
+            //FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
+            //string value = "Document Name";
+            //string destinaton = "";
+            //if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
+            //{
+            //    Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
+            //    destinaton = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
+            //}
+            //File.Move(oldnewestFile.FullName, Name);
 
-            PdfDocument doc = new PdfDocument();
-            doc.Pages.Add(new PdfPage());
-            XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
-            XImage img = XImage.FromFile(Name);
-            xgr.DrawImage(img, 0, 0);
-            doc.Save(destinaton);
-            doc.Close();
+            //PdfDocument doc = new PdfDocument();
+            //doc.Pages.Add(new PdfPage());
+            //XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
+            //XImage img = XImage.FromFile(Name);
+            //xgr.DrawImage(img, 0, 0);
+            //doc.Save(destinaton);
+            //doc.Close();
 
-            var Ocr = new IronOcr.AdvancedOcr()
-            {
-                CleanBackgroundNoise = true,
-                EnhanceContrast = true,
-                EnhanceResolution = true,
-                Language = IronOcr.Languages.English.OcrLanguagePack,
-                Strategy = IronOcr.AdvancedOcr.OcrStrategy.Advanced,
-                ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
-                DetectWhiteTextOnDarkBackgrounds = true,
-                InputImageType = AdvancedOcr.InputTypes.Document,
-                RotateAndStraighten = true,
-                ReadBarCodes = false,
-                ColorDepth = 4
-            };
-            var ResultsPDF = Ocr.ReadPdf(destinaton);
-            var TextPDF = ResultsPDF.Text;
-            File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
+            //var Ocr = new IronOcr.AdvancedOcr()
+            //{
+            //    CleanBackgroundNoise = true,
+            //    EnhanceContrast = true,
+            //    EnhanceResolution = true,
+            //    Language = IronOcr.Languages.English.OcrLanguagePack,
+            //    Strategy = IronOcr.AdvancedOcr.OcrStrategy.Advanced,
+            //    ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
+            //    DetectWhiteTextOnDarkBackgrounds = true,
+            //    InputImageType = AdvancedOcr.InputTypes.Document,
+            //    RotateAndStraighten = true,
+            //    ReadBarCodes = false,
+            //    ColorDepth = 4
+            //};
+            //var ResultsPDF = Ocr.ReadPdf(destinaton);
+            //var TextPDF = ResultsPDF.Text;
+            //File.WriteAllText(oldnewestFile.DirectoryName + "\\testingPDF.txt", TextPDF);
 
-            var ResultsJPG = Ocr.Read(Name);
-            var TextJPG = ResultsJPG.Text;
-            File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
+            //var ResultsJPG = Ocr.Read(Name);
+            //var TextJPG = ResultsJPG.Text;
+            //File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
 
 
             ///////////// Save file to the Azure cloud
             // https://filehold.file.core.windows.net/invoices/Ihop158
             // https://filehold.blob.core.windows.net/testingground
+            // https://filehold.file.core.windows.net/
             // DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net
             // DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=0tv9+8SsMjhJdnJdDOk4Mb+DHrmSeGEVj+CcEiMYPdl4z1w6qKifTMLqK6mEUJQpT1iVa7VrZRjxYyTs790AsA==;EndpointSuffix=core.windows.net
             // testingground
             // invoices / Ihop158
 
-            var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.jpeg");
+            //var inputstream = document.InputStream;
+            //var filename = document.FileName;
+            //var doctype = document.ContentType;
+            //CloudStorageAccount storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
+            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            //CloudBlobContainer container = blobClient.GetContainerReference("documentscontainer");
+            //container.CreateIfNotExists();
+            //var permissions = container.GetPermissions();
+            //permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+            //container.SetPermissions(permissions);
+            //string uniqueBlobName = string.Format("rewhizzdocuments/{0}", "helloworld.pdf");
+            //CloudBlockBlob blob = container.GetBlockBlobReference(uniqueBlobName);
+            //blob.Properties.ContentType = doctype;
+            //blob.UploadFromStream(inputstream);
+
+
+
+            var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.pdf");
             var fileStream = new FileStream(fileName, FileMode.Create);
             string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
             byte[] fileData = new byte[fileName.Length];
