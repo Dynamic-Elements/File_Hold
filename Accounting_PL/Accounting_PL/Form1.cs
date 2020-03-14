@@ -27,6 +27,7 @@ using Microsoft.Azure.Storage.Blob;
 using System.Threading.Tasks;
 
 
+
 namespace Accounting_PL
 {
     public partial class Form1 : Form
@@ -41,6 +42,7 @@ namespace Accounting_PL
         {
             InitializeComponent();
         }
+
 
         /// <summary>
         /// Setup fields right now. Will add more later.
@@ -58,7 +60,7 @@ namespace Accounting_PL
             txtInvHold.Text = "FOOD";
             string lcSQL = "";
             string lcSQLz = "";
-            textBox1.Text = System.Environment.MachineName;
+            textBox1.Text = System.Environment.MachineName.Trim() + " - " + System.Environment.UserName.Trim();
 
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
 
@@ -107,6 +109,7 @@ namespace Accounting_PL
             refreshFormFields();
 
         }
+
 
 
         /// <summary>
@@ -302,6 +305,7 @@ namespace Accounting_PL
             updateFormat();
 
         }
+
 
 
         /// <summary>
@@ -552,6 +556,7 @@ namespace Accounting_PL
 
         }
 
+
         private void ReleaseObject(object obj)
         {
             try
@@ -675,17 +680,15 @@ namespace Accounting_PL
             //blob.UploadFromStream(inputstream);
 
 
-
             var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.pdf");
             var fileStream = new FileStream(fileName, FileMode.Create);
             string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
             byte[] fileData = new byte[fileName.Length];
-
             BlobStorageService objBlobService = new BlobStorageService();
-
             objBlobService.UploadFileToBlob(fileName, fileData, mimeType);
 
             MessageBox.Show("DONE!");
+
         }
 
 
@@ -700,7 +703,8 @@ namespace Accounting_PL
 
             decimal val;
             string txtinfo = "";
-            if (decimal.TryParse(txtfile, out val))
+            string lv = txtfile.Replace(",", "").Replace("$", "");
+            if (decimal.TryParse(lv, out val))
                 txtinfo = val.ToString("C");
 
             return txtinfo.ToString();
@@ -714,84 +718,83 @@ namespace Accounting_PL
         /// </summary>
         private void updateFormat()
         {
-            
-            // Left side of the form
-            txtNetSales.Text = currencyFormat(txtNetSales.Text.Replace(",", "").Replace("$", ""));
-            txtRetire.Text = currencyFormat(txtRetire.Text.Replace(",", "").Replace("$", ""));
-            txtHealth.Text = currencyFormat(txtHealth.Text.Replace(",", "").Replace("$", ""));
 
-            
+            // Left side of the form
+            txtNetSales.Text = currencyFormat(txtNetSales.Text);
+            txtRetire.Text = currencyFormat(txtRetire.Text);
+            txtHealth.Text = currencyFormat(txtHealth.Text);
+
+
             // Food
-            txtPrimSup.Text = currencyFormat(txtPrimSup.Text.Replace(",", "").Replace("$", ""));
-            txtOtherSupp.Text = currencyFormat(txtOtherSupp.Text.Replace(",", "").Replace("$", ""));
-            txtBread.Text = currencyFormat(txtBread.Text.Replace(",", "").Replace("$", ""));
-            txtBev.Text = currencyFormat(txtBev.Text.Replace(",", "").Replace("$", ""));
-            txtProd.Text = currencyFormat(txtProd.Text.Replace(",", "").Replace("$", ""));
-            txtCarbDio.Text = currencyFormat(txtCarbDio.Text.Replace(",", "").Replace("$", ""));
-            txtFoodTot.Text = currencyFormat(txtFoodTot.Text.Replace(",", "").Replace("$", ""));
+            txtPrimSup.Text = currencyFormat(txtPrimSup.Text);
+            txtOtherSupp.Text = currencyFormat(txtOtherSupp.Text);
+            txtBread.Text = currencyFormat(txtBread.Text);
+            txtBev.Text = currencyFormat(txtBev.Text);
+            txtProd.Text = currencyFormat(txtProd.Text);
+            txtCarbDio.Text = currencyFormat(txtCarbDio.Text);
+            txtFoodTot.Text = currencyFormat(txtFoodTot.Text);
 
 
             //// Expenses
-            txtAccount.Text = currencyFormat(txtAccount.Text.Replace(",", "").Replace("$", ""));
-            txtBank.Text = currencyFormat(txtBank.Text.Replace(",", "").Replace("$", ""));
-            txtCC.Text = currencyFormat(txtCC.Text.Replace(",", "").Replace("$", ""));
-            txtFuel.Text = currencyFormat(txtFuel.Text.Replace(",", "").Replace("$", ""));
-            txtLegal.Text = currencyFormat(txtLegal.Text.Replace(",", "").Replace("$", ""));
-            txtLicense.Text = currencyFormat(txtLicense.Text.Replace(",", "").Replace("$", ""));
-            txtPayroll.Text = currencyFormat(txtPayroll.Text.Replace(",", "").Replace("$", ""));
-            txtInsur.Text = currencyFormat(txtInsur.Text.Replace(",", "").Replace("$", ""));
-            txtWorkComp.Text = currencyFormat(txtWorkComp.Text.Replace(",", "").Replace("$", ""));
-            txtAdvertising.Text = currencyFormat(txtAdvertising.Text.Replace(",", "").Replace("$", ""));
-            txtCharitableComp.Text = currencyFormat(txtCharitableComp.Text.Replace(",", "").Replace("$", ""));
-            txtAuto.Text = currencyFormat(txtAuto.Text.Replace(",", "").Replace("$", ""));
-            txtCashShort.Text = currencyFormat(txtCashShort.Text.Replace(",", "").Replace("$", ""));
-            txtElectrical.Text = currencyFormat(txtElectrical.Text.Replace(",", "").Replace("$", ""));
-            txtGeneral.Text = currencyFormat(txtGeneral.Text.Replace(",", "").Replace("$", ""));
-            txtHVAC.Text = currencyFormat(txtHVAC.Text.Replace(",", "").Replace("$", ""));
-            txtLawn.Text = currencyFormat(txtLawn.Text.Replace(",", "").Replace("$", ""));
-            txtPaint.Text = currencyFormat(txtPaint.Text.Replace(",", "").Replace("$", ""));
-            txtPlumb.Text = currencyFormat(txtPlumb.Text.Replace(",", "").Replace("$", ""));
-            txtRemodel.Text = currencyFormat(txtRemodel.Text.Replace(",", "").Replace("$", ""));
-            txtStructural.Text = currencyFormat(txtStructural.Text.Replace(",", "").Replace("$", ""));
-            txtDishMach.Text = currencyFormat(txtDishMach.Text.Replace(",", "").Replace("$", ""));
-            txtJanitorial.Text = currencyFormat(txtJanitorial.Text.Replace(",", "").Replace("$", ""));
-            txtOffice.Text = currencyFormat(txtOffice.Text.Replace(",", "").Replace("$", ""));
-            txtRestaurant.Text = currencyFormat(txtRestaurant.Text.Replace(",", "").Replace("$", ""));
-            txtUniform.Text = currencyFormat(txtUniform.Text.Replace(",", "").Replace("$", ""));
-            txtDataTele.Text = currencyFormat(txtDataTele.Text.Replace(",", "").Replace("$", ""));
-            txtElectricity.Text = currencyFormat(txtElectricity.Text.Replace(",", "").Replace("$", ""));
-            txtMusic.Text = currencyFormat(txtMusic.Text.Replace(",", "").Replace("$", ""));
-            txtNatGas.Text = currencyFormat(txtNatGas.Text.Replace(",", "").Replace("$", ""));
-            txtSecurity.Text = currencyFormat(txtSecurity.Text.Replace(",", "").Replace("$", ""));
-            txtTrash.Text = currencyFormat(txtTrash.Text.Replace(",", "").Replace("$", ""));
-            txtWater.Text = currencyFormat(txtWater.Text.Replace(",", "").Replace("$", ""));
-            txtTotExpense.Text = currencyFormat(txtTotExpense.Text.Replace(",", "").Replace("$", ""));
+            txtAccount.Text = currencyFormat(txtAccount.Text);
+            txtBank.Text = currencyFormat(txtBank.Text);
+            txtCC.Text = currencyFormat(txtCC.Text);
+            txtFuel.Text = currencyFormat(txtFuel.Text);
+            txtLegal.Text = currencyFormat(txtLegal.Text);
+            txtLicense.Text = currencyFormat(txtLicense.Text);
+            txtPayroll.Text = currencyFormat(txtPayroll.Text);
+            txtInsur.Text = currencyFormat(txtInsur.Text);
+            txtWorkComp.Text = currencyFormat(txtWorkComp.Text);
+            txtAdvertising.Text = currencyFormat(txtAdvertising.Text);
+            txtCharitableComp.Text = currencyFormat(txtCharitableComp.Text);
+            txtAuto.Text = currencyFormat(txtAuto.Text);
+            txtCashShort.Text = currencyFormat(txtCashShort.Text);
+            txtElectrical.Text = currencyFormat(txtElectrical.Text);
+            txtGeneral.Text = currencyFormat(txtGeneral.Text);
+            txtHVAC.Text = currencyFormat(txtHVAC.Text);
+            txtLawn.Text = currencyFormat(txtLawn.Text);
+            txtPaint.Text = currencyFormat(txtPaint.Text);
+            txtPlumb.Text = currencyFormat(txtPlumb.Text);
+            txtRemodel.Text = currencyFormat(txtRemodel.Text);
+            txtStructural.Text = currencyFormat(txtStructural.Text);
+            txtDishMach.Text = currencyFormat(txtDishMach.Text);
+            txtJanitorial.Text = currencyFormat(txtJanitorial.Text);
+            txtOffice.Text = currencyFormat(txtOffice.Text);
+            txtRestaurant.Text = currencyFormat(txtRestaurant.Text);
+            txtUniform.Text = currencyFormat(txtUniform.Text);
+            txtDataTele.Text = currencyFormat(txtDataTele.Text);
+            txtElectricity.Text = currencyFormat(txtElectricity.Text);
+            txtMusic.Text = currencyFormat(txtMusic.Text);
+            txtNatGas.Text = currencyFormat(txtNatGas.Text);
+            txtSecurity.Text = currencyFormat(txtSecurity.Text);
+            txtTrash.Text = currencyFormat(txtTrash.Text);
+            txtWater.Text = currencyFormat(txtWater.Text);
+            txtTotExpense.Text = currencyFormat(txtTotExpense.Text);
 
 
             //// Labor
-            txtHost.Text = currencyFormat(txtHost.Text.Replace(",", "").Replace("$", ""));
-            txtCooks.Text = currencyFormat(txtCooks.Text.Replace(",", "").Replace("$", ""));
-            txtServers.Text = currencyFormat(txtServers.Text.Replace(",", "").Replace("$", ""));
-            txtDMO.Text = currencyFormat(txtDMO.Text.Replace(",", "").Replace("$", ""));
-            txtSupervisor.Text = currencyFormat(txtSupervisor.Text.Replace(",", "").Replace("$", ""));
-            txtOvertime.Text = currencyFormat(txtOvertime.Text.Replace(",", "").Replace("$", ""));
-            txtGenManager.Text = currencyFormat(txtGenManager.Text.Replace(",", "").Replace("$", ""));
-            txtManager.Text = currencyFormat(txtManager.Text.Replace(",", "").Replace("$", ""));
-            txtBonus.Text = currencyFormat(txtBonus.Text.Replace(",", "").Replace("$", ""));
-            txtPayrollTax.Text = currencyFormat(txtPayrollTax.Text.Replace(",", "").Replace("$", ""));
-            txtTotLabor.Text = currencyFormat(txtTotLabor.Text.Replace(",", "").Replace("$", ""));
+            txtHost.Text = currencyFormat(txtHost.Text);
+            txtCooks.Text = currencyFormat(txtCooks.Text);
+            txtServers.Text = currencyFormat(txtServers.Text);
+            txtDMO.Text = currencyFormat(txtDMO.Text);
+            txtSupervisor.Text = currencyFormat(txtSupervisor.Text);
+            txtOvertime.Text = currencyFormat(txtOvertime.Text);
+            txtGenManager.Text = currencyFormat(txtGenManager.Text);
+            txtManager.Text = currencyFormat(txtManager.Text);
+            txtBonus.Text = currencyFormat(txtBonus.Text);
+            txtPayrollTax.Text = currencyFormat(txtPayrollTax.Text);
+            txtTotLabor.Text = currencyFormat(txtTotLabor.Text);
 
 
             //// Overhead
-            txtMortgage.Text = currencyFormat(txtMortgage.Text.Replace(",", "").Replace("$", ""));
-            txtLoan.Text = currencyFormat(txtLoan.Text.Replace(",", "").Replace("$", ""));
-            txtAssociation.Text = currencyFormat(txtAssociation.Text.Replace(",", "").Replace("$", ""));
-            txtPropTax.Text = currencyFormat(txtPropTax.Text.Replace(",", "").Replace("$", ""));
-            txtAdvCoop.Text = currencyFormat(txtAdvCoop.Text.Replace(",", "").Replace("$", ""));
-            txtNationalAdv.Text = currencyFormat(txtNationalAdv.Text.Replace(",", "").Replace("$", ""));
-            txtLicenseFee.Text = currencyFormat(txtLicenseFee.Text.Replace(",", "").Replace("$", ""));
-            txtTotOverhead.Text = currencyFormat(txtTotOverhead.Text.Replace(",", "").Replace("$", ""));
-
+            txtMortgage.Text = currencyFormat(txtMortgage.Text);
+            txtLoan.Text = currencyFormat(txtLoan.Text);
+            txtAssociation.Text = currencyFormat(txtAssociation.Text);
+            txtPropTax.Text = currencyFormat(txtPropTax.Text);
+            txtAdvCoop.Text = currencyFormat(txtAdvCoop.Text);
+            txtNationalAdv.Text = currencyFormat(txtNationalAdv.Text);
+            txtLicenseFee.Text = currencyFormat(txtLicenseFee.Text);
+            txtTotOverhead.Text = currencyFormat(txtTotOverhead.Text);
 
         }
 
@@ -909,6 +912,7 @@ namespace Accounting_PL
         }
 
 
+
         /// <summary>
         /// Save button
         /// </summary>
@@ -1018,6 +1022,8 @@ namespace Accounting_PL
             MessageBox.Show("Done!");
 
         }
+
+
 
         private void textBox3_Leave(object sender, EventArgs e)
         {
@@ -2027,8 +2033,6 @@ namespace Accounting_PL
             e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)8 && e.KeyChar != (char)46;  // 8 is backspace, 46 is period
         }
 
-
-
         public static FileInfo GetNewestFile(DirectoryInfo directory)
         {
             return directory.GetFiles()
@@ -2114,6 +2118,7 @@ namespace Accounting_PL
 
         }
 
+
         private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
             // Add columns together
@@ -2139,6 +2144,7 @@ namespace Accounting_PL
             txtTotInvoice.Text = totalSalary.ToString("C");
         }
 
+
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             var ldate = monthCalendar1.SelectionRange.Start.Date;  // .ToShortDateString()
@@ -2151,6 +2157,7 @@ namespace Accounting_PL
             refreshFormFields();
 
         }
+
 
 
         /// <summary>
@@ -2176,7 +2183,6 @@ namespace Accounting_PL
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
 
             var lcInvDate = DateTime.Parse(txtInvDate.Text);
-            ////  var lcInvDate = Dates.CTOD(txtInvDate.Text);  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             string lcVendor = vendorIDTextBox.Text.Trim();
             string lcVendorInv = txtInvNumb.Text.Trim();
@@ -2262,7 +2268,7 @@ namespace Accounting_PL
             stateProvinceTextBox.Text = "";
             countryRegionTextBox.Text = "";
             postalCodeTextBox.Text = "";
-            txtTotInvoice.Text = "0.00";
+            txtTotInvoice.Text = "";
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
 
@@ -2271,6 +2277,7 @@ namespace Accounting_PL
             MessageBox.Show("Done!");
 
         }
+
 
 
         /// <summary>
@@ -2319,6 +2326,7 @@ namespace Accounting_PL
             conn.Close();
         }
 
+
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
@@ -2331,6 +2339,7 @@ namespace Accounting_PL
                 }
             }
         }
+
 
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)
         {
