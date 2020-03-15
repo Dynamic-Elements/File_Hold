@@ -31,24 +31,46 @@ namespace Accounting_PL
             }
         }
 
-        //public async void DeleteBlobData(string fileUrl)
-        //{
-        //    Uri uriObj = new Uri(fileUrl);
-        //    string BlobName = Path.GetFileName(uriObj.LocalPath);
 
-        //    CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(accessKey);
-        //    CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-        //    string strContainerName = "invoices/Ihop158";  //  testingground
-        //    CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
+        public async Task<byte[]> DownloadFileFromBlob(string FileName)
+        {
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(accessKey);
+            CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
 
-        //    string pathPrefix = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd") + "/";
-        //    CloudBlobDirectory blobDirectory = cloudBlobContainer.GetDirectoryReference(pathPrefix);
-        //    // get block blob refarence    
-        //    CloudBlockBlob blockBlob = blobDirectory.GetBlockBlobReference(BlobName);
+            // Get Blob Container
+            string strContainerName = "invoices";
+            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
 
-        //    // delete blob from container        
-        //    await blockBlob.DeleteAsync();
-        //}
+            // Get reference to blob (binary content)
+            CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(FileName);
+
+            // Read content
+            using (MemoryStream ms = new MemoryStream())
+            {
+                cloudBlockBlob.DownloadToStream(ms);
+                return ms.ToArray();
+            }
+        }
+
+
+        public async void DeleteBlobData(string fileUrl)
+        {
+            Uri uriObj = new Uri(fileUrl);
+            string BlobName = Path.GetFileName(uriObj.LocalPath);
+
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(accessKey);
+            CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+            string strContainerName = "invoices/Ihop158";  //  testingground
+            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
+
+            string pathPrefix = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd") + "/";
+            CloudBlobDirectory blobDirectory = cloudBlobContainer.GetDirectoryReference(pathPrefix);
+            // get block blob refarence    
+            CloudBlockBlob blockBlob = blobDirectory.GetBlockBlobReference(BlobName);
+
+            // delete blob from container        
+            await blockBlob.DeleteAsync();
+        }
 
 
         private string GenerateFileName(string fileName)

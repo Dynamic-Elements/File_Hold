@@ -664,22 +664,6 @@ namespace Accounting_PL
             // testingground
             // invoices / Ihop158
 
-            //var inputstream = document.InputStream;
-            //var filename = document.FileName;
-            //var doctype = document.ContentType;
-            //CloudStorageAccount storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
-            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            //CloudBlobContainer container = blobClient.GetContainerReference("documentscontainer");
-            //container.CreateIfNotExists();
-            //var permissions = container.GetPermissions();
-            //permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
-            //container.SetPermissions(permissions);
-            //string uniqueBlobName = string.Format("rewhizzdocuments/{0}", "helloworld.pdf");
-            //CloudBlockBlob blob = container.GetBlockBlobReference(uniqueBlobName);
-            //blob.Properties.ContentType = doctype;
-            //blob.UploadFromStream(inputstream);
-
-
             var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.pdf");
             var fileStream = new FileStream(fileName, FileMode.Create);
             string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
@@ -688,6 +672,8 @@ namespace Accounting_PL
             objBlobService.UploadFileToBlob(fileName, fileData, mimeType);
 
             MessageBox.Show("DONE!");
+
+            // https://docs.microsoft.com/en-us/dotnet/azure/
 
         }
 
