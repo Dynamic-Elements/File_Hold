@@ -1,7 +1,6 @@
 ﻿using ScanIt;
 using IronOcr;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Data.Odbc;
@@ -11,22 +10,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using VFPToolkit;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Threading;
-using WIA;
 using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Data.OleDb;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
-using Microsoft.Azure; // Namespace for Azure Configuration Manager
-using Microsoft.Azure.Storage; // Namespace for Storage Client Library
-using Microsoft.Azure.Storage.File; // Namespace for Azure Files
-using Microsoft.Azure.Storage.Blob;
-using System.Threading.Tasks;
-
-
+using Azure.Storage.Files.Shares;
 
 namespace Accounting_PL
 {
@@ -37,6 +27,9 @@ namespace Accounting_PL
         string curDir = Files.AddBS(Files.CurDir());
         string baseCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")));
         string fileCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\")));
+        string lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
+        // string lcStoreName = System.Environment.MachineName.Trim();
+        //  MessageBox.Show(VFPToolkit.Environment.ID()+"  -- "+ System.Environment.MachineName.Trim());
 
         public Form1()
         {
@@ -60,9 +53,14 @@ namespace Accounting_PL
             txtInvHold.Text = "FOOD";
             string lcSQL = "";
             string lcSQLz = "";
-            textBox1.Text = System.Environment.MachineName.Trim() + " - " + System.Environment.UserName.Trim();
 
+            textBox1.Text = lcStoreName;
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
+
+            // MessageBox.Show(VFPToolkit.Environment.sys(0));
+            // MessageBox.Show(VFPToolkit.Environment.sys(2003));
+            // MessageBox.Show(VFPToolkit.Environment.sys(2023));
+
 
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=GoodLife44";
@@ -78,7 +76,6 @@ namespace Accounting_PL
             cbCategory.ValueMember = "category"; //ID Member using which you will get the selected Item ID
             conn.Close();
 
-
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
             string lcODBC = "ODBC Driver 17 for SQL Server";
             string lcDB = "dynamicelements";
@@ -88,7 +85,7 @@ namespace Accounting_PL
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
 
             //// This will create records for the new week so the system just needs to update data
-            lcSQL = " Exec dynamicelements..CheckRecord @IDs = 158 ";  // 138  158  168  180  192  197  209  218  222
+            lcSQL = " Exec dynamicelements..CheckRecord @IDs=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             CreateCommand(lcSQL);
 
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
@@ -153,7 +150,7 @@ namespace Accounting_PL
             string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             cnn.Open();
-            lcSQL = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "' and AddressID=158 ";
+            lcSQL = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "' and AddressID=" + lcStoreName;
             OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             OdbcDataReader reader = cmd.ExecuteReader();
 
@@ -299,11 +296,8 @@ namespace Accounting_PL
                 txtPayrollTax.Text = "0.00";
                 txtTotLabor.Text = "0.00";
             }
-
             cnn.Close();
-
             updateFormat();
-
         }
 
 
@@ -337,12 +331,10 @@ namespace Accounting_PL
 
             string lexfile = lexfolder + "FinancialSheets.xlsx";
             string lcYear = txtYear.ToString();
-            string lcIDS = "158";
             string lexeApp = fileCurDir + "createexcel.EXE";
-            string lvar = lcYear + "_" + lcIDS + "_" + lexfolder;
+            string lvar = lcYear + "_" + lcStoreName + "_" + lexfolder;
 
             File.WriteAllText(curDir + "VarforVfp.txt", lvar);
-
             Process.Start(lexeApp);
 
 
@@ -357,7 +349,7 @@ namespace Accounting_PL
             //cnn.Open();
 
             //// string lcSQL = "SELECT * from dynamicelements..vw_OrderLogs where year='" + lcYear + "' order by week";
-            //string lcSQL = "EXEC dynamicelements..MakePNL @year = '" + lcYear + "', @AddressID='158'";
+            //string lcSQL = "EXEC dynamicelements..MakePNL @year = '" + lcYear + "', @AddressID='" + lcStoreName + "'";
             //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
             //OdbcDataAdapter adapter = new OdbcDataAdapter(lcSQL, cnn);
             //OdbcDataReader reader = cmd.ExecuteReader();
@@ -655,21 +647,39 @@ namespace Accounting_PL
             File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
 
 
-            ///////////// Save file to the Azure cloud
-            // https://filehold.file.core.windows.net/invoices/Ihop158
-            // https://filehold.blob.core.windows.net/testingground
-            // https://filehold.file.core.windows.net/
-            // DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net
-            // DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=0tv9+8SsMjhJdnJdDOk4Mb+DHrmSeGEVj+CcEiMYPdl4z1w6qKifTMLqK6mEUJQpT1iVa7VrZRjxYyTs790AsA==;EndpointSuffix=core.windows.net
-            // testingground
-            // invoices / Ihop158
+            /////////////// Save file to the Azure cloud
+            //// https://filehold.file.core.windows.net/invoices/Ihop158
+            //// https://filehold.blob.core.windows.net/testingground
+            //// https://filehold.file.core.windows.net/
+            //// DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net
+            //// DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=0tv9+8SsMjhJdnJdDOk4Mb+DHrmSeGEVj+CcEiMYPdl4z1w6qKifTMLqK6mEUJQpT1iVa7VrZRjxYyTs790AsA==;EndpointSuffix=core.windows.net
+            //// testingground
+            //// invoices / Ihop158
 
-            var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.pdf");
-            var fileStream = new FileStream(fileName, FileMode.Create);
-            string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
-            byte[] fileData = new byte[fileName.Length];
-            BlobStorageService objBlobService = new BlobStorageService();
-            objBlobService.UploadFileToBlob(fileName, fileData, mimeType);
+
+            //var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.pdf");
+            //var fileStream = new FileStream(fileName, FileMode.Create);
+            //string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
+            //byte[] fileData = new byte[fileName.Length];
+            //BlobStorageService objBlobService = new BlobStorageService();
+            //objBlobService.UploadFileToBlob(fileName, fileData, mimeType);
+
+
+            //// Create a temporary Lorem Ipsum file on disk that we can upload
+            //string localFilePath = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents";  //  CreateTempFile(SampleFileContent);
+            //string constring = "DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net";
+
+            //string shareName = "Invoice";  //  Randomize("sample-share");
+            //ShareClient share = new ShareClient(constring, shareName);
+            //try
+            //{
+            //    AzureHold.Upload(constring, shareName, localFilePath);
+            //}
+            //finally
+            //{
+            //    share.Delete();
+            //    File.Delete(localFilePath);
+            //}
 
             MessageBox.Show("DONE!");
 
@@ -686,7 +696,6 @@ namespace Accounting_PL
         /// <returns></returns>
         private static string currencyFormat(string txtfile)
         {
-
             decimal val;
             string txtinfo = "";
             string lv = txtfile.Replace(",", "").Replace("$", "");
@@ -694,7 +703,6 @@ namespace Accounting_PL
                 txtinfo = val.ToString("C");
 
             return txtinfo.ToString();
-
         }
 
 
@@ -781,7 +789,6 @@ namespace Accounting_PL
             txtNationalAdv.Text = currencyFormat(txtNationalAdv.Text);
             txtLicenseFee.Text = currencyFormat(txtLicenseFee.Text);
             txtTotOverhead.Text = currencyFormat(txtTotOverhead.Text);
-
         }
 
 
@@ -983,7 +990,7 @@ namespace Accounting_PL
 
             lcSQL = "UPDATE dynamicelements..tb_LaborCost SET LaborCost=" + lclTotLabor + " ,HostCashier=" + lclHost + " ,Cooks=" + lclCook + " ,Servers=" + lclServer + " ," +
                 "DMO=" + lclDMO + " ,Supervisor=" + lclSuperv + ", Overtime=" + lclOvertime + ", GeneralManager=" + lclGenManager + ", Manager=" + lclManager + "," +
-                " Bonus=" + lclBonus + ", PayrollTax=" + lclPayTax + " WHERE Week='" + lcEOW + "' and IDS=158 "; // 138  158  168  180  192  197  209  218  222
+                " Bonus=" + lclBonus + ", PayrollTax=" + lclPayTax + " WHERE Week='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             CreateCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_ExpenseCost SET ExpenseCost =" + lceTotExpense + ",Accounting =" + lceAccount + ",Bank =" + lceBank + ",CreditCard =" + lceCC + ",Fuel =" + lceFuel + "," +
@@ -991,24 +998,23 @@ namespace Accounting_PL
                 "Charitable =" + lceCharitable + ",Auto =" + lceAuto + ",CashShortage =" + lceCash + ",Electrical =" + lceElect + ",General =" + lceGeneral + ",HVAC =" + lceHVAC + ",Lawn =" + lceLawn + ",Painting =" + lcePaint + "," +
                 "Plumbing =" + lcePlumb + ",Remodeling =" + lceRemodel + ",Structural =" + lceStruct + ",DishMachine =" + lceDishMach + ",Janitorial =" + lceJanitorial + ",Office =" + lceOfficeComp + "," +
                 "Restaurant =" + lceRestaurant + ",Uniforms =" + lceUniform + ",Data =" + lceData + ",Electricity =" + lceElectric + ",Music =" + lceMusic + ",NaturalGas =" + lceNatGas + ",Security =" + lceSecurity + "," +
-                "Trash =" + lceTrash + ",WaterSewer =" + lceWaterSewer + " WHERE Week ='" + lcEOW + "' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
+                "Trash =" + lceTrash + ",WaterSewer =" + lceWaterSewer + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             CreateCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_FoodCost SET FoodCost =" + lcfTotFood + ",PrimSupp =" + lcfPrimSupp + ",OthSupp =" + lcfOthSupp + ",Bread =" + lcfBread + "," +
-                "Beverage =" + lcfBev + ",Produce =" + lcfProd + ",CarbonDioxide =" + lcfCarbon + " WHERE Week ='" + lcEOW + "' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
+                "Beverage =" + lcfBev + ",Produce =" + lcfProd + ",CarbonDioxide =" + lcfCarbon + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             CreateCommand(lcSQL);
 
-            lcSQL = " UPDATE dynamicelements..tb_NetSales SET NetSales =" + lcNetSales + ",Healthcare =" + lcHealth + ",Retirement =" + lcRetire + " WHERE Week = '" + lcEOW + "' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222 
+            lcSQL = " UPDATE dynamicelements..tb_NetSales SET NetSales =" + lcNetSales + ",Healthcare =" + lcHealth + ",Retirement =" + lcRetire + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222 
             CreateCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_OverheadCost set OverheadCost =" + lcoTotOverhead + ",Mortgage =" + lcoMort + ",LoanPayment =" + lcoLoan + ",Association =" + lcoAssoc + ",PropertyTax =" + lcoPropTax + "," +
-                "AdvertisingCoop =" + lcoAdvCoop + ",NationalAdvertise =" + lcoNatAdver + ",LicensingFee =" + lcoLicenseFee + " WHERE Week = '" + lcEOW + "' and IDS = 158 "; // 138  158  168  180  192  197  209  218  222
+                "AdvertisingCoop =" + lcoAdvCoop + ",NationalAdvertise =" + lcoNatAdver + ",LicensingFee =" + lcoLicenseFee + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             CreateCommand(lcSQL);
 
             MessageBox.Show("Done!");
 
         }
-
 
 
         private void textBox3_Leave(object sender, EventArgs e)
@@ -2097,7 +2103,6 @@ namespace Accounting_PL
                 default:
                     txtInvHold.Text = "FOOD";
                     break;
-
             }
 
             updateCalculations();
@@ -2107,7 +2112,6 @@ namespace Accounting_PL
 
         private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
-            // Add columns together
             decimal totalSalary = 0;
             decimal amt = 0;
 
@@ -2119,12 +2123,6 @@ namespace Accounting_PL
                     amt = Convert.ToDecimal(value);
                     totalSalary += amt;
                 }
-
-                //string valzz = dataGridView1.Rows[i].Cells[0].Value.ToString();  //  txtGeneral.Text.Replace(",", "").Replace("$", "");
-                //decimal val;
-                //if (decimal.TryParse(valzz, out val))
-                //    dataGridView1.Rows[i].Cells[0].Value = val.ToString("C");
-
             }
 
             txtTotInvoice.Text = totalSalary.ToString("C");
@@ -2139,9 +2137,7 @@ namespace Accounting_PL
 
             txtWeek.Text = nextSunday;
             txtYear.Text = lcyear;
-
             refreshFormFields();
-
         }
 
 
@@ -2193,7 +2189,7 @@ namespace Accounting_PL
                 lcAmt = Convert.ToDecimal(dataGridView1.Rows[i].Cells[1].Value.ToString());
 
                 lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Item,Amount) VALUES " +
-                    "('" + lcEOW + "', 158, '" + lcInvDate + "' , '" + lcVendor + "', '" + lcVendorInv + "', '" + lcCat + "', '" + lcItem + "', " + lcAmt + ") "; // 138  158  168  180  192  197  209  218  222
+                    "('" + lcEOW + "', " + lcStoreName + ", '" + lcInvDate + "' , '" + lcVendor + "', '" + lcVendorInv + "', '" + lcCat + "', '" + lcItem + "', " + lcAmt + ") "; // 138  158  168  180  192  197  209  218  222
                 CreateCommand(lcSQL);
             }
 
@@ -2210,7 +2206,7 @@ namespace Accounting_PL
 
             }
 
-            string lcSQLz = "select " + lcCat + " from vw_OrderLogs where week = '" + lcEOW + "' and AddressID = 158";
+            string lcSQLz = "select " + lcCat + " from vw_OrderLogs where week = '" + lcEOW + "' and AddressID =" + lcStoreName;
             OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
             OdbcDataReader readerz = cmdz.ExecuteReader();
 
@@ -2224,19 +2220,19 @@ namespace Accounting_PL
             switch (txtInvHold.Text.Trim())
             {
                 case "FOOD":
-                    lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
                     break;
 
                 case "EXPENSES":
-                    lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
                     break;
 
                 case "LABOR":
-                    lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
                     break;
 
                 case "OVERHEAD":
-                    lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =158 ";
+                    lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
                     break;
             }
             CreateCommand(lcSQLb);
@@ -2288,7 +2284,6 @@ namespace Accounting_PL
 
             if (reader.HasRows)
             {
-
                 MessageBox.Show("Found something!");
                 vendorIDTextBox.Text = reader["VendorID"].ToString();
                 vendorNameTextBox.Text = reader["VendorName"].ToString();
@@ -2300,14 +2295,11 @@ namespace Accounting_PL
                 stateProvinceTextBox.Text = reader["StateProvince"].ToString();
                 countryRegionTextBox.Text = reader["CountryRegion"].ToString();
                 postalCodeTextBox.Text = reader["PostalCode"].ToString();
-
             }
             else
             {
-
                 MessageBox.Show("Found nothing!");
                 vendorIDTextBox.Focus();
-
             }
             conn.Close();
         }

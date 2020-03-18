@@ -74,7 +74,7 @@ namespace VFPToolkit
 			//If no printers are installed on this machine return false
 			string[] myarr = new string[0];
 			int nCount = VFPToolkit.Arrays.APrinters(out myarr);
-			return (nCount >= 1) ;
+			return (nCount >= 1);
 		}
 
 		/// <summary>
