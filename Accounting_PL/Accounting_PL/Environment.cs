@@ -73,7 +73,7 @@ namespace VFPToolkit
 		{
 			//If no printers are installed on this machine return false
 			string[] myarr = new string[0];
-			int nCount = VFPToolkit.Arrays.APrinters(out myarr);
+			int nCount = VFPToolkit.arrays.APrinters(out myarr);
 			return (nCount >= 1);
 		}
 
@@ -346,7 +346,8 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Implementation of the _ClipText Property that allows to get and set data on the clipboard.
-		/// <pre>		/// Example:
+		/// <pre>
+		/// Example:
 		/// //Updates the Windows clipboard with string "My Name". You can now use Windows "Paste" 
 		/// feature to retrieve the contents or use Ctrl+V
 		/// VFPToolkit.environmanet._ClipText = "My Name";			
@@ -354,7 +355,8 @@ namespace VFPToolkit
 		/// 
 		/// Tip: Get the clipboard contents through the Clipboard object
 		///	MyLabel.Text = (string)Clipboard.GetDataObject().GetData(DataFormats.Text);
-		/// </pre>		/// </summary>
+		/// </pre>
+		/// </summary>
 		/// <RequiredNamespaces>WinForms</RequiredNamespaces>
 		public static string _ClipText
 		{
@@ -399,7 +401,8 @@ namespace VFPToolkit
 
 		/// Private method which is only used internally to return environment variables. Receives a string
 		/// as a parameter and returns the environment variable.
-		/// <example>		///		//Here is a small  piece of code which creates an array of all the environement variables
+		/// <example>
+		///		//Here is a small  piece of code which creates an array of all the environement variables
 		///			
 		///		//Get all the environment variables into a collection
 		///		System.Collections.ICollection id = System.Environment.GetEnvironmentVariables();

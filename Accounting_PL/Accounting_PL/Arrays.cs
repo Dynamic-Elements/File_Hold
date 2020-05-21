@@ -16,7 +16,7 @@ namespace VFPToolkit
 	/// This class contains all the functions that allow us to work with arrays such as ALen(), ASort(), ACopy(), AScan() etc.
 	/// It also contains functions that return arrays such as ADir(), APrinter() and AFonts().
 	/// </summary>
-	public class Arrays
+	public class arrays
 	{
 		/// <summary>
 		/// Inserts an element into a one-dimensional array, or a row or column into a two-dimensional array
@@ -341,7 +341,7 @@ namespace VFPToolkit
 		public static int ALines(out string[] aArray, string cExpression)
 		{
 			//Remove all new line characters from the string
-			cExpression = VFPToolkit.Strings.StrTran(cExpression, "\n", "");
+			cExpression = VFPToolkit.strings.StrTran(cExpression, "\n", "");
 
 			//If the third parameter is not specified then forward the call
 			return ALines(out aArray, cExpression, "\r");
@@ -361,9 +361,9 @@ namespace VFPToolkit
 		public static string[] ADir(string cFileSkeleton)
 		{
 			string[] aFiles;
-			string lcDrive = Strings.SubStr(cFileSkeleton, 1, Strings.RAt("\\", cFileSkeleton));
-			string lcStem = Strings.SubStr(cFileSkeleton, Strings.RAt("\\", cFileSkeleton) + 1);
-			aFiles = Directory.GetFiles(lcDrive, lcStem);
+			string lcDrive = VFPToolkit.strings.SubStr(cFileSkeleton, 1,VFPToolkit.strings.RAt("\\", cFileSkeleton));
+			string lcStem = VFPToolkit.strings.SubStr(cFileSkeleton, strings.RAt("\\", cFileSkeleton) + 1);
+			aFiles = System.IO.Directory.GetFiles(lcDrive, lcStem);
 			return aFiles;
 		}		
 		

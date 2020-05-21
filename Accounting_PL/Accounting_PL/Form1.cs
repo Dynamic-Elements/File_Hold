@@ -29,7 +29,6 @@ namespace Accounting_PL
         string fileCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\")));
         string lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
         // string lcStoreName = System.Environment.MachineName.Trim();
-        //  MessageBox.Show(VFPToolkit.Environment.ID()+"  -- "+ System.Environment.MachineName.Trim());
 
         public Form1()
         {
@@ -44,7 +43,6 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();
@@ -52,18 +50,12 @@ namespace Accounting_PL
             txtYear.Text = lYear;   // Yr.Substring(0,4);
             txtInvHold.Text = "FOOD";
             string lcSQL = "";
-            string lcSQLz = "";
 
-            textBox1.Text = lcStoreName;
+            txtStoreNumb.Text = lcStoreName;
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
 
-            // MessageBox.Show(VFPToolkit.Environment.sys(0));
-            // MessageBox.Show(VFPToolkit.Environment.sys(2003));
-            // MessageBox.Show(VFPToolkit.Environment.sys(2023));
-
-
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=GoodLife44";
+            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Crazy$Times44";
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
             command.CommandText = "select category from tb_category";
@@ -73,35 +65,12 @@ namespace Accounting_PL
             adapter.Fill(dt);
             cbCategory.DataSource = dt; // setting the datasource property of combobox
             cbCategory.DisplayMember = "category"; // Display Member which will display on screen
-            cbCategory.ValueMember = "category"; //ID Member using which you will get the selected Item ID
+            cbCategory.ValueMember = "category"; // ID Member using which you will get the selected Item ID
             conn.Close();
-
-            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "dynamicelements";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "GoodLife44";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
 
             //// This will create records for the new week so the system just needs to update data
             lcSQL = " Exec dynamicelements..CheckRecord @IDs=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             CreateCommand(lcSQL);
-
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
-
-            lcSQLz = " SELECT * from dynamicelements..tb_Config where Year='" + lYear + "'";
-            OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
-            OdbcDataReader reader = cmdz.ExecuteReader();
-
-            bool fiscialLeapYear;
-            if (reader.HasRows)
-            {
-                fiscialLeapYear = true;
-                checkBox3.Checked = true;
-            }
-            cnn.Close();
 
             refreshFormFields();
 
@@ -111,6 +80,7 @@ namespace Accounting_PL
 
         /// <summary>
         /// This should make using SQL Connections easier. 
+        /// Use this for Update, Delete, Insert  -->  but no Selecting
         /// </summary>
         /// <param name="queryString"></param>
         private static void CreateCommand(string queryString)  //  , string connectionString)
@@ -118,15 +88,52 @@ namespace Accounting_PL
             string lcServer = "dynamicelements.database.windows.net";
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
-            string lcPass = "GoodLife44";
+            string lcPass = "Crazy$Times44";
             string connectionString = "Data Source=" + lcServer + ";Initial Catalog=" + lcDB + ";Persist Security Info=True;User ID=" + lcUser + ";Password=" + lcPass;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
+
                 command.ExecuteNonQuery();
+
+                command.Connection.Close();
             }
+
+            //string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            //string lcODBC = "ODBC Driver 17 for SQL Server";
+            //string lcDB = "dynamicelements";
+            //string lcUser = "tbmaster";
+            //string lcProv = "SQLOLEDB";
+            //string lcPass = "Crazy$Times44";
+            //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+            //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
+            //cnn.Open();
+            //lcSQL = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "' and AddressID=" + lcStoreName;
+            //OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
+            //OdbcDataReader reader = cmd.ExecuteReader();
+        }
+
+
+
+        public OdbcDataReader GetData(string queryString)
+        {
+            // https://www.codeproject.com/Questions/679137/fill-gridview-from-datareader
+            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
+            string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcDB = "dynamicelements";
+            string lcUser = "tbmaster";
+            string lcProv = "SQLOLEDB";
+            string lcPass = "Crazy$Times44";
+            string connectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
+
+            OdbcConnection connection = new OdbcConnection(connectionString);
+            connection.Open();
+            OdbcCommand cmd = new OdbcCommand(queryString, connection);
+            OdbcDataReader reader = cmd.ExecuteReader();
+            // connection.Close();
+            return reader;
         }
 
 
@@ -138,21 +145,10 @@ namespace Accounting_PL
         {
 
             string lcSQL = "";
-            string lcSQLa = "";
             string lcEOW = txtWeek.Text.Trim();
 
-            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "dynamicelements";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "GoodLife44";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-            cnn.Open();
             lcSQL = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "' and AddressID=" + lcStoreName;
-            OdbcCommand cmd = new OdbcCommand(lcSQL, cnn);
-            OdbcDataReader reader = cmd.ExecuteReader();
+            OdbcDataReader reader = GetData(lcSQL);
 
             if (reader.HasRows)
             {
@@ -296,7 +292,7 @@ namespace Accounting_PL
                 txtPayrollTax.Text = "0.00";
                 txtTotLabor.Text = "0.00";
             }
-            cnn.Close();
+            reader.Close();
             updateFormat();
         }
 
@@ -343,7 +339,7 @@ namespace Accounting_PL
             //string lcDB = "dynamicelements";
             //string lcUser = "tbmaster";
             //string lcProv = "SQLOLEDB";
-            //string lcPass = "GoodLife44";     // Smartman55  GoodLife44
+            //string lcPass = "Crazy$Times44";     // Smartman55  Crazy$Times44
             //string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
             //OdbcConnection cnn = new OdbcConnection(lcConnectionString);
             //cnn.Open();
@@ -2155,15 +2151,6 @@ namespace Accounting_PL
             string lcSQLb = "";
             string lcEOW = txtWeek.Text.Trim();
 
-            string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
-            string lcDB = "dynamicelements";
-            string lcUser = "tbmaster";
-            string lcProv = "SQLOLEDB";
-            string lcPass = "GoodLife44";
-            string lcConnectionString = "Driver={" + lcODBC + "};Provider=" + lcProv + ";Server=" + lcServer + ";DATABASE=" + lcDB + ";Uid=" + lcUser + "; Pwd=" + lcPass + ";";
-            OdbcConnection cnn = new OdbcConnection(lcConnectionString);
-
             var lcInvDate = DateTime.Parse(txtInvDate.Text);
 
             string lcVendor = vendorIDTextBox.Text.Trim();
@@ -2193,10 +2180,8 @@ namespace Accounting_PL
                 CreateCommand(lcSQL);
             }
 
-            cnn.Open();
             lcSQLa = " select * from tb_Vendors where VendorID='%" + lcVendor + "% '";
-            OdbcCommand cmda = new OdbcCommand(lcSQLa, cnn);
-            OdbcDataReader reader = cmda.ExecuteReader();
+            OdbcDataReader reader = GetData(lcSQLa);
 
             if (!reader.HasRows)
             {
@@ -2205,16 +2190,16 @@ namespace Accounting_PL
                 CreateCommand(lcSQLa);
 
             }
+            reader.Close();
 
             string lcSQLz = "select " + lcCat + " from vw_OrderLogs where week = '" + lcEOW + "' and AddressID =" + lcStoreName;
-            OdbcCommand cmdz = new OdbcCommand(lcSQLz, cnn);
-            OdbcDataReader readerz = cmdz.ExecuteReader();
+            OdbcDataReader readerz = GetData(lcSQLz);
 
             decimal lcnumb = 0m;
             if (readerz.HasRows)
                 lcnumb = Convert.ToDecimal(readerz[lcCat].ToString());
 
-            cnn.Close();
+            readerz.Close();
             decimal lcNewTot = lcTotVal + lcnumb;
 
             switch (txtInvHold.Text.Trim())
@@ -2272,15 +2257,8 @@ namespace Accounting_PL
 
             string lcval = this.txtVndSearch.Text;
 
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=GoodLife44";
-
-            SqlCommand command = new SqlCommand();
-            command.Connection = conn;
-            command.CommandText = "select * from tb_Vendors where VendorID='%" + lcval + "% '";
-            conn.Open();
-
-            SqlDataReader reader = command.ExecuteReader(); // new SqlDataReader(command);
+            string lcSQL = "select * from tb_Vendors where VendorID='%" + lcval + "% '";
+            OdbcDataReader reader = GetData(lcSQL);
 
             if (reader.HasRows)
             {
@@ -2301,7 +2279,7 @@ namespace Accounting_PL
                 MessageBox.Show("Found nothing!");
                 vendorIDTextBox.Focus();
             }
-            conn.Close();
+            reader.Close();
         }
 
 

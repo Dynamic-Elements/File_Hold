@@ -13,15 +13,15 @@
 
 
 
-
-//        /****** Object:  Table [dbo].[tb_Address]    Script Date: 3/18/2020 8:56:00 PM ******/
+// -- > Done 5/20/20
+//        /****** Object:  Table [tb_Address]    Script Date: 3/18/2020 8:56:00 PM ******/
 //        SET ANSI_NULLS ON
 //        GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_Address]
+//CREATE TABLE[tb_Address]
 //        (
 
 //   [AddressID][int] NOT NULL,
@@ -29,8 +29,8 @@
 //   [AddressLine1] [nvarchar] (80) NULL,
 //	[AddressLine2] [nvarchar] (80) NULL,
 //	[City] [nvarchar] (40) NULL,
-//	[StateProvince] [dbo].[Name] NULL,
-//	[Country] [dbo].[Name] NULL,
+//	[StateProvince] [Name] NULL,  [nvarchar] (80)
+//	[Country] [Name] NULL,  [nvarchar] (80)
 //	[PostalCode] [nvarchar] (15) NULL,
 //	[Phone] [nvarchar] (20) NULL,
 //	[Fax] [nvarchar] (20) NULL,
@@ -47,15 +47,15 @@
 
 
 
-
-//            /****** Object:  Table [dbo].[tb_Category]    Script Date: 3/18/2020 8:57:31 PM ******/
+// -- > Done 5/20/20
+//            /****** Object:  Table [tb_Category]    Script Date: 3/18/2020 8:57:31 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_Category]
+//CREATE TABLE[tb_Category]
 //        (
 
 //   [Header][nvarchar](20) NULL,
@@ -69,15 +69,15 @@
 
 
 
-
-//            /****** Object:  Table [dbo].[tb_Config]    Script Date: 3/18/2020 8:57:51 PM ******/
+// No need
+//            /****** Object:  Table [tb_Config]    Script Date: 3/18/2020 8:57:51 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_Config]
+//CREATE TABLE[tb_Config]
 //        (
 
 //   [Year][varchar](4) NULL
@@ -90,15 +90,15 @@
 
 
 
-
-//            /****** Object:  Table [dbo].[tb_Dates]    Script Date: 3/18/2020 8:58:45 PM ******/
+// --> Done 5/20/20
+//            /****** Object:  Table [tb_Dates]    Script Date: 3/18/2020 8:58:45 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_Dates]
+//CREATE TABLE[tb_Dates]
 //        (
 
 //   [WeekEnd][date] NOT NULL,
@@ -115,15 +115,15 @@
 
 
 
-
-//			/****** Object:  Table [dbo].[tb_ExpenseCost]    Script Date: 3/18/2020 8:59:15 PM ******/
+// -- > Done 5/20/20
+//			/****** Object:  Table [tb_ExpenseCost]    Script Date: 3/18/2020 8:59:15 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_ExpenseCost]
+//CREATE TABLE[tb_ExpenseCost]
 //		(
 
 //   [Week][date] NULL,
@@ -206,15 +206,15 @@
 
 
 
-
-///****** Object:  Table [dbo].[tb_FoodCost]    Script Date: 3/18/2020 9:00:08 PM ******/
+// -- > 5/20/20
+///****** Object:  Table [tb_FoodCost]    Script Date: 3/18/2020 9:00:08 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_FoodCost]
+//CREATE TABLE[tb_FoodCost]
 //        (
 
 //   [Week][date] NULL,
@@ -243,15 +243,15 @@
 
 
 
-
-///****** Object:  Table [dbo].[tb_LaborCost]    Script Date: 3/18/2020 9:00:23 PM ******/
+// -- > 5/20/20
+///****** Object:  Table [tb_LaborCost]    Script Date: 3/18/2020 9:00:23 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_LaborCost]
+//CREATE TABLE[tb_LaborCost]
 //        (
 
 //   [Week][date] NOT NULL,
@@ -277,15 +277,15 @@
 
 
 
-
-//            /****** Object:  Table [dbo].[tb_NetSales]    Script Date: 3/18/2020 9:00:38 PM ******/
+// -- > 5/20/20
+//            /****** Object:  Table [tb_NetSales]    Script Date: 3/18/2020 9:00:38 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_NetSales]
+//CREATE TABLE[tb_NetSales]
 //        (
 
 //   [Week][date] NOT NULL,
@@ -305,15 +305,15 @@
 
 
 
-
-//            /****** Object:  Table [dbo].[tb_OrderDetail]    Script Date: 3/18/2020 9:00:53 PM ******/
+// -- > 5/20/20
+//            /****** Object:  Table [tb_OrderDetail]    Script Date: 3/18/2020 9:00:53 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_OrderDetail]
+//CREATE TABLE[tb_OrderDetail]
 //        (
 
 //   [SalesOrderID][int] NOT NULL,
@@ -339,16 +339,16 @@
 
 
 
-
-
-//            /****** Object:  Table [dbo].[tb_OrderHeader]    Script Date: 3/18/2020 9:01:12 PM ******/
+// --> Done 5/20/20
+// -- > Error
+//            /****** Object:  Table [tb_OrderHeader]    Script Date: 3/18/2020 9:01:12 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_OrderHeader]
+//CREATE TABLE[tb_OrderHeader]
 //        (
 
 //   [SalesOrderID][int] NOT NULL,
@@ -361,8 +361,8 @@
 
 //   [ShipDate] [datetime] NULL,
 //	[SalesOrderNumber] AS(isnull(N'SO'+CONVERT([nvarchar](23),[SalesOrderID],(0)),N'*** ERROR ***')),
-//	[PurchaseOrderNumber] [dbo].[OrderNumber] NULL,
-//	[AccountNumber] [dbo].[AccountNumber] NULL,
+//	[PurchaseOrderNumber] [OrderNumber] NULL,  [nvarchar] (80)
+//	[AccountNumber] [AccountNumber] NULL,  [nvarchar] (80)
 //	[SubTotal]
 //        [money]
 //        NOT NULL,
@@ -386,15 +386,15 @@
 
 
 
-
-///****** Object:  Table [dbo].[tb_OverheadCost]    Script Date: 3/18/2020 9:01:27 PM ******/
+// -- > 5/20/20
+///****** Object:  Table [tb_OverheadCost]    Script Date: 3/18/2020 9:01:27 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_OverheadCost]
+//CREATE TABLE[tb_OverheadCost]
 //        (
 
 //   [Week][date] NULL,
@@ -425,15 +425,15 @@
 
 
 
-
-///****** Object:  Table [dbo].[tb_VendorInv]    Script Date: 3/18/2020 9:01:41 PM ******/
+// -- > 5/20/20
+///****** Object:  Table [tb_VendorInv]    Script Date: 3/18/2020 9:01:41 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_VendorInv]
+//CREATE TABLE[tb_VendorInv]
 //        (
 
 //   [Week][date] NOT NULL,
@@ -454,15 +454,15 @@
 
 
 
-
-//            /****** Object:  Table [dbo].[tb_Vendors]    Script Date: 3/18/2020 9:01:56 PM ******/
+// -- > 5/20/20
+//            /****** Object:  Table [tb_Vendors]    Script Date: 3/18/2020 9:01:56 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE TABLE[dbo].[tb_Vendors]
+//CREATE TABLE[tb_Vendors]
 //        (
 
 //   [ID][int] IDENTITY(1,1) NOT NULL,
@@ -481,7 +481,7 @@
 //) ON[PRIMARY]
 //GO
 
-//ALTER TABLE[dbo].[tb_Vendors] ADD CONSTRAINT[DF_tb_Vendors_ModifiedDate]  DEFAULT(getdate()) FOR[ModifiedDate]
+//ALTER TABLE[tb_Vendors] ADD CONSTRAINT[DF_tb_Vendors_ModifiedDate]  DEFAULT(getdate()) FOR[ModifiedDate]
 //GO
 
 
@@ -490,15 +490,15 @@
 
 
 
-
-//            /****** Object:  View [dbo].[vw_OrderLogs]    Script Date: 3/18/2020 9:02:23 PM ******/
+// -- > 5/20/20
+//            /****** Object:  View [vw_OrderLogs]    Script Date: 3/18/2020 9:02:23 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE VIEW[dbo].[vw_OrderLogs]
+//CREATE VIEW[vw_OrderLogs]
 //        AS
 //SELECT        dbo.tb_NetSales.Week, dbo.tb_Dates.Year, dbo.tb_Address.AddressID, dbo.tb_Dates.WeekNumb, dbo.tb_NetSales.NetSales, dbo.tb_NetSales.Healthcare, dbo.tb_NetSales.Retirement, FDCost.PrimSupp, FDCost.OthSupp, 
 //                         FDCost.Bread, FDCost.Beverage, FDCost.Produce, FDCost.CarbonDioxide, FDCost.FoodCost, LBRCost.HostCashier, LBRCost.Cooks, LBRCost.Servers, LBRCost.DMO, LBRCost.Supervisor, LBRCost.Overtime, 
@@ -530,15 +530,15 @@
 
 
 
-
-///****** Object:  View [dbo].[vw_VendInvCat]    Script Date: 3/18/2020 9:02:43 PM ******/
+// -- > 5/20/20
+///****** Object:  View [vw_VendInvCat]    Script Date: 3/18/2020 9:02:43 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
 //SET QUOTED_IDENTIFIER ON
 //GO
 
-//CREATE VIEW[dbo].[vw_VendInvCat]
+//CREATE VIEW[vw_VendInvCat]
 //AS
 //SELECT        dbo.tb_VendorInv.Week, dbo.tb_VendorInv.IDS, dbo.tb_VendorInv.InvDate, dbo.tb_VendorInv.InvNumber, dbo.tb_VendorInv.Amount, dbo.tb_Category.Header, dbo.tb_VendorInv.Category, dbo.tb_VendorInv.VendorID,
 //                         dbo.tb_Vendors.VendorName, dbo.tb_Vendors.SalesPerson, dbo.tb_Vendors.Phone, dbo.tb_Vendors.AddressLine1, dbo.tb_Vendors.AddressLine2, dbo.tb_Vendors.City, dbo.tb_Vendors.StateProvince,
@@ -556,8 +556,8 @@
 
 
 
-
-///****** Object:  StoredProcedure [dbo].[CheckRecord]    Script Date: 3/18/2020 9:03:07 PM ******/
+// -- > 5/20/20
+///****** Object:  StoredProcedure [CheckRecord]    Script Date: 3/18/2020 9:03:07 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
@@ -569,7 +569,7 @@
 //-- Create Date: <Create Date, , >
 //-- Description: <Description, , >
 //-- =============================================
-//CREATE PROCEDURE [dbo].[CheckRecord] @IDs nvarchar(3)
+//CREATE PROCEDURE [CheckRecord] @IDs nvarchar(3)
 //-- (  -- Add the parameters for the stored procedure here<@Param1, sysname, @p1> <Datatype_For_Param1, , int> = <Default_Value_For_Param1, , 0>, <@Param2, sysname, @p2> <Datatype_For_Param2, , int> = <Default_Value_For_Param2, , 0> )
 //AS
 //BEGIN
@@ -625,8 +625,8 @@
 
 
 
-
-///****** Object:  StoredProcedure [dbo].[MakePNL]    Script Date: 3/18/2020 9:03:19 PM ******/
+// -- > 5/20/20
+///****** Object:  StoredProcedure [MakePNL]    Script Date: 3/18/2020 9:03:19 PM ******/
 //SET ANSI_NULLS ON
 //GO
 
@@ -638,7 +638,7 @@
 //-- Create Date: <Create Date, , >
 //-- Description: <Description, , >
 //-- =============================================
-//CREATE PROCEDURE[dbo].[MakePNL] @Year nvarchar(4), @AddressID nvarchar(3)
+//CREATE PROCEDURE[MakePNL] @Year nvarchar(4), @AddressID nvarchar(3)
 //-- (
 //    -- Add the parameters for the stored procedure here
 //   -- <@Param1, sysname, @p1> <Datatype_For_Param1, , int> = <Default_Value_For_Param1, , 0>,

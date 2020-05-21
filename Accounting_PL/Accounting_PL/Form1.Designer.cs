@@ -203,7 +203,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.txtTotInvoice = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.vendorIDTextBox = new System.Windows.Forms.TextBox();
             this.vendorNameTextBox = new System.Windows.Forms.TextBox();
             this.salesPersonTextBox = new System.Windows.Forms.TextBox();
@@ -221,7 +220,7 @@
             this.tbCategoryBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dynamicelementsDataSet = new Accounting_PL.dynamicelementsDataSet();
             this.tb_CategoryTableAdapter = new Accounting_PL.dynamicelementsDataSetTableAdapters.tb_CategoryTableAdapter();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtStoreNumb = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             vendorIDLabel = new System.Windows.Forms.Label();
             vendorNameLabel = new System.Windows.Forms.Label();
@@ -1904,7 +1903,7 @@
             this.tabExpense.Padding = new System.Windows.Forms.Padding(3);
             this.tabExpense.Size = new System.Drawing.Size(524, 580);
             this.tabExpense.TabIndex = 1;
-            this.tabExpense.Text = "Expenses";
+            this.tabExpense.Text = "Expense";
             this.tabExpense.UseVisualStyleBackColor = true;
             // 
             // tabLabor
@@ -2027,17 +2026,6 @@
             this.label8.TabIndex = 96;
             this.label8.Text = "Total:";
             // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(12, 488);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(80, 17);
-            this.checkBox3.TabIndex = 11;
-            this.checkBox3.Text = "checkBox3";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.Visible = false;
-            // 
             // vendorIDTextBox
             // 
             this.vendorIDTextBox.Location = new System.Drawing.Point(870, 146);
@@ -2157,12 +2145,12 @@
             // 
             this.tb_CategoryTableAdapter.ClearBeforeFill = true;
             // 
-            // textBox1
+            // txtStoreNumb
             // 
-            this.textBox1.Location = new System.Drawing.Point(114, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 116;
+            this.txtStoreNumb.Location = new System.Drawing.Point(114, 12);
+            this.txtStoreNumb.Name = "txtStoreNumb";
+            this.txtStoreNumb.Size = new System.Drawing.Size(100, 20);
+            this.txtStoreNumb.TabIndex = 116;
             // 
             // label15
             // 
@@ -2180,7 +2168,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1052, 625);
             this.Controls.Add(this.label15);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtStoreNumb);
             this.Controls.Add(this.cbCategory);
             this.Controls.Add(label14);
             this.Controls.Add(label13);
@@ -2209,7 +2197,6 @@
             this.Controls.Add(this.vendorNameTextBox);
             this.Controls.Add(vendorIDLabel);
             this.Controls.Add(this.vendorIDTextBox);
-            this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtTotInvoice);
             this.Controls.Add(this.button3);
@@ -2412,7 +2399,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox txtTotInvoice;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.TextBox vendorIDTextBox;
         private System.Windows.Forms.TextBox vendorNameTextBox;
         private System.Windows.Forms.TextBox salesPersonTextBox;
@@ -2432,7 +2418,7 @@
         private dynamicelementsDataSetTableAdapters.tb_CategoryTableAdapter tb_CategoryTableAdapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn txtItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn txtAmt;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtStoreNumb;
         private System.Windows.Forms.Label label15;
     }
 }

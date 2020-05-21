@@ -22,13 +22,15 @@ namespace VFPToolkit
 		/// <summary>
 		/// Creates an array containing detailed information  for a file
 		/// Note: Params 13 and 15 are not implemented. Param 13 specifies if file can self register and param 15 specified the translation code.
-		///<p/><pre>		/// //Create an array of type string and pass it by reference to the AGetFileVersion() along with the name of the file 
+		///<p/><pre>
+		/// //Create an array of type string and pass it by reference to the AGetFileVersion() along with the name of the file 
 		/// //Fills MyArray with detailed information about the file
 		/// string[] MyArray = new string[0];
 		/// int i = VFPToolkit.arrays.AGetFileVersion(ref MyArray, "c:\\visio10\\gdiplus.dll");
 		/// 
 		/// Tip: Note the use of double backslash \\ as a separator. In C# the backslash is used to specify escape sequence so you need to specify the \\ as a separator or specify the path using the @"c:\MyPath\MyFile". 
-		///</pre>		/// </summary>
+		///</pre>
+		/// </summary>
 		/// <param name="aFileInfoArray"></param>
 		/// <param name="cFileName"></param>
 		/// <returns></returns>
@@ -80,9 +82,11 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Returns the current directory. (In VFP, CurDir() receives a parameter for the volume/drive. This has not been implemented.)
-		///<p/><pre>		/// Example: MyLabel.Text = VFPToolkit.files.CurDir()		//returns c:\VisualFoxProCommands\bin\debug
+		///<p/><pre>
+		/// Example: MyLabel.Text = VFPToolkit.files.CurDir()		//returns c:\VisualFoxProCommands\bin\debug
 		/// Tip: In order to change the current directory use: System.IO.Directory.SetCurrentDirectory(cPathName)
-		///</pre>		/// </summary>
+		///</pre>
+		/// </summary>
 		/// <returns></returns>
 		public static string CurDir()
 		{
@@ -91,7 +95,8 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Receives a file name and extension as parameters. If the file name does not have an extension then adds the extension. If the file has a different extension then changes that extension to the new extension.
-		///<p/><pre>		/// Example: VFPToolkit.files.DefaultExt("MyFile.txt","txt");	//Returns MyFile.txt
+		///<p/><pre>
+		/// Example: VFPToolkit.files.DefaultExt("MyFile.txt","txt");	//Returns MyFile.txt
 		/// Example: VFPToolkit.files.DefaultExt("MyFile","txt");		//Returns MyFile.txt
 		/// </pre>
 		/// </summary>
@@ -140,13 +145,15 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Receives a filename with path and maxlength as parameters and returns a truncated version of the path for display purposes
-		///<p/><pre>		/// Example: 
+		///<p/><pre>
+		/// Example: 
 		/// string lcFile = @"c:\My Folders\My Custom Folders\My Files\ResultFile.txt"
 		/// DisplayPath(lcFile, 10)		//returns ResultFile
 		/// DisplayPath(lcFile, 15)		//returns \ResultFile.txt
 		/// DisplayPath(lcFile, 20)		//returns c:\...\ResultFile.txt
 		/// DisplayPath(lcFile, 30)		//returns c:\...\My Files\ResultFile.txt
-		///</pre>		/// </summary>
+		///</pre>
+		/// </summary>
 		/// <param name="cFileNameWithPath"></param>
 		/// <param name="nMaxLength"></param>
 		/// <returns></returns>
@@ -250,9 +257,11 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Returns a string containing the last modification date for a file
-		///<pre>		/// Example:
+		///<pre>
+		/// Example:
 		/// FDate("c:\\My Folders\\MyFile.txt");	//returns "04/29/2001"
-		///</pre>		/// </summary>
+		///</pre>
+		/// </summary>
 		/// <param name="cFileName"></param>
 		/// <returns></returns>
 		public static string FDate(string cFileName)
@@ -287,9 +296,12 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Receives a file name with path as a parameter and returns true if the file exists otherwise false
-		///<p/><pre>		/// Example:
+		///<p/><pre>
+		/// Example:
 		/// File(@"c:\My Folders\MyFile.txt");	//or
-		/// File("c:\\My Folders\\MyFile.txt");		/// </pre>		/// </summary>
+		/// File("c:\\My Folders\\MyFile.txt");
+		/// </pre>
+		/// </summary>
 		/// <param name="cFileName"></param>
 		/// <returns></returns>
 		public static bool File(string cFileName)
@@ -309,9 +321,11 @@ namespace VFPToolkit
 
 		/// <summary>
 		/// Receives a file name and extension as parameters. If the file name does not have an extension then adds the extension. If the file has a different extension then changes that extension to the new extension. (Forces the file to have then new extension)
-		///<p/><pre>		/// Example: VFPToolkit.files.ForceExt("MyFile.txt","txt");	//Returns MyFile.txt
+		///<p/><pre>
+		/// Example: VFPToolkit.files.ForceExt("MyFile.txt","txt");	//Returns MyFile.txt
 		/// Example: VFPToolkit.files.ForceExt("MyFile","txt");		//Returns MyFile.txt
-		/// Example: VFPToolkit.files.ForceExt("MyFile.kpp","txt");	//Returns MyFile.txt        ///</pre>		/// </pre>
+		/// Example: VFPToolkit.files.ForceExt("MyFile.kpp","txt");	//Returns MyFile.txt        ///</pre>
+		/// </pre>
 		/// </summary>
 		/// <param name="cFileName"></param>
 		/// <param name="cExtension"></param>
