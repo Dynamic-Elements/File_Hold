@@ -47,9 +47,8 @@ namespace Accounting_PL
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();
             txtWeek.Text = lastSunday;
-            txtYear.Text = lYear;   // Yr.Substring(0,4);
+            txtYear.Text = lYear;
             txtInvHold.Text = "FOOD";
-            string lcSQL = "";
 
             txtStoreNumb.Text = lcStoreName;
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
@@ -69,8 +68,8 @@ namespace Accounting_PL
             conn.Close();
 
             //// This will create records for the new week so the system just needs to update data
-            lcSQL = " Exec dynamicelements..CheckRecord @IDs=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
-            CreateCommand(lcSQL);
+            string lcSQL = " Exec dynamicelements..CheckRecord @IDs=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
+            SQLCommand(lcSQL);
 
             refreshFormFields();
 
@@ -83,7 +82,7 @@ namespace Accounting_PL
         /// Use this for Update, Delete, Insert  -->  but no Selecting
         /// </summary>
         /// <param name="queryString"></param>
-        private static void CreateCommand(string queryString)  //  , string connectionString)
+        private static void SQLCommand(string queryString)  //  , string connectionString)
         {
             string lcServer = "dynamicelements.database.windows.net";
             string lcDB = "dynamicelements";
@@ -95,9 +94,7 @@ namespace Accounting_PL
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
-
                 command.ExecuteNonQuery();
-
                 command.Connection.Close();
             }
 
@@ -144,10 +141,8 @@ namespace Accounting_PL
         private void refreshFormFields()
         {
 
-            string lcSQL = "";
             string lcEOW = txtWeek.Text.Trim();
-
-            lcSQL = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "' and AddressID=" + lcStoreName;
+            string lcSQL = "select * from dynamicelements..vw_OrderLogs where week='" + lcEOW + "' and AddressID=" + lcStoreName;
             OdbcDataReader reader = GetData(lcSQL);
 
             if (reader.HasRows)
@@ -543,6 +538,7 @@ namespace Accounting_PL
             //ReleaseObject(xlApp);
 
         }
+
 
 
         private void ReleaseObject(object obj)
@@ -987,7 +983,7 @@ namespace Accounting_PL
             lcSQL = "UPDATE dynamicelements..tb_LaborCost SET LaborCost=" + lclTotLabor + " ,HostCashier=" + lclHost + " ,Cooks=" + lclCook + " ,Servers=" + lclServer + " ," +
                 "DMO=" + lclDMO + " ,Supervisor=" + lclSuperv + ", Overtime=" + lclOvertime + ", GeneralManager=" + lclGenManager + ", Manager=" + lclManager + "," +
                 " Bonus=" + lclBonus + ", PayrollTax=" + lclPayTax + " WHERE Week='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
-            CreateCommand(lcSQL);
+            SQLCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_ExpenseCost SET ExpenseCost =" + lceTotExpense + ",Accounting =" + lceAccount + ",Bank =" + lceBank + ",CreditCard =" + lceCC + ",Fuel =" + lceFuel + "," +
                 "Legal =" + lceLegal + ",License =" + lceLicensePerm + ",PayrollProc =" + lcePayroll + ",Insurance =" + lceInsur + ",WorkersComp =" + lceWorkComp + ",Advertising =" + lceAdvertise + "," +
@@ -995,18 +991,18 @@ namespace Accounting_PL
                 "Plumbing =" + lcePlumb + ",Remodeling =" + lceRemodel + ",Structural =" + lceStruct + ",DishMachine =" + lceDishMach + ",Janitorial =" + lceJanitorial + ",Office =" + lceOfficeComp + "," +
                 "Restaurant =" + lceRestaurant + ",Uniforms =" + lceUniform + ",Data =" + lceData + ",Electricity =" + lceElectric + ",Music =" + lceMusic + ",NaturalGas =" + lceNatGas + ",Security =" + lceSecurity + "," +
                 "Trash =" + lceTrash + ",WaterSewer =" + lceWaterSewer + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
-            CreateCommand(lcSQL);
+            SQLCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_FoodCost SET FoodCost =" + lcfTotFood + ",PrimSupp =" + lcfPrimSupp + ",OthSupp =" + lcfOthSupp + ",Bread =" + lcfBread + "," +
                 "Beverage =" + lcfBev + ",Produce =" + lcfProd + ",CarbonDioxide =" + lcfCarbon + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
-            CreateCommand(lcSQL);
+            SQLCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_NetSales SET NetSales =" + lcNetSales + ",Healthcare =" + lcHealth + ",Retirement =" + lcRetire + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222 
-            CreateCommand(lcSQL);
+            SQLCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_OverheadCost set OverheadCost =" + lcoTotOverhead + ",Mortgage =" + lcoMort + ",LoanPayment =" + lcoLoan + ",Association =" + lcoAssoc + ",PropertyTax =" + lcoPropTax + "," +
                 "AdvertisingCoop =" + lcoAdvCoop + ",NationalAdvertise =" + lcoNatAdver + ",LicensingFee =" + lcoLicenseFee + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
-            CreateCommand(lcSQL);
+            SQLCommand(lcSQL);
 
             MessageBox.Show("Done!");
 
@@ -2085,7 +2081,7 @@ namespace Accounting_PL
                     break;
 
                 case 1:
-                    txtInvHold.Text = "EXPENSES";
+                    txtInvHold.Text = "EXPENSE";
                     break;
 
                 case 2:
@@ -2177,7 +2173,7 @@ namespace Accounting_PL
 
                 lcSQL = " INSERT INTO dynamicelements..tb_VendorInv (Week,IDS,InvDate,VendorID,InvNumber,Category,Item,Amount) VALUES " +
                     "('" + lcEOW + "', " + lcStoreName + ", '" + lcInvDate + "' , '" + lcVendor + "', '" + lcVendorInv + "', '" + lcCat + "', '" + lcItem + "', " + lcAmt + ") "; // 138  158  168  180  192  197  209  218  222
-                CreateCommand(lcSQL);
+                SQLCommand(lcSQL);
             }
 
             lcSQLa = " select * from tb_Vendors where VendorID='%" + lcVendor + "% '";
@@ -2187,7 +2183,7 @@ namespace Accounting_PL
             {
                 lcSQLa = " INSERT INTO dynamicelements..tb_Vendors (VendorID,VendorName,SalesPerson,Phone,AddressLine1,AddressLine2,City,StateProvince,CountryRegion,PostalCode) VALUES " +
                     " ('" + lcVendor + "','" + lcVendName + "','" + lcSalesP + "','" + lcPhone + "','" + lcAddress1 + "','" + lcAddress2 + "','" + lcCity + "','" + lcState + "','" + lcCountry + "','" + lcPostal + "') ";
-                CreateCommand(lcSQLa);
+                SQLCommand(lcSQLa);
 
             }
             reader.Close();
@@ -2220,7 +2216,7 @@ namespace Accounting_PL
                     lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
                     break;
             }
-            CreateCommand(lcSQLb);
+            SQLCommand(lcSQLb);
 
             txtInvDate.Text = "";
             vendorIDTextBox.Text = "";

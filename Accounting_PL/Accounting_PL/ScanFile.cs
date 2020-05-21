@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 using WIA;
 
 namespace ScanIt
@@ -73,10 +74,12 @@ namespace ScanIt
             }
             catch (System.Exception ex)
             {
-                throw new System.Exception("Error, Is a scanner chosen?");
+                MessageBox.Show("Error: " + ex.Message);
+                // throw new System.Exception("Error, Is a scanner chosen?");
             }
 
-            throw new System.Exception("No Device Selected");
+            MessageBox.Show("No Device Selected");
+            // throw new System.Exception("No Device Selected");
         }
 
         /// <summary>

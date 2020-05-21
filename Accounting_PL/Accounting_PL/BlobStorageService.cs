@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Accounting_PL
 {
