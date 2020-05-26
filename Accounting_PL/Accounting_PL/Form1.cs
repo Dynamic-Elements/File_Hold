@@ -17,6 +17,7 @@ using System.Diagnostics;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Azure.Storage.Files.Shares;
+using Azure;
 
 namespace Accounting_PL
 {
@@ -29,6 +30,8 @@ namespace Accounting_PL
         string fileCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\")));
         string lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
         // string lcStoreName = System.Environment.MachineName.Trim();
+        string scanFileDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")) + "Scanned_Documents");
+        string excelFileDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")) + "FinancialFolder");
 
         public Form1()
         {
@@ -114,7 +117,7 @@ namespace Accounting_PL
 
 
 
-        public OdbcDataReader GetData(string queryString)
+        public static OdbcDataReader GetData(string queryString)
         {
             // https://www.codeproject.com/Questions/679137/fill-gridview-from-datareader
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
@@ -132,6 +135,7 @@ namespace Accounting_PL
             // connection.Close();
             return reader;
         }
+
 
 
 
@@ -308,7 +312,7 @@ namespace Accounting_PL
             //Excel.Worksheet xlWorkSheet;
             //object misValue = Missing.Value;
 
-            string lexfolder = Files.AddBS(baseCurDir + "FinancialFolder");
+            string lexfolder = excelFileDir;  //  Files.AddBS(baseCurDir + "FinancialFolder");
             try
             {
                 // Determine whether the directory exists.
@@ -560,6 +564,44 @@ namespace Accounting_PL
         }
 
 
+        /// <summary>
+        /// This is the proper code to upload files to AZURE File Cloud Storage.
+        /// Make sure the filename and file extension is passed to the code.
+        /// </summary>
+        /// <param name="fileName"></param>
+        private async void UploadFile(string fileName)
+        {
+
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=dynamicfiles;AccountKey=LWb7Fskhw1UOHuKqoMnZMSmbJmVjSz7A77YHVO1ADsKLVKOKQ3vxl0CIvrUQX0buapEu4Oc83ElN/q5lY5M9qQ==;EndpointSuffix=core.windows.net";
+
+            // Name of the share, directory, and file we'll create
+            string shareName = "restaurantdocs";
+            string dirName = "store" + lcStoreName;
+            // string fileName = "RestDataHold.pdf";
+
+            // Path to the local file to upload
+            string localFilePath = scanFileDir;  //  Files.AddBS(baseCurDir + "Scanned_Documents") + fileName;
+
+            // Get a reference to a share and then create it
+            ShareClient share = new ShareClient(connectionString, shareName);
+            share.CreateIfNotExists();
+
+            // Get a reference to a directory and create it
+            ShareDirectoryClient directory = share.GetDirectoryClient(dirName);
+            directory.CreateIfNotExists();
+
+            // Get a reference to a file and upload it
+            ShareFileClient file = directory.GetFileClient(fileName);
+            using (FileStream stream = File.OpenRead(localFilePath))
+            {
+                file.Create(stream.Length);
+                file.UploadRange(new HttpRange(0, stream.Length), stream);
+            }
+            //  MessageBox.Show("DONE!");
+        }
+
+
+
 
         /// <summary>
         /// Scanner Button
@@ -572,7 +614,7 @@ namespace Accounting_PL
 
             updateCalculations();
 
-            string lscfolder = Files.AddBS(baseCurDir + "Scanned_Documents");
+            string lscfolder = scanFileDir;  // Files.AddBS(baseCurDir + "Scanned_Documents");
             try
             {
                 // Determine whether the directory exists.
@@ -638,44 +680,11 @@ namespace Accounting_PL
             var TextJPG = ResultsJPG.Text;
             File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
 
+            string lcPDF = Files.JustFName(destinaton);
 
-            /////////////// Save file to the Azure cloud
-            //// https://filehold.file.core.windows.net/invoices/Ihop158
-            //// https://filehold.blob.core.windows.net/testingground
-            //// https://filehold.file.core.windows.net/
-            //// DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net
-            //// DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=0tv9+8SsMjhJdnJdDOk4Mb+DHrmSeGEVj+CcEiMYPdl4z1w6qKifTMLqK6mEUJQpT1iVa7VrZRjxYyTs790AsA==;EndpointSuffix=core.windows.net
-            //// testingground
-            //// invoices / Ihop158
-
-
-            //var fileName = Path.GetFileName(@"D:\File_Hold\Accounting_PL\Scanned_Documents\testingbb.pdf");
-            //var fileStream = new FileStream(fileName, FileMode.Create);
-            //string mimeType = MimeMapping.MimeUtility.GetMimeMapping(fileName);
-            //byte[] fileData = new byte[fileName.Length];
-            //BlobStorageService objBlobService = new BlobStorageService();
-            //objBlobService.UploadFileToBlob(fileName, fileData, mimeType);
-
-
-            //// Create a temporary Lorem Ipsum file on disk that we can upload
-            //string localFilePath = @"C:\Users\taylo\Documents\File_Hold\Accounting_PL\Scanned_Documents";  //  CreateTempFile(SampleFileContent);
-            //string constring = "DefaultEndpointsProtocol=https;AccountName=filehold;AccountKey=EHO2oNja711DH4F0ymklwjdbepveULyQDVTz0ndboZT03LHYH0DuIS4J3CliuLkpmfJW01kJhqCbhIuCGVj2mw==;EndpointSuffix=core.windows.net";
-
-            //string shareName = "Invoice";  //  Randomize("sample-share");
-            //ShareClient share = new ShareClient(constring, shareName);
-            //try
-            //{
-            //    AzureHold.Upload(constring, shareName, localFilePath);
-            //}
-            //finally
-            //{
-            //    share.Delete();
-            //    File.Delete(localFilePath);
-            //}
+            UploadFile(lcPDF);
 
             MessageBox.Show("DONE!");
-
-            // https://docs.microsoft.com/en-us/dotnet/azure/
 
         }
 

@@ -168,8 +168,7 @@ namespace Accounting_PL
                 // Ignore any errors if the share already exists
             }
             #endregion Snippet:Azure_Storage_Files_Shares_Samples_Sample01a_HelloWorld_Errors
+
         }
-
-
     }
 }
