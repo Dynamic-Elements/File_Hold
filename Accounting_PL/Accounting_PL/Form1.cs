@@ -580,7 +580,7 @@ namespace Accounting_PL
             // string fileName = "RestDataHold.pdf";
 
             // Path to the local file to upload
-            string localFilePath = scanFileDir;  //  Files.AddBS(baseCurDir + "Scanned_Documents") + fileName;
+            string localFilePath = scanFileDir + fileName;  //  Files.AddBS(baseCurDir + "Scanned_Documents") + fileName;
 
             // Get a reference to a share and then create it
             ShareClient share = new ShareClient(connectionString, shareName);
@@ -684,7 +684,7 @@ namespace Accounting_PL
 
             UploadFile(lcPDF);
 
-            MessageBox.Show("DONE!");
+            MessageBox.Show("Finished!");
 
         }
 
