@@ -60,7 +60,7 @@ namespace Accounting_PL
             conn.ConnectionString = "Data Source=dynamicelements.database.windows.net;Initial Catalog=dynamicelements;Persist Security Info=True;User ID=tbmaster;Password=Crazy$Times44";
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "select category from tb_category";
+            command.CommandText = "select category from dynamicelements..tb_category order by category";
             DataTable dt = new DataTable();
 
             SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -2185,7 +2185,7 @@ namespace Accounting_PL
                 SQLCommand(lcSQL);
             }
 
-            lcSQLa = " select * from tb_Vendors where VendorID='%" + lcVendor + "% '";
+            lcSQLa = " select * from dynamicelements..tb_Vendors where VendorID='%" + lcVendor + "% '";
             OdbcDataReader reader = GetData(lcSQLa);
 
             if (!reader.HasRows)
@@ -2197,7 +2197,7 @@ namespace Accounting_PL
             }
             reader.Close();
 
-            string lcSQLz = "select " + lcCat + " from vw_OrderLogs where week = '" + lcEOW + "' and AddressID =" + lcStoreName;
+            string lcSQLz = "select " + lcCat + " from dynamicelements..vw_OrderLogs where week = '" + lcEOW + "' and AddressID =" + lcStoreName;
             OdbcDataReader readerz = GetData(lcSQLz);
 
             decimal lcnumb = 0m;
@@ -2229,6 +2229,7 @@ namespace Accounting_PL
 
             txtInvDate.Text = "";
             vendorIDTextBox.Text = "";
+            txtVndSearch.Text = "";
             txtInvNumb.Text = "";
             cbCategory.Text = "";
             vendorNameTextBox.Text = "";
@@ -2262,12 +2263,12 @@ namespace Accounting_PL
 
             string lcval = this.txtVndSearch.Text;
 
-            string lcSQL = "select * from tb_Vendors where VendorID='%" + lcval + "% '";
+            string lcSQL = "select * from dynamicelements..tb_Vendors where VendorID='%" + lcval + "% '";
             OdbcDataReader reader = GetData(lcSQL);
 
             if (reader.HasRows)
             {
-                MessageBox.Show("Found something!");
+                //  MessageBox.Show("Found something!");
                 vendorIDTextBox.Text = reader["VendorID"].ToString();
                 vendorNameTextBox.Text = reader["VendorName"].ToString();
                 salesPersonTextBox.Text = reader["SalesPerson"].ToString();
