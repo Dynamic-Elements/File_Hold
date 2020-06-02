@@ -63,7 +63,6 @@ namespace AccountingPL
             var lYear = DateTime.Now.Year.ToString();
             txtWeek.Text = lastSunday;
             txtYear.Text = lYear;
-            txtInvHold.Text = "FOOD";
 
             txtStoreNumb.Text = lcStoreName;
             txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
@@ -2093,30 +2092,6 @@ namespace AccountingPL
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtInvHold.Text = "FOOD";
-
-            switch (this.tabControl1.SelectedIndex)
-            {
-                case 0:
-                    txtInvHold.Text = "FOOD";
-                    break;
-
-                case 1:
-                    txtInvHold.Text = "EXPENSE";
-                    break;
-
-                case 2:
-                    txtInvHold.Text = "LABOR";
-                    break;
-
-                case 3:
-                    txtInvHold.Text = "OVERHEAD";
-                    break;
-
-                default:
-                    txtInvHold.Text = "FOOD";
-                    break;
-            }
 
             updateCalculations();
 
@@ -2197,7 +2172,7 @@ namespace AccountingPL
                 SQLCommand(lcSQL);
             }
 
-            lcSQLa = " select * from dynamicelements..tb_Vendors where VendorID='%" + lcVendor + "% '";
+            lcSQLa = " select * from dynamicelements..tb_Vendors where VendorID like '%" + lcVendor + "%' ";
             OdbcDataReader reader = GetData(lcSQLa);
 
             if (!reader.HasRows)
@@ -2219,31 +2194,39 @@ namespace AccountingPL
             readerz.Close();
             decimal lcNewTot = lcTotVal + lcnumb;
 
-            switch (txtInvHold.Text.Trim())
+            try
             {
-                case "FOOD":
-                    lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
-                    break;
-
-                case "EXPENSES":
-                    lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
-                    break;
-
-                case "LABOR":
-                    lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
-                    break;
-
-                case "OVERHEAD":
-                    lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
-                    break;
+                lcSQLb = " UPDATE dynamicelements..tb_FoodCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
+                SQLCommand(lcSQLb);
             }
-            SQLCommand(lcSQLb);
+            catch { }
 
-            txtInvDate.Text = "";
+            try
+            {
+                lcSQLb = " UPDATE dynamicelements..tb_ExpenseCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
+                SQLCommand(lcSQLb);
+            }
+            catch { }
+
+            try
+            {
+                lcSQLb = " UPDATE dynamicelements..tb_LaborCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
+                SQLCommand(lcSQLb);
+            }
+            catch { }
+
+            try
+            {
+                lcSQLb = " UPDATE dynamicelements..tb_OverheadCost SET " + lcCat + " = " + lcNewTot + " WHERE Week='" + lcEOW + "' and IDS =" + lcStoreName;
+                SQLCommand(lcSQLb);    //  SQLCommand(lcSQLb);  //  delete from dynamicelements..tb_Vendors    delete from dynamicelements..tb_VendorInv
+            }
+            catch { }
+
+            txtInvDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
             vendorIDTextBox.Text = "";
             txtVndSearch.Text = "";
             txtInvNumb.Text = "";
-            cbCategory.Text = "";
+            cbCategory.SelectedIndex = 0;
             vendorNameTextBox.Text = "";
             salesPersonTextBox.Text = "";
             phoneTextBox.Text = "";
@@ -2253,9 +2236,11 @@ namespace AccountingPL
             stateProvinceTextBox.Text = "";
             countryRegionTextBox.Text = "";
             postalCodeTextBox.Text = "";
-            txtTotInvoice.Text = "";
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
+
+            decimal totalSalary = 0;
+            txtTotInvoice.Text = totalSalary.ToString("C");
 
             refreshFormFields();
 
@@ -2273,9 +2258,9 @@ namespace AccountingPL
         private void textBox1_Leave(object sender, EventArgs e)
         {
 
-            string lcval = this.txtVndSearch.Text;
+            string lcval = this.txtVndSearch.Text.Trim();
 
-            string lcSQL = "select * from dynamicelements..tb_Vendors where VendorID='%" + lcval + "% '";
+            string lcSQL = "select * from dynamicelements..tb_Vendors where VendorID like '%" + lcval + "%' ";
             OdbcDataReader reader = GetData(lcSQL);
 
             if (reader.HasRows)
