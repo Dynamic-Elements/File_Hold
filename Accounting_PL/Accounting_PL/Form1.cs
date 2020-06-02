@@ -28,10 +28,11 @@ namespace Accounting_PL
         string curDir = Files.AddBS(Files.CurDir());
         string baseCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")));
         string fileCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\")));
-        string lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
-        // string lcStoreName = System.Environment.MachineName.Trim();
+        // string lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
+        string lcStoreName = System.Environment.MachineName.Trim();    // " DESKTOP-6HBQUIA"
         string scanFileDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")) + "Scanned_Documents");
         string excelFileDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")) + "FinancialFolder");
+
 
         public Form1()
         {
@@ -46,6 +47,17 @@ namespace Accounting_PL
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            /// Will make sure to grab the store number on any computer and be used for testing.
+            if (lcStoreName != "DESKTOP-6HBQUIA")
+            {
+                lcStoreName = System.Environment.MachineName.Trim().Substring(4, 3);
+            }
+            else
+            {
+                lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
+            }
+
             var date = DateTime.Now;
             var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();

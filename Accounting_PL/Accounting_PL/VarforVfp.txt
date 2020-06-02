@@ -1,1 +1,0 @@
-System.Windows.Forms.TextBox, Text: 2020_158_C:\Users\taylo\Documents\File_Hold\Accounting_PL\FinancialFolder\
