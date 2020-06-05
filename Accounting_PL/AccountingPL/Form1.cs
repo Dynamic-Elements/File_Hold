@@ -17,7 +17,10 @@ using System.Diagnostics;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Azure.Storage.Files.Shares;
+using System.Runtime.InteropServices;
 using Azure;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AccountingPL
 {
@@ -132,7 +135,8 @@ namespace AccountingPL
         {
             // https://www.codeproject.com/Questions/679137/fill-gridview-from-datareader
             string lcServer = "dynamicelements.database.windows.net";  // playgroup.database.windows.net
-            string lcODBC = "ODBC Driver 17 for SQL Server";
+            // string lcODBC = "ODBC Driver 17 for SQL Server";
+            string lcODBC = GetSystemDriverList();
             string lcDB = "dynamicelements";
             string lcUser = "tbmaster";
             string lcProv = "SQLOLEDB";
@@ -145,6 +149,51 @@ namespace AccountingPL
             OdbcDataReader reader = cmd.ExecuteReader();
             // connection.Close();
             return reader;
+        }
+
+
+
+        // public static List<String> GetSystemDriverList()
+        public static string GetSystemDriverList()
+        {
+            //  List<string> names = new List<string>();
+            string names = "";
+            // get system dsn's
+            Microsoft.Win32.RegistryKey reg = (Microsoft.Win32.Registry.LocalMachine).OpenSubKey("Software");
+            if (reg != null)
+            {
+                reg = reg.OpenSubKey("ODBC");
+                if (reg != null)
+                {
+                    reg = reg.OpenSubKey("ODBCINST.INI");
+                    if (reg != null)
+                    {
+
+                        reg = reg.OpenSubKey("ODBC Drivers");
+                        if (reg != null)
+                        {
+                            // Get all DSN entries defined in DSN_LOC_IN_REGISTRY.
+                            foreach (string sName in reg.GetValueNames())
+                            {
+                                if (sName.Contains("SQL Server"))
+                                {
+                                    // names.Add(sName);
+                                    // MessageBox.Show(sName);
+                                    names = sName.Trim();
+                                    break;
+                                }
+                            }
+                        }
+                        try
+                        {
+                            reg.Close();
+                        }
+                        catch { /* ignore this exception if we couldn't close */ }
+                    }
+                }
+            }
+
+            return names;
         }
 
 
