@@ -21,6 +21,9 @@ using System.Runtime.InteropServices;
 using Azure;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace AccountingPL
 {
