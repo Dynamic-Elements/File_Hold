@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/// Author: Taylor Badonsky
 namespace AccountingPL
 {
     static class Program
