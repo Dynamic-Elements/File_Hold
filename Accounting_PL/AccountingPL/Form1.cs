@@ -8,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using VFPToolkit;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Linq;
 using System.Data;
@@ -17,7 +16,6 @@ using System.Diagnostics;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Azure.Storage.Files.Shares;
-using System.Runtime.InteropServices;
 using Azure;
 using System.Collections.Generic;
 using System.Text;
@@ -28,13 +26,12 @@ namespace AccountingPL
     {
 
         string appPath = AppDomain.CurrentDomain.BaseDirectory;
-        string curDir = Files.AddBS(Files.CurDir());
-        string baseCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")));
-        string fileCurDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\")));
-        // string lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
-        string lcStoreName = System.Environment.MachineName.Trim();    // " DESKTOP-6HBQUIA"
-        string scanFileDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")) + "ScannedDocuments");
-        string excelFileDir = Files.AddBS(Path.GetFullPath(Path.Combine(Files.CurDir(), @"..\..\..\")) + "FinancialFolder");
+        string curDir = Directory.GetCurrentDirectory().Trim() + "\\";
+        string baseCurDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\")).Trim() + "\\";  
+        string fileCurDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\")).Trim() + "\\";
+        string lcStoreName = System.Environment.MachineName.Trim();
+        string scanFileDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\") + "\\ScannedDocuments");
+        string excelFileDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\") + "\\FinancialFolder");
 
 
         public Form1()
@@ -52,17 +49,17 @@ namespace AccountingPL
         {
 
             /// Will make sure to grab the store number on any computer and be used for testing.
-            if (lcStoreName != "DESKTOP-6HBQUIA")
-            {
-                lcStoreName = System.Environment.MachineName.Trim().Substring(4, 3);
-            }
-            else
-            {
-                lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
-            }
+            //if (lcStoreName != "DESKTOP-6HBQUIA")
+            //{
+            //    lcStoreName = System.Environment.MachineName.Trim().Substring(4, 3);
+            //}
+            //else
+            //{
+            lcStoreName = "IHOP158-AZTEC # Manager".Trim().Substring(4, 3);
+            //}
 
             var date = DateTime.Now;
-            var lastSunday = Dates.DTOC(date.AddDays(-(int)date.DayOfWeek));  // Grabs the past Sunday for Week End
+            var lastSunday = date.AddDays(-(int)date.DayOfWeek).ToString("MM/dd/yyyy");  // Grabs the past Sunday for Week End
             var lYear = DateTime.Now.Year.ToString();
             txtWeek.Text = lastSunday;
             txtYear.Text = lYear;
@@ -221,17 +218,17 @@ namespace AccountingPL
                 txtBread.Text = reader["Bread"].ToString();
                 txtBev.Text = reader["Beverage"].ToString();
                 txtProd.Text = reader["Produce"].ToString();
-                txtCarbDio.Text = reader["CarbonDioxide"].ToString();
+                txtCarbDio.Text = reader["CO2"].ToString();
                 txtFoodTot.Text = reader["FoodCost"].ToString();
 
                 txtMortgage.Text = reader["Mortgage"].ToString();
-                txtLoan.Text = reader["LoanPayment"].ToString();
-                txtAssociation.Text = reader["Association"].ToString();
-                txtPropTax.Text = reader["PropertyTax"].ToString();
-                txtAdvCoop.Text = reader["AdvertisingCoop"].ToString();
-                txtNationalAdv.Text = reader["NationalAdvertise"].ToString();
-                txtLicenseFee.Text = reader["LicensingFee"].ToString();
-                txtTotOverhead.Text = reader["OverheadCost"].ToString();
+                txtLoan.Text = reader["LoanPay"].ToString();
+                txtAssociation.Text = reader["Associat"].ToString();
+                txtPropTax.Text = reader["PropTax"].ToString();
+                txtAdvCoop.Text = reader["AdsCoop"].ToString();
+                txtNationalAdv.Text = reader["NationalAd"].ToString();
+                txtLicenseFee.Text = reader["LicenseFee"].ToString();
+                txtTotOverhead.Text = reader["OverhdCost"].ToString();
 
                 txtAccount.Text = reader["Accounting"].ToString();
                 txtBank.Text = reader["Bank"].ToString();
@@ -239,13 +236,13 @@ namespace AccountingPL
                 txtFuel.Text = reader["Fuel"].ToString();
                 txtLegal.Text = reader["Legal"].ToString();
                 txtLicense.Text = reader["License"].ToString();
-                txtPayroll.Text = reader["PayrollProc"].ToString();
+                txtPayroll.Text = reader["Payroll"].ToString();
                 txtInsur.Text = reader["Insurance"].ToString();
-                txtWorkComp.Text = reader["WorkersComp"].ToString();
-                txtAdvertising.Text = reader["Advertising"].ToString();
+                txtWorkComp.Text = reader["WorkComp"].ToString();
+                txtAdvertising.Text = reader["Advertise"].ToString();
                 txtCharitableComp.Text = reader["Charitable"].ToString();
                 txtAuto.Text = reader["Auto"].ToString();
-                txtCashShort.Text = reader["CashShortage"].ToString();
+                txtCashShort.Text = reader["CashShort"].ToString();
                 txtElectrical.Text = reader["Electrical"].ToString();
                 txtGeneral.Text = reader["General"].ToString();
                 txtHVAC.Text = reader["HVAC"].ToString();
@@ -254,27 +251,27 @@ namespace AccountingPL
                 txtPlumb.Text = reader["Plumbing"].ToString();
                 txtRemodel.Text = reader["Remodeling"].ToString();
                 txtStructural.Text = reader["Structural"].ToString();
-                txtDishMach.Text = reader["DishMachine"].ToString();
+                txtDishMach.Text = reader["DishMach"].ToString();
                 txtJanitorial.Text = reader["Janitorial"].ToString();
                 txtOffice.Text = reader["Office"].ToString();
                 txtRestaurant.Text = reader["Restaurant"].ToString();
                 txtUniform.Text = reader["Uniforms"].ToString();
                 txtDataTele.Text = reader["Data"].ToString();
-                txtElectricity.Text = reader["Electricity"].ToString();
+                txtElectricity.Text = reader["Electric"].ToString();
                 txtMusic.Text = reader["Music"].ToString();
                 txtNatGas.Text = reader["NaturalGas"].ToString();
                 txtSecurity.Text = reader["Security"].ToString();
                 txtTrash.Text = reader["Trash"].ToString();
                 txtWater.Text = reader["WaterSewer"].ToString();
-                txtTotExpense.Text = reader["ExpenseCost"].ToString();
+                txtTotExpense.Text = reader["ExpCost"].ToString();
 
-                txtHost.Text = reader["HostCashier"].ToString();
+                txtHost.Text = reader["HostCash"].ToString();
                 txtCooks.Text = reader["Cooks"].ToString();
                 txtServers.Text = reader["Servers"].ToString();
                 txtDMO.Text = reader["DMO"].ToString();
                 txtSupervisor.Text = reader["Supervisor"].ToString();
                 txtOvertime.Text = reader["Overtime"].ToString();
-                txtGenManager.Text = reader["GeneralManager"].ToString();
+                txtGenManager.Text = reader["GeneralMan"].ToString();
                 txtManager.Text = reader["Manager"].ToString();
                 txtBonus.Text = reader["Bonus"].ToString();
                 txtPayrollTax.Text = reader["PayrollTax"].ToString();
@@ -703,10 +700,12 @@ namespace AccountingPL
             FileInfo oldnewestFile = GetNewestFile(new DirectoryInfo(path));
             string value = "Document Name";
             string destinaton = "";
+            string lcfilename = "";
             if (InputBox("New document", "New document name:", ref value) == DialogResult.OK)
             {
                 Name = oldnewestFile.DirectoryName + "\\" + value + ".jpeg";
                 destinaton = oldnewestFile.DirectoryName + "\\" + value + ".pdf";
+                lcfilename = value + ".pdf";
             }
             File.Move(oldnewestFile.FullName, Name);
 
@@ -740,9 +739,7 @@ namespace AccountingPL
             var TextJPG = ResultsJPG.Text;
             File.WriteAllText(oldnewestFile.DirectoryName + "\\testingJPG.txt", TextJPG);  // Looks better
 
-            string lcPDF = Files.JustFName(destinaton);
-
-            UploadFile(lcPDF);
+            UploadFile(lcfilename.Trim());
 
             MessageBox.Show("Finished!");
 
@@ -1049,28 +1046,28 @@ namespace AccountingPL
 
             string lcSQL = "";
 
-            lcSQL = "UPDATE dynamicelements..tb_LaborCost SET LaborCost=" + lclTotLabor + " ,HostCashier=" + lclHost + " ,Cooks=" + lclCook + " ,Servers=" + lclServer + " ," +
-                "DMO=" + lclDMO + " ,Supervisor=" + lclSuperv + ", Overtime=" + lclOvertime + ", GeneralManager=" + lclGenManager + ", Manager=" + lclManager + "," +
+            lcSQL = "UPDATE dynamicelements..tb_LaborCost SET LaborCost=" + lclTotLabor + " ,HostCash=" + lclHost + " ,Cooks=" + lclCook + " ,Servers=" + lclServer + " ," +
+                "DMO=" + lclDMO + " ,Supervisor=" + lclSuperv + ", Overtime=" + lclOvertime + ", GeneralMan=" + lclGenManager + ", Manager=" + lclManager + "," +
                 " Bonus=" + lclBonus + ", PayrollTax=" + lclPayTax + " WHERE Week='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             SQLCommand(lcSQL);
 
-            lcSQL = " UPDATE dynamicelements..tb_ExpenseCost SET ExpenseCost =" + lceTotExpense + ",Accounting =" + lceAccount + ",Bank =" + lceBank + ",CreditCard =" + lceCC + ",Fuel =" + lceFuel + "," +
-                "Legal =" + lceLegal + ",License =" + lceLicensePerm + ",PayrollProc =" + lcePayroll + ",Insurance =" + lceInsur + ",WorkersComp =" + lceWorkComp + ",Advertising =" + lceAdvertise + "," +
-                "Charitable =" + lceCharitable + ",Auto =" + lceAuto + ",CashShortage =" + lceCash + ",Electrical =" + lceElect + ",General =" + lceGeneral + ",HVAC =" + lceHVAC + ",Lawn =" + lceLawn + ",Painting =" + lcePaint + "," +
-                "Plumbing =" + lcePlumb + ",Remodeling =" + lceRemodel + ",Structural =" + lceStruct + ",DishMachine =" + lceDishMach + ",Janitorial =" + lceJanitorial + ",Office =" + lceOfficeComp + "," +
-                "Restaurant =" + lceRestaurant + ",Uniforms =" + lceUniform + ",Data =" + lceData + ",Electricity =" + lceElectric + ",Music =" + lceMusic + ",NaturalGas =" + lceNatGas + ",Security =" + lceSecurity + "," +
+            lcSQL = " UPDATE dynamicelements..tb_ExpenseCost SET ExpCost =" + lceTotExpense + ",Accounting =" + lceAccount + ",Bank =" + lceBank + ",CreditCard =" + lceCC + ",Fuel =" + lceFuel + "," +
+                "Legal =" + lceLegal + ",License =" + lceLicensePerm + ",Payroll =" + lcePayroll + ",Insurance =" + lceInsur + ",WorkComp =" + lceWorkComp + ",Advertise =" + lceAdvertise + "," +
+                "Charitable =" + lceCharitable + ",Auto =" + lceAuto + ",CashShort =" + lceCash + ",Electrical =" + lceElect + ",General =" + lceGeneral + ",HVAC =" + lceHVAC + ",Lawn =" + lceLawn + ",Painting =" + lcePaint + "," +
+                "Plumbing =" + lcePlumb + ",Remodeling =" + lceRemodel + ",Structural =" + lceStruct + ",DishMach =" + lceDishMach + ",Janitorial =" + lceJanitorial + ",Office =" + lceOfficeComp + "," +
+                "Restaurant =" + lceRestaurant + ",Uniforms =" + lceUniform + ",Data =" + lceData + ",Electric =" + lceElectric + ",Music =" + lceMusic + ",NaturalGas =" + lceNatGas + ",Security =" + lceSecurity + "," +
                 "Trash =" + lceTrash + ",WaterSewer =" + lceWaterSewer + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             SQLCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_FoodCost SET FoodCost =" + lcfTotFood + ",PrimSupp =" + lcfPrimSupp + ",OthSupp =" + lcfOthSupp + ",Bread =" + lcfBread + "," +
-                "Beverage =" + lcfBev + ",Produce =" + lcfProd + ",CarbonDioxide =" + lcfCarbon + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
+                "Beverage =" + lcfBev + ",Produce =" + lcfProd + ",CO2 =" + lcfCarbon + " WHERE Week ='" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             SQLCommand(lcSQL);
 
             lcSQL = " UPDATE dynamicelements..tb_NetSales SET NetSales =" + lcNetSales + ",Healthcare =" + lcHealth + ",Retirement =" + lcRetire + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222 
             SQLCommand(lcSQL);
 
-            lcSQL = " UPDATE dynamicelements..tb_OverheadCost set OverheadCost =" + lcoTotOverhead + ",Mortgage =" + lcoMort + ",LoanPayment =" + lcoLoan + ",Association =" + lcoAssoc + ",PropertyTax =" + lcoPropTax + "," +
-                "AdvertisingCoop =" + lcoAdvCoop + ",NationalAdvertise =" + lcoNatAdver + ",LicensingFee =" + lcoLicenseFee + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
+            lcSQL = " UPDATE dynamicelements..tb_OverheadCost set OverhdCost =" + lcoTotOverhead + ",Mortgage =" + lcoMort + ",LoanPay =" + lcoLoan + ",Associat =" + lcoAssoc + ",PropTax =" + lcoPropTax + "," +
+                "AdsCoop =" + lcoAdvCoop + ",NationalAd =" + lcoNatAdver + ",LicenseFee =" + lcoLicenseFee + " WHERE Week = '" + lcEOW + "' and IDS=" + lcStoreName;  // 138  158  168  180  192  197  209  218  222
             SQLCommand(lcSQL);
 
             MessageBox.Show("Done!");
@@ -2169,8 +2166,8 @@ namespace AccountingPL
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             var ldate = monthCalendar1.SelectionRange.Start.Date;  // .ToShortDateString()
-            var nextSunday = Dates.DTOC(ldate.AddDays(7 - (int)ldate.DayOfWeek));
-            var lcyear = Dates.CTOD(nextSunday).Year.ToString();
+            string nextSunday = ldate.AddDays(7 - (int)ldate.DayOfWeek).ToString("MM/dd/yyyy"); // Dates.DTOC(ldate.AddDays(7 - (int)ldate.DayOfWeek));
+            string lcyear = ldate.AddDays(7 - (int)ldate.DayOfWeek).Year.ToString();
 
             txtWeek.Text = nextSunday;
             txtYear.Text = lcyear;
