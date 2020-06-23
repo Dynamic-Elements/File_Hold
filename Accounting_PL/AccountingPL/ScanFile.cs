@@ -46,12 +46,11 @@ namespace ScanIt
         public string DeviceID;
 
         //Image Filenames
-        private const string wiaFormatBMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
-
-        private const string wiaFormatGIF = "{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}";
+        //private const string wiaFormatBMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
+        //private const string wiaFormatGIF = "{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}";
         private const string wiaFormatJPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
-        private const string wiaFormatPNG = "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}";
-        private const string wiaFormatTIFF = "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}";
+        //private const string wiaFormatPNG = "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}";
+        //private const string wiaFormatTIFF = "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}";
 
         #region Setup/select Scanner
 
@@ -329,7 +328,7 @@ namespace ScanIt
             return destination;
         }
 
-        public void mergeTiffPages(string str_DestinationPath, string[] sourceFiles)
+        public void MergeTiffPages(string str_DestinationPath, string[] sourceFiles)
         {
             System.Drawing.Imaging.ImageCodecInfo codec = null;
 
@@ -502,7 +501,7 @@ namespace ScanIt
                         ////sourceFiles[pages] = imgPath;
                         //mergeTiffPages(string str_DestinationPath, string[] sourceFiles)
                     }
-                    mergeTiffPages(@"D:\Test\", sourceFiles);
+                    MergeTiffPages(@"D:\Test\", sourceFiles);
 
                     string varImageFileName_duplex;
 
@@ -546,7 +545,7 @@ namespace ScanIt
         }
     }
 
-  
+
     internal class NewScanner
     {
     }
