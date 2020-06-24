@@ -25,9 +25,7 @@ namespace AccountingPL
     public partial class Form1 : Form
     {
 
-        string appPath = AppDomain.CurrentDomain.BaseDirectory;
         string curDir = Directory.GetCurrentDirectory().Trim() + "\\";
-        string baseCurDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\")).Trim() + "\\"; 
         string fileCurDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\")).Trim() + "\\";
         string lcStoreName = Environment.MachineName.Trim();
         string scanFileDir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\") + "\\ScannedDocuments");
